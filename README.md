@@ -5,7 +5,7 @@ Exports AWS SSO credentials to your terminal session.
 
 [![Version](https://img.shields.io/npm/v/get-sso-creds.svg)](https://npmjs.org/package/get-sso-creds)
 [![Downloads/week](https://img.shields.io/npm/dw/get-sso-creds.svg)](https://npmjs.org/package/get-sso-creds)
-[![License](https://img.shields.io/npm/l/get-sso-creds.svg)](https://github.com/JamesChung/get-sso-creds/LICENSE)
+[![License](https://img.shields.io/npm/l/get-sso-creds.svg)](https://github.com/JamesChung/get-sso-creds/blob/main/LICENSE)
 
 <!-- toc -->
 * [Usage](#usage)
