@@ -1,7 +1,7 @@
 {
   "name": "get-sso-creds",
   "description": "Exports AWS SSO credentials to your terminal session.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "James Chung @JamesChung",
   "bin": {
     "gsc": "./bin/run"
@@ -39,9 +39,7 @@
   },
   "repository": "JamesChung/get-sso-creds",
   "scripts": {
-    "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
-    "test": "echo NO TESTS",
-    "version": "oclif-dev readme && git add README.md"
+    "prepack": "rm -rf lib && tsc -b"
   },
   "types": "lib/index.d.ts"
 }
