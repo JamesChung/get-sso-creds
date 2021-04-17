@@ -46,7 +46,7 @@ class GetSsoCreds extends Command {
     for (let prof in iniConfig) {
       profiles.push(prof.split(' ').pop());
     }
-    if (profile in profiles) {
+    if (profiles.includes(profile)) {
       return true;
     }
     return false;
@@ -153,7 +153,7 @@ class GetSsoCreds extends Command {
     const { flags } = this.parse(GetSsoCreds);
 
     try {
-      if (!this.isProfile(flags?.profile)) {
+      if (!this.isProfile(flags.profile)) {
         throw `> [${flags.profile}] is not a valid profile.`;
       }
       const profileInfo = this.getProfileInfo(flags?.profile);

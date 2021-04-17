@@ -19,7 +19,7 @@ $ npm install -g get-sso-creds
 $ gsc COMMAND
 running command...
 $ gsc (-v|--version|version)
-get-sso-creds/0.0.1 darwin-x64 node-v14.16.1
+get-sso-creds/0.0.2 darwin-x64 node-v14.16.1
 $ gsc --help [COMMAND]
 USAGE
   $ gsc COMMAND
