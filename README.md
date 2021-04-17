@@ -14,8 +14,11 @@ Exports AWS SSO credentials to your terminal session.
 <!-- usage -->
 ```sh-session
 $ npm install -g get-sso-creds
+```
 
-# If you just type gsc it will default to your default profile
+###### If you just type `gsc` it will default to your default profile
+
+```sh-session
 $ gsc
 Profile: default
 Credentials expire at: 6:06:34 AM
@@ -23,9 +26,11 @@ Credentials expire at: 6:06:34 AM
 export AWS_ACCESS_KEY_ID=<Access Key ID>
 export AWS_SECRET_ACCESS_KEY=<Secret Access Key>
 export AWS_SESSION_TOKEN=<Session Token>
+```
 
+###### If you want to specify a profile use the `--profile` flag
 
-# If you want to specify a profile use the profile flag
+```sh-session
 $ gsc --profile your-profile
 Profile: your-profile
 Credentials expire at: 6:06:34 AM
@@ -33,12 +38,17 @@ Credentials expire at: 6:06:34 AM
 export AWS_ACCESS_KEY_ID=<Access Key ID>
 export AWS_SECRET_ACCESS_KEY=<Secret Access Key>
 export AWS_SESSION_TOKEN=<Session Token>
+```
 
+###### Version number
 
-# Version number
+```sh-session
 $ gsc -v
+```
 
-# Help
+###### Help
+
+```sh-session
 $ gsc -h
 
 ...
