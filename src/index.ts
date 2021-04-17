@@ -153,8 +153,10 @@ class GetSsoCreds extends Command {
     const { flags } = this.parse(GetSsoCreds);
 
     try {
-      if (!this.isProfile(flags.profile)) {
-        throw `> [${flags.profile}] is not a valid profile.`;
+      if (flags.profile) {
+        if (!this.isProfile(flags.profile)) {
+          throw `> [${flags.profile}] is not a valid profile.`;
+        }
       }
       const profileInfo = this.getProfileInfo(flags?.profile);
       profileInfo.identity = await this.initCredentials(profileInfo?.profileName);
