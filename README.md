@@ -53,6 +53,8 @@ USAGE
 OPTIONS
   -h, --help
   -p, --profile=profile  [default: default]
+  -q, --quiet
+  --json
 
 EXAMPLE
   $ gsc get --profile my-profile

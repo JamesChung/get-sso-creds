@@ -17,6 +17,8 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
   static flags = {
     help: flags.help({ char: 'h', description: '' }),
     profile: flags.string({ name: 'profile', char: 'p', default: 'default' }),
+    quiet: flags.boolean({ name: 'quiet', char: 'q', default: false }),
+    json: flags.boolean({ name: 'json', default: false }),
   };
 
   static args = [];
@@ -25,7 +27,7 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
     const { flags } = this.parse(Get);
 
     try {
-      await output(this, flags.profile);
+      await output(this, flags.profile, flags.quiet, flags.json);
     } catch (error) {
       console.error(error);
     }
