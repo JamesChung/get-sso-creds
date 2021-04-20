@@ -52,6 +52,11 @@ export default class Select extends Command {
       for (let ssoConfig of ssoConfigs) {
         urlChoices.push(ssoConfig.startUrl);
       }
+
+      if (urlChoices.length === 0) {
+        throw '> Sign in first (aws sso login | gsc login)';
+      }
+
       const accounts = await getAccounts(ssoConfigs);
 
       const ssoUrlResponse = await inquirer.prompt([{
