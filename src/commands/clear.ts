@@ -23,6 +23,7 @@ export default class Clear extends Command {
       clearCredentials(this);
       cli.action.stop();
     } catch (error) {
+      cli.action.stop('failed');
       this.log(error);
     }
   }

@@ -48,7 +48,7 @@ export default class Select extends Command {
       }
 
       if (urlChoices.length === 0) {
-        throw '> Sign in first (aws sso login | gsc login)';
+        throw '❯ Sign in first (aws sso login | gsc login)';
       }
 
       const accounts = await getAccounts(ssoConfigs);

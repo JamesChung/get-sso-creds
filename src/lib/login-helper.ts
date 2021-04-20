@@ -3,7 +3,7 @@ import { isProfile } from './profile-helper';
 
 export async function login(profile: string) {
   if (!isProfile(profile)) {
-    throw `> [ ${profile} ] is not a valid profile.`;
+    throw `❯ [ ${profile} ] is not a valid profile.`;
   }
 
   return new Promise((resolve, reject) => {

@@ -9,7 +9,7 @@ const ini = require('ini');
 
 export async function initCredentials(profile: string = 'default'): Promise<IUserIdentity> {
   if (!isProfile(profile)) {
-    throw `> [ ${profile} ] is not a valid profile.`;
+    throw `❯ [ ${profile} ] is not a valid profile.`;
   }
 
   const runStsCommand = `aws sts get-caller-identity --profile ${profile} --output json`;
@@ -83,7 +83,7 @@ export async function getCredentials(profile: IProfile): Promise<ICredentials> {
       return creds;
     }
   }
-  throw '> No valid credentials.';
+  throw '❯ No valid credentials.';
 }
 
 export function writeCredentialsFile(credentials: ICredentials) {
@@ -102,7 +102,7 @@ export function writeCredentialsFile(credentials: ICredentials) {
 export function clearCredentials(command: Command) {
   const credentialsFilePath = `${homedir()}/.aws/credentials`;
   if (!existsSync(credentialsFilePath)) {
-    command.log('> credentials file does not exist');
+    throw '❯ credentials file does not exist';
   }
   const parsedCredentials = ini.parse(readFileSync(credentialsFilePath, 'utf-8'));
   parsedCredentials.default.aws_access_key_id = '';
