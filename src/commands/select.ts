@@ -91,6 +91,7 @@ export default class Select extends Command {
       }
       roleOutput(this, ssoRoleResponse.ssoRole, roleCreds, flags);
     } catch (error) {
+      cli.action.stop('failed');
       this.log(error);
     }
   }
