@@ -33,6 +33,26 @@ export async function output(command: Command, flags: IFlags) {
     exportHeaderOutput(command, profileInfo, credentials);
     exportOutput(command, credentials);
   } catch (error) {
-    console.log(error);
+    command.error(error);
+  }
+}
+
+export async function roleOutput(command: Command, roleName: string, credentials: ICredentials, flags: IFlags) {
+  try {
+    if (flags?.json) {
+      command.log(JSON.stringify(credentials));
+      return;
+    }
+
+    if (flags?.quiet) {
+      exportOutput(command, credentials);
+      return;
+    }
+
+    command.log(`Role: ${roleName}`);
+    command.log(`Credentials expire at: ${(new Date(credentials.expiration)).toLocaleTimeString()}\n`);
+    exportOutput(command, credentials);
+  } catch (error) {
+    command.error(error);
   }
 }

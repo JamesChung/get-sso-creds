@@ -34,6 +34,7 @@ export function getCredentialsFromCredentialFiles(): ICredentials[] {
   const credsList: ICredentials[] = [];
   const credfiles = readdirSync(`${homedir()}/.aws/cli/cache`, 'utf-8');
   for (let credFile of credfiles) {
+    // TODO: Make this async
     const fileContents = JSON.parse(readFileSync(`${homedir()}/.aws/cli/cache/${credFile}`, 'utf-8'));
     const creds = fileContents.Credentials;
     const credentials: ICredentials = {

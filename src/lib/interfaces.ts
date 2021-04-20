@@ -1,4 +1,4 @@
-interface IProfile {
+export interface IProfile {
   profileName: string;
   ssoStartUrl: string;
   ssoAccountId: string;
@@ -7,23 +7,28 @@ interface IProfile {
   identity: IUserIdentity;
 }
 
-interface IUserIdentity {
+export interface IUserIdentity {
   userId: string;
   account: string;
   arn: string;
 }
 
-interface ICredentials {
+export interface ICredentials {
   accessKeyId: string;
   secretAccessKey: string;
   sessionToken: string;
   expiration: string;
 }
 
-interface IFlags {
-  profile: string;
+export interface IFlags {
+  profile?: string;
   json?: boolean;
   quiet?: boolean;
 }
 
-export { IProfile, IUserIdentity, ICredentials, IFlags };
+export interface ISsoConfig {
+  startUrl: string;
+  region: string;
+  accessToken: string;
+  expiresAt: string;
+}

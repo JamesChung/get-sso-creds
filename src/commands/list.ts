@@ -5,12 +5,12 @@ import { IFlags } from '../lib/interfaces';
 import * as inquirer from 'inquirer';
 
 export default class List extends Command {
-  static description = 'interactive AWS SSO credentials retrieval';
+  static description = 'interactive AWS SSO profile credentials retrieval';
 
   static examples = [
     `$ gsc list
 ? Select a profile: (Use arrow keys)
-❯ default 
+❯ default
 dev
 prod
 personal`,
@@ -43,7 +43,7 @@ personal`,
 
       await output(this, input);
     } catch (error) {
-      console.log(error);
+      this.error(error);
     }
   }
 }

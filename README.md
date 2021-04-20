@@ -29,17 +29,18 @@ $ npm install -g get-sso-creds
 CLI tool to get AWS SSO temporary credentials.
 
 VERSION
-  get-sso-creds/1.2.0 darwin-x64 node-v14.16.1
+  get-sso-creds/2.0.0 darwin-x64 node-v14.16.1
 
 USAGE
   $ gsc [COMMAND]
 
 COMMANDS
-  get     get AWS SSO credentials
-  help    display help for gsc
-  list    interactive AWS SSO credentials retrieval
-  login   initiates AWS SSO login
-  logout  initiates AWS SSO logout
+  get       get AWS SSO credentials
+  help      display help for gsc
+  list      interactive AWS SSO profile credentials retrieval
+  list-sso  interactive AWS SSO selection
+  login     initiates AWS SSO login
+  logout    initiates AWS SSO logout
 ```
 
 ### `get` command
@@ -94,6 +95,42 @@ Credentials expire at: 6:06:34 AM
 export AWS_ACCESS_KEY_ID=<Access Key ID>
 export AWS_SECRET_ACCESS_KEY=<Secret Access Key>
 export AWS_SESSION_TOKEN=<Session Token>
+```
+
+### `list-sso` command
+
+```sh-session
+interactive AWS SSO selection
+
+USAGE
+  $ gsc list-sso
+
+OPTIONS
+  -h, --help
+  -q, --quiet
+  --json
+
+EXAMPLE
+  $ gsc list-sso
+  ? Select an SSO url: (Use arrow keys)
+  ❯ https://alpha.awsapps.com/start
+    https://delta.awsapps.com/start
+  ? Select an SSO account:
+  ❯ Log archive | ctlogs@google.com | 111111111111
+    test-alpha | testalpha@yahoo.com | 222222222222
+    Audit | ctaudit@hotmail.com | 333333333333
+    test-delta | testdelta@outlook.com | 444444444444
+    test-beta | testbeta@aol.com | 555555555555
+    test-epsilon | testepsilon@icloud.com | 666666666666
+  ? Select an SSO role: (Use arrow keys)
+  ❯ AWSServiceCatalogEndUserAccess 
+    AWSAdministratorAccess
+    ...
+    Credentials expire at: 6:06:34 AM
+
+    export AWS_ACCESS_KEY_ID=<Access Key ID>
+    export AWS_SECRET_ACCESS_KEY=<Secret Access Key>
+    export AWS_SESSION_TOKEN=<Session Token>
 ```
 
 ### `login` command

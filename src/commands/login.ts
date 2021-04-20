@@ -26,7 +26,7 @@ Logging in... ⣽`,
       cli.action.stop();
     } catch (error) {
       cli.action.stop('failed');
-      console.log(error);
+      this.log(error);
     }
   }
 }
