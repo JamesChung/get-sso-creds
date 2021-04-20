@@ -20,4 +20,10 @@ interface ICredentials {
   expiration: string;
 }
 
-export { IProfile, IUserIdentity, ICredentials };
+interface IFlags {
+  profile: string;
+  json?: boolean;
+  quiet?: boolean;
+}
+
+export { IProfile, IUserIdentity, ICredentials, IFlags };

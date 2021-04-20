@@ -1,6 +1,7 @@
 import { Command, flags } from '@oclif/command';
 import { getProfileNames } from '../lib/profile-helper';
 import { output } from '../lib/output-helper';
+import { IFlags } from '../lib/interfaces';
 import * as inquirer from 'inquirer';
 
 export default class List extends Command {
@@ -17,6 +18,8 @@ personal`,
 
   static flags = {
     help: flags.help({ char: 'h', description: undefined }),
+    quiet: flags.boolean({ name: 'quiet', char: 'q', default: false }),
+    json: flags.boolean({ name: 'json', default: false }),
   };
 
   static args = [];
@@ -31,7 +34,14 @@ personal`,
         type: 'list',
         choices: getProfileNames()
       }]);
-      output(this, response.profile);
+
+      const input: IFlags = {
+        profile: response.profile,
+        quiet: flags.quiet,
+        json: flags.json,
+      };
+
+      await output(this, input);
     } catch (error) {
       console.log(error);
     }
