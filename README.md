@@ -28,6 +28,9 @@ $ npm install -g get-sso-creds
 ```sh-session
 CLI tool to get AWS SSO temporary credentials.
 
+VERSION
+  get-sso-creds/1.1.0 darwin-x64 node-v14.16.1
+
 USAGE
   $ gsc [COMMAND]
 
@@ -35,7 +38,8 @@ COMMANDS
   get     get AWS SSO credentials
   help    display help for gsc
   list    interactive AWS SSO credentials retrieval
-  signin  initiates AWS SSO signin
+  login   initiates AWS SSO login
+  logout  initiates AWS SSO logout
 ```
 
 ### `get` command
@@ -88,21 +92,38 @@ export AWS_SECRET_ACCESS_KEY=<Secret Access Key>
 export AWS_SESSION_TOKEN=<Session Token>
 ```
 
-### `signin` command
+### `login` command
 
 ```sh-sesson
-initiates AWS SSO signin
+initiates AWS SSO login
 
 USAGE
-  $ gsc signin
+  $ gsc login
 
 OPTIONS
   -h, --help
   -p, --profile=profile  [default: default]
 
 EXAMPLE
-  $ gsc signin --profile your-profile
-  Signing in... ⣽
+  $ gsc login --profile your-profile
+  Logging in... ⣽
+```
+
+### `logout` command
+
+```sh-session
+initiates AWS SSO logout
+
+USAGE
+  $ gsc logout
+
+OPTIONS
+  -h, --help
+  -p, --profile=profile  [default: default]
+
+EXAMPLE
+  $ gsc logout --profile your-profile
+  Logging out... ⣽
 ```
 
 <!-- usagestop -->
