@@ -1,5 +1,5 @@
 import { homedir } from 'os';
-import { readFileSync, readdirSync, writeFileSync, existsSync } from 'fs';
+import { readFile, readFileSync, readdirSync, writeFileSync, existsSync } from 'fs';
 import { exec } from 'child_process';
 import { STS } from 'aws-sdk';
 import { ICredentials, IUserIdentity, IProfile } from './interfaces';
@@ -32,13 +32,29 @@ export async function initCredentials(profile: string = 'default'): Promise<IUse
   });
 }
 
-export function getCredentialsFromCredentialFiles(): ICredentials[] {
+async function readCredsFile(path: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    readFile(path, 'utf-8', (err, data) => {
+      if (err) {
+        reject(err);
+      }
+      if (data) {
+        resolve(data);
+      }
+    });
+  });
+}
+
+export async function getCredentialsFromCredentialFiles(): Promise<ICredentials[]> {
   const credsList: ICredentials[] = [];
-  const credfiles = readdirSync(`${homedir()}/.aws/cli/cache`, 'utf-8');
-  for (let credFile of credfiles) {
-    // TODO: Make this async
-    const fileContents = JSON.parse(readFileSync(`${homedir()}/.aws/cli/cache/${credFile}`, 'utf-8'));
-    const creds = fileContents.Credentials;
+  const credfileNames = readdirSync(`${homedir()}/.aws/cli/cache`, 'utf-8');
+  const credFilePromises: Promise<string>[] = [];
+  for (let credFile of credfileNames) {
+    credFilePromises.push(readCredsFile(`${homedir()}/.aws/cli/cache/${credFile}`));
+  }
+  const credentialsList = await Promise.all(credFilePromises);
+  for (let credData of credentialsList) {
+    const creds = JSON.parse(credData).Credentials;
     const credentials: ICredentials = {
       accessKeyId: creds.AccessKeyId,
       secretAccessKey: creds.SecretAccessKey,
@@ -53,7 +69,7 @@ export function getCredentialsFromCredentialFiles(): ICredentials[] {
 }
 
 export async function getCredentials(profile: IProfile): Promise<ICredentials> {
-  const credsList = getCredentialsFromCredentialFiles();
+  const credsList = await getCredentialsFromCredentialFiles();
   const sts = new STS({ region: profile?.region });
   for (let creds of credsList) {
     sts.config.credentials = {
@@ -86,7 +102,7 @@ export function writeCredentialsFile(credentials: ICredentials) {
 export function clearCredentials(command: Command) {
   const credentialsFilePath = `${homedir()}/.aws/credentials`;
   if (!existsSync(credentialsFilePath)) {
-    command.log('> credentials file does not exit');
+    command.log('> credentials file does not exist');
   }
   const parsedCredentials = ini.parse(readFileSync(credentialsFilePath, 'utf-8'));
   parsedCredentials.default.aws_access_key_id = '';
