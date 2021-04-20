@@ -6,14 +6,14 @@ import {
   getToken,
   getRoles,
   getRoleCredentials
-} from '../lib/list-sso-helper';
+} from '../lib/select-helper';
 import * as inquirer from 'inquirer';
 
-export default class ListSso extends Command {
-  static description = 'interactive AWS SSO selection';
+export default class Select extends Command {
+  static description = 'get AWS SSO credentials by interactive AWS SSO selection';
 
   static examples = [
-    `$ gsc list-sso
+    `$ gsc select
 ? Select an SSO url: (Use arrow keys)
 ❯ https://alpha.awsapps.com/start
  https://delta.awsapps.com/start
@@ -44,7 +44,7 @@ export default class ListSso extends Command {
   static args = [];
 
   async run() {
-    const { args, flags } = this.parse(ListSso);
+    const { args, flags } = this.parse(Select);
 
     try {
       const ssoConfigs = await getSsoConfigs();

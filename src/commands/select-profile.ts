@@ -4,11 +4,11 @@ import { output } from '../lib/output-helper';
 import { IFlags } from '../lib/interfaces';
 import * as inquirer from 'inquirer';
 
-export default class List extends Command {
-  static description = 'interactive AWS SSO profile credentials retrieval';
+export default class SelectProfile extends Command {
+  static description = 'get AWS SSO credentials by interactive profile selection';
 
   static examples = [
-    `$ gsc list
+    `$ gsc select-profile
 ? Select a profile: (Use arrow keys)
 ❯ default
 dev
@@ -25,7 +25,7 @@ personal`,
   static args = [];
 
   async run() {
-    const { args, flags } = this.parse(List);
+    const { args, flags } = this.parse(SelectProfile);
 
     try {
       const response = await inquirer.prompt([{

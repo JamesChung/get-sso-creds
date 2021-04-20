@@ -29,18 +29,18 @@ $ npm install -g get-sso-creds
 CLI tool to get AWS SSO temporary credentials.
 
 VERSION
-  get-sso-creds/2.0.0 darwin-x64 node-v14.16.1
+  get-sso-creds/3.0.0 darwin-x64 node-v14.16.1
 
 USAGE
   $ gsc [COMMAND]
 
 COMMANDS
-  get       get AWS SSO credentials
-  help      display help for gsc
-  list      interactive AWS SSO profile credentials retrieval
-  list-sso  interactive AWS SSO selection
-  login     initiates AWS SSO login
-  logout    initiates AWS SSO logout
+  get             get AWS SSO credentials by profile
+  help            display help for gsc
+  login           initiates AWS SSO login
+  logout          initiates AWS SSO logout
+  select          get AWS SSO credentials by interactive AWS SSO selection
+  select-profile  get AWS SSO credentials by interactive profile selection
 ```
 
 ### `get` command
@@ -67,13 +67,13 @@ EXAMPLE
   export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>
 ```
 
-### `list` command
+### `select` command
 
 ```sh-session
-interactive AWS SSO credentials retrieval
+get AWS SSO credentials by interactive AWS SSO selection
 
 USAGE
-  $ gsc list
+  $ gsc select
 
 OPTIONS
   -h, --help
@@ -81,37 +81,7 @@ OPTIONS
   --json
 
 EXAMPLE
-  $ gsc list
-  ? Select a profile: (Use arrow keys)
-  ❯ default 
-  dev
-  prod
-  personal
-
-...
-Profile: <profile>
-Credentials expire at: 6:06:34 AM
-
-export AWS_ACCESS_KEY_ID=<Access Key ID>
-export AWS_SECRET_ACCESS_KEY=<Secret Access Key>
-export AWS_SESSION_TOKEN=<Session Token>
-```
-
-### `list-sso` command
-
-```sh-session
-interactive AWS SSO selection
-
-USAGE
-  $ gsc list-sso
-
-OPTIONS
-  -h, --help
-  -q, --quiet
-  --json
-
-EXAMPLE
-  $ gsc list-sso
+  $ gsc select
   ? Select an SSO url: (Use arrow keys)
   ❯ https://alpha.awsapps.com/start
     https://delta.awsapps.com/start
@@ -123,7 +93,7 @@ EXAMPLE
     test-beta | testbeta@aol.com | 555555555555
     test-epsilon | testepsilon@icloud.com | 666666666666
   ? Select an SSO role: (Use arrow keys)
-  ❯ AWSServiceCatalogEndUserAccess 
+  ❯ AWSServiceCatalogEndUserAccess
     AWSAdministratorAccess
     ...
     Credentials expire at: 6:06:34 AM
@@ -131,6 +101,28 @@ EXAMPLE
     export AWS_ACCESS_KEY_ID=<Access Key ID>
     export AWS_SECRET_ACCESS_KEY=<Secret Access Key>
     export AWS_SESSION_TOKEN=<Session Token>
+```
+
+### `select-profile` command
+
+```sh-session
+get AWS SSO credentials by interactive profile selection
+
+USAGE
+  $ gsc select-profile
+
+OPTIONS
+  -h, --help
+  -q, --quiet
+  --json
+
+EXAMPLE
+  $ gsc select-profile
+  ? Select a profile: (Use arrow keys)
+  ❯ default
+  dev
+  prod
+  personal
 ```
 
 ### `login` command
