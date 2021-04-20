@@ -1,6 +1,5 @@
 import { Command } from '@oclif/command';
-import { getProfileInfo } from '../lib/profile-helper';
-import { initCredentials, getCredentials } from '../lib/creds-helper';
+import { getProfileCredentials } from '../lib/creds-helper';
 import { ICredentials, IProfile, IFlags } from './interfaces';
 
 function exportHeaderOutput(command: Command, profileInfo: IProfile, credentials: ICredentials) {
@@ -16,9 +15,7 @@ function exportOutput(command: Command, credentials: ICredentials) {
 
 export async function output(command: Command, flags: IFlags) {
   try {
-    const profileInfo = getProfileInfo(flags.profile);
-    profileInfo.identity = await initCredentials(profileInfo.profileName);
-    const credentials = await getCredentials(profileInfo);
+    const { profileInfo, credentials } = await getProfileCredentials(flags.profile);
   
     if (flags?.json) {
       command.log(JSON.stringify(credentials));

@@ -3,6 +3,8 @@ import { getProfileNames } from '../lib/profile-helper';
 import { output } from '../lib/output-helper';
 import { IFlags } from '../lib/interfaces';
 import * as inquirer from 'inquirer';
+import { getProfileCredentials, writeCredentialsFile } from '../lib/creds-helper';
+import cli from 'cli-ux';
 
 export default class SelectProfile extends Command {
   static description = 'get AWS SSO credentials by interactive profile selection';
@@ -18,6 +20,7 @@ personal`,
 
   static flags = {
     help: flags.help({ char: 'h', description: undefined }),
+    credentials: flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials as default', default: false }),
     quiet: flags.boolean({ name: 'quiet', char: 'q', default: false }),
     json: flags.boolean({ name: 'json', default: false }),
   };
@@ -40,6 +43,14 @@ personal`,
         quiet: flags.quiet,
         json: flags.json,
       };
+      
+      if (flags.credentials) {
+        const { credentials } = await getProfileCredentials(response.profile);
+        cli.action.start('Writing to credentials file');
+        writeCredentialsFile(credentials);
+        cli.action.stop();
+        return;
+      }
 
       await output(this, input);
     } catch (error) {

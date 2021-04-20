@@ -3,7 +3,7 @@ import { readFile, readFileSync, readdirSync, writeFileSync, existsSync } from '
 import { exec } from 'child_process';
 import { STS } from 'aws-sdk';
 import { ICredentials, IUserIdentity, IProfile } from './interfaces';
-import { isProfile } from './profile-helper';
+import { getProfileInfo, isProfile } from './profile-helper';
 import Command from '@oclif/command';
 const ini = require('ini');
 
@@ -110,4 +110,11 @@ export function clearCredentials(command: Command) {
   parsedCredentials.default.aws_session_token = '';
   const encodedCredentials = ini.encode(parsedCredentials);
   writeFileSync(credentialsFilePath, encodedCredentials, {encoding: 'utf-8'});
+}
+
+export async function getProfileCredentials(profile: string = 'default') {
+  const profileInfo = getProfileInfo(profile);
+  profileInfo.identity = await initCredentials(profileInfo.profileName);
+  const credentials = await getCredentials(profileInfo);
+  return { profileInfo, credentials };
 }
