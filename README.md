@@ -68,7 +68,7 @@ EXAMPLE
 
 ### `list` command
 
-```sh-sesson
+```sh-session
 interactive AWS SSO credentials retrieval
 
 USAGE
@@ -98,7 +98,7 @@ export AWS_SESSION_TOKEN=<Session Token>
 
 ### `login` command
 
-```sh-sesson
+```sh-session
 initiates AWS SSO login
 
 USAGE
