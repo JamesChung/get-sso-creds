@@ -73,6 +73,7 @@ USAGE
   $ gsc select
 
 OPTIONS
+  -c, --credentials  writes credentials to ~/.aws/credentials as default
   -h, --help
   -q, --quiet
   --json
