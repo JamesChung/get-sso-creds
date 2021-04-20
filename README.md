@@ -28,9 +28,6 @@ $ npm install -g get-sso-creds
 ```sh-session
 CLI tool to get AWS SSO temporary credentials.
 
-VERSION
-  get-sso-creds/3.0.0 darwin-x64 node-v14.16.1
-
 USAGE
   $ gsc [COMMAND]
 
