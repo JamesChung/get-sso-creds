@@ -32,6 +32,7 @@ USAGE
   $ gsc [COMMAND]
 
 COMMANDS
+  clear           clears credentials in ~/.aws/credentials
   get             get AWS SSO credentials by profile
   help            display help for gsc
   login           initiates AWS SSO login
@@ -155,6 +156,21 @@ OPTIONS
 EXAMPLE
   $ gsc logout --profile your-profile
   Logging out... ⣽
+```
+
+### `clear` command
+
+```sh-session
+clears credentials in ~/.aws/credentials
+
+USAGE
+  $ gsc clear
+
+OPTIONS
+  -h, --help
+
+EXAMPLE
+  $ gsc clear
 ```
 
 <!-- usagestop -->
