@@ -1,5 +1,6 @@
 import { Command, flags } from '@oclif/command';
 import { roleOutput } from '../lib/output-helper';
+import { writeCredentialsFile } from '../lib/creds-helper';
 import {
   getSsoConfigs,
   getAccounts,
@@ -8,6 +9,7 @@ import {
   getRoleCredentials
 } from '../lib/select-helper';
 import * as inquirer from 'inquirer';
+import cli from 'cli-ux';
 
 export default class Select extends Command {
   static description = 'get AWS SSO credentials by interactive AWS SSO selection';
@@ -20,23 +22,15 @@ export default class Select extends Command {
 ? Select an SSO account:
 ❯ Log archive | ctlogs@google.com | 111111111111
  test-alpha | testalpha@yahoo.com | 222222222222
- Audit | ctaudit@hotmail.com | 333333333333
- test-delta | testdelta@outlook.com | 444444444444
- test-beta | testbeta@aol.com | 555555555555
- test-epsilon | testepsilon@icloud.com | 666666666666
 ? Select an SSO role: (Use arrow keys)
 ❯ AWSServiceCatalogEndUserAccess
  AWSAdministratorAccess
- ...
- Credentials expire at: 6:06:34 AM
-
- export AWS_ACCESS_KEY_ID=<Access Key ID>
- export AWS_SECRET_ACCESS_KEY=<Secret Access Key>
- export AWS_SESSION_TOKEN=<Session Token>`,
+ ...`,
   ];
 
   static flags = {
     help: flags.help({ char: 'h', description: undefined }),
+    credentials: flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials as default', default: false }),
     quiet: flags.boolean({ name: 'quiet', char: 'q', default: false }),
     json: flags.boolean({ name: 'json', default: false }),
   };
@@ -89,6 +83,12 @@ export default class Select extends Command {
       }]);
 
       const roleCreds = await getRoleCredentials(ssoRoleResponse.ssoRole, accountValue, accessToken);
+      if (flags.credentials) {
+        cli.action.start('Writing to credentials file');
+        writeCredentialsFile(roleCreds);
+        cli.action.stop();
+        return;
+      }
       roleOutput(this, ssoRoleResponse.ssoRole, roleCreds, flags);
     } catch (error) {
       this.log(error);

@@ -1,9 +1,10 @@
 import { homedir } from 'os';
-import { readFileSync, readdirSync } from 'fs';
+import { readFileSync, readdirSync, writeFileSync, existsSync } from 'fs';
 import { exec } from 'child_process';
 import { STS } from 'aws-sdk';
 import { ICredentials, IUserIdentity, IProfile } from './interfaces';
 import { isProfile } from './profile-helper';
+const ini = require('ini');
 
 export async function initCredentials(profile: string = 'default'): Promise<IUserIdentity> {
   if (!isProfile(profile)) {
@@ -66,4 +67,17 @@ export async function getCredentials(profile: IProfile): Promise<ICredentials> {
     }
   }
   throw '> No valid credentials.';
+}
+
+export function writeCredentialsFile(credentials: ICredentials) {
+  const credentialsFilePath = `${homedir()}/.aws/credentials`;
+  if (!existsSync(credentialsFilePath)) {
+    writeFileSync(credentialsFilePath, '[default]', {encoding: 'utf-8'});
+  }
+  const parsedCredentials = ini.parse(readFileSync(credentialsFilePath, 'utf-8'));
+  parsedCredentials.default.aws_access_key_id = credentials.accessKeyId;
+  parsedCredentials.default.aws_secret_access_key = credentials.secretAccessKey;
+  parsedCredentials.default.aws_session_token = credentials.sessionToken;
+  const encodedCredentials = ini.encode(parsedCredentials);
+  writeFileSync(credentialsFilePath, encodedCredentials, {encoding: 'utf-8'});
 }
