@@ -1,13 +1,13 @@
 import { Command, flags } from '@oclif/command';
-import { signin } from '../lib/signin-helper';
+import { logout } from '../lib/logout-helper';
 import cli from 'cli-ux';
 
-export default class SignIn extends Command {
-  static description = 'initiates AWS SSO signin';
+export default class LogOut extends Command {
+  static description = 'initiates AWS SSO logout';
 
   static examples = [
-    `$ gsc signin --profile your-profile
-Signing in... ⣽`,
+    `$ gsc logout --profile your-profile
+Logging out... ⣽`,
   ];
 
   static flags = {
@@ -18,13 +18,14 @@ Signing in... ⣽`,
   static args = [];
 
   async run() {
-    const {args, flags} = this.parse(SignIn);
+    const {args, flags} = this.parse(LogOut);
 
     try {
-      cli.action.start('Signing in');
-      await signin(flags.profile);
+      cli.action.start('Logging out');
+      await logout(flags.profile);
       cli.action.stop();
     } catch (error) {
+      cli.action.stop('failed');
       console.log(error);
     }
   }

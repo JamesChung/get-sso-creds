@@ -1,12 +1,8 @@
 import { Command } from '@oclif/command';
-import { isProfile, getProfileInfo } from '../lib/profile-helper';
+import { getProfileInfo } from '../lib/profile-helper';
 import { initCredentials, getCredentials } from '../lib/creds-helper';
 
 export async function output(command: Command, profile: string) {
-  if (!isProfile(profile)) {
-    throw `> [ ${profile} ] is not a valid profile.`;
-  }
-
   try {
     const profileInfo = getProfileInfo(profile);
     profileInfo.identity = await initCredentials(profileInfo.profileName);

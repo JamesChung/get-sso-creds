@@ -3,9 +3,14 @@ import { readFileSync, readdirSync } from 'fs';
 import { exec } from 'child_process';
 import { STS } from 'aws-sdk';
 import { ICredentials, IUserIdentity, IProfile } from './interfaces';
+import { isProfile } from './profile-helper';
 
 export async function initCredentials(profile: string = 'default'): Promise<IUserIdentity> {
-  let runStsCommand = `aws sts get-caller-identity --profile ${profile}`;
+  if (!isProfile(profile)) {
+    throw `> [ ${profile} ] is not a valid profile.`;
+  }
+
+  const runStsCommand = `aws sts get-caller-identity --profile ${profile} --output json`;
 
   return new Promise((resolve, reject) => {
     exec(runStsCommand, (error, stdout, stderr) => {
@@ -26,7 +31,7 @@ export async function initCredentials(profile: string = 'default'): Promise<IUse
 }
 
 export function getCredentialsFromCredentialFiles(): ICredentials[] {
-  let credsList: ICredentials[] = [];
+  const credsList: ICredentials[] = [];
   const credfiles = readdirSync(`${homedir()}/.aws/cli/cache`, 'utf-8');
   for (let credFile of credfiles) {
     const fileContents = JSON.parse(readFileSync(`${homedir()}/.aws/cli/cache/${credFile}`, 'utf-8'));

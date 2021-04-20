@@ -6,7 +6,7 @@ const ini = require('ini');
 export function isProfile(profile: any): boolean {
   const configFile = readFileSync(`${homedir()}/.aws/config`, 'utf-8');
   const iniConfig = ini.parse(configFile);
-  let profiles = [];
+  const profiles = [];
   for (let prof in iniConfig) {
     profiles.push(prof.split(' ').pop()?.trim());
   }
