@@ -44,7 +44,7 @@ COMMANDS
 ### `get` command
 
 ```sh-session
-get AWS SSO credentials
+get AWS SSO credentials by ~/.aws/config profile
 
 USAGE
   $ gsc get
@@ -74,8 +74,9 @@ USAGE
   $ gsc select
 
 OPTIONS
-  -c, --credentials  writes credentials to ~/.aws/credentials as default
+  -c, --credentials        writes credentials to ~/.aws/credentials (will use default as the profile name if --profile-name flag is not used)
   -h, --help
+  -n, --profile-name=name  name of custom profile when using --credentials flag
   -q, --quiet
   --json
 
@@ -87,10 +88,6 @@ EXAMPLE
   ? Select an SSO account:
   ❯ Log archive | ctlogs@google.com | 111111111111
     test-alpha | testalpha@yahoo.com | 222222222222
-    Audit | ctaudit@hotmail.com | 333333333333
-    test-delta | testdelta@outlook.com | 444444444444
-    test-beta | testbeta@aol.com | 555555555555
-    test-epsilon | testepsilon@icloud.com | 666666666666
   ? Select an SSO role: (Use arrow keys)
   ❯ AWSServiceCatalogEndUserAccess
     AWSAdministratorAccess
@@ -111,6 +108,8 @@ USAGE
   $ gsc select-profile
 
 OPTIONS
+  -P, --preserve     uses selected profile name when using --credentials flag
+  -c, --credentials  writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used)
   -h, --help
   -q, --quiet
   --json
@@ -119,9 +118,9 @@ EXAMPLE
   $ gsc select-profile
   ? Select a profile: (Use arrow keys)
   ❯ default
-  dev
-  prod
-  personal
+    dev
+    prod
+    personal
 ```
 
 ### `login` command
@@ -168,6 +167,7 @@ USAGE
 
 OPTIONS
   -h, --help
+  -p, --profile=profile  clears given profile credentials in ~/.aws/credentials
 
 EXAMPLE
   $ gsc clear
