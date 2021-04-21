@@ -21,12 +21,12 @@ Logging in... ⣽`,
     const {args, flags} = this.parse(LogIn);
 
     try {
-      cli.action.start('Logging in');
+      cli.action.start('❯ Logging in');
       await login(flags.profile);
       cli.action.stop();
     } catch (error) {
       cli.action.stop('failed');
-      this.log(error);
+      this.error(error);
     }
   }
 }

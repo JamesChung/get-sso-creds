@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { homedir } from 'os';
 import { IProfile } from './interfaces';
+import * as chalk from 'chalk';
 const ini = require('ini');
 
 export function isProfile(profile: any): boolean {
@@ -54,5 +55,8 @@ export function getProfiles(): Map<string, IProfile> {
 
 export function getProfileInfo(profile: string = 'default'): IProfile {
   const profiles = getProfiles();
-  return profiles.get(profile)!;
+  if (profiles.has(profile)) {
+    return profiles.get(profile)!;
+  }
+  throw `${chalk.redBright(profile)} is not a valid profile.`;
 }

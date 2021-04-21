@@ -3,7 +3,7 @@ import { clearCredentials } from '../lib/creds-helper';
 import cli from 'cli-ux';
 
 export default class Clear extends Command {
-  static description = 'clears default credentials in ~/.aws/credentials';
+  static description = 'clears credentials in ~/.aws/credentials';
 
   static examples = [
     `$ gsc clear`,
@@ -11,6 +11,7 @@ export default class Clear extends Command {
 
   static flags = {
     help: flags.help({ char: 'h', description: undefined }),
+    profile: flags.string({ char: 'p', description: 'clears given profile credentials in ~/.aws/credentials' }),
   };
 
   static args = [];
@@ -19,12 +20,12 @@ export default class Clear extends Command {
     const {args, flags} = this.parse(Clear);
 
     try {
-      cli.action.start('Clearing');
-      clearCredentials(this);
+      cli.action.start('❯ Clearing');
+      clearCredentials(this, flags.profile);
       cli.action.stop();
     } catch (error) {
       cli.action.stop('failed');
-      this.log(error);
+      this.error(error);
     }
   }
 }

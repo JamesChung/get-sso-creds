@@ -13,14 +13,15 @@ export default class SelectProfile extends Command {
     `$ gsc select-profile
 ? Select a profile: (Use arrow keys)
 ❯ default
-dev
-prod
-personal`,
+ dev
+ prod
+ personal`,
   ];
 
   static flags = {
     help: flags.help({ char: 'h', description: undefined }),
-    credentials: flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials as default', default: false }),
+    credentials: flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used)', default: false }),
+    preserve: flags.boolean({ char: 'P', description: 'uses selected profile name when using --credentials flag', dependsOn: ['credentials'] }),
     quiet: flags.boolean({ name: 'quiet', char: 'q', default: false }),
     json: flags.boolean({ name: 'json', default: false }),
   };
@@ -46,7 +47,10 @@ personal`,
       
       if (flags.credentials) {
         const { credentials } = await getProfileCredentials(response.profile);
-        cli.action.start('Writing to credentials file');
+        cli.action.start('❯ Writing to credentials file');
+        if (flags.preserve) {
+          writeCredentialsFile(credentials, response.profile);
+        }
         writeCredentialsFile(credentials);
         cli.action.stop();
         return;

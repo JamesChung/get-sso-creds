@@ -1,15 +1,16 @@
 import { homedir } from 'os';
-import { readFile, readFileSync, readdirSync, writeFileSync, existsSync } from 'fs';
+import { readFile, readFileSync, readdirSync, writeFileSync, appendFileSync, existsSync } from 'fs';
 import { exec } from 'child_process';
 import { STS } from 'aws-sdk';
 import { ICredentials, IUserIdentity, IProfile } from './interfaces';
 import { getProfileInfo, isProfile } from './profile-helper';
 import Command from '@oclif/command';
+import * as chalk from 'chalk';
 const ini = require('ini');
 
 export async function initCredentials(profile: string = 'default'): Promise<IUserIdentity> {
   if (!isProfile(profile)) {
-    throw `❯ [ ${profile} ] is not a valid profile.`;
+    throw `${chalk.redBright(profile)} is not a valid profile`;
   }
 
   const runStsCommand = `aws sts get-caller-identity --profile ${profile} --output json`;
@@ -83,33 +84,41 @@ export async function getCredentials(profile: IProfile): Promise<ICredentials> {
       return creds;
     }
   }
-  throw '❯ No valid credentials.';
+  throw `no valid credentials`;
 }
 
-export function writeCredentialsFile(credentials: ICredentials) {
+export function writeCredentialsFile(credentials: ICredentials, profile: string = 'default') {
   const credentialsFilePath = `${homedir()}/.aws/credentials`;
   if (!existsSync(credentialsFilePath)) {
     writeFileSync(credentialsFilePath, '[default]', {encoding: 'utf-8'});
   }
-  const parsedCredentials = ini.parse(readFileSync(credentialsFilePath, 'utf-8'));
-  parsedCredentials.default.aws_access_key_id = credentials.accessKeyId;
-  parsedCredentials.default.aws_secret_access_key = credentials.secretAccessKey;
-  parsedCredentials.default.aws_session_token = credentials.sessionToken;
+  let parsedCredentials = ini.parse(readFileSync(credentialsFilePath, 'utf-8'));
+  if (!parsedCredentials[profile]) {
+    appendFileSync(credentialsFilePath, `[${profile}]`, { encoding: 'utf-8' });
+    parsedCredentials = ini.parse(readFileSync(credentialsFilePath, 'utf-8'));
+  }
+  parsedCredentials[profile].aws_access_key_id = credentials.accessKeyId;
+  parsedCredentials[profile].aws_secret_access_key = credentials.secretAccessKey;
+  parsedCredentials[profile].aws_session_token = credentials.sessionToken;
   const encodedCredentials = ini.encode(parsedCredentials);
   writeFileSync(credentialsFilePath, encodedCredentials, {encoding: 'utf-8'});
 }
 
-export function clearCredentials(command: Command) {
+export function clearCredentials(command: Command, profile: string = 'default') {
   const credentialsFilePath = `${homedir()}/.aws/credentials`;
   if (!existsSync(credentialsFilePath)) {
-    throw '❯ credentials file does not exist';
+    throw `credentials file does not exist`;
   }
   const parsedCredentials = ini.parse(readFileSync(credentialsFilePath, 'utf-8'));
-  parsedCredentials.default.aws_access_key_id = '';
-  parsedCredentials.default.aws_secret_access_key = '';
-  parsedCredentials.default.aws_session_token = '';
-  const encodedCredentials = ini.encode(parsedCredentials);
-  writeFileSync(credentialsFilePath, encodedCredentials, {encoding: 'utf-8'});
+  if (parsedCredentials[profile]) {
+    parsedCredentials[profile].aws_access_key_id = '';
+    parsedCredentials[profile].aws_secret_access_key = '';
+    parsedCredentials[profile].aws_session_token = '';
+    const encodedCredentials = ini.encode(parsedCredentials);
+    writeFileSync(credentialsFilePath, encodedCredentials, {encoding: 'utf-8'});
+    return;
+  }
+  throw `profile does not exist`;
 }
 
 export async function getProfileCredentials(profile: string = 'default') {

@@ -21,12 +21,12 @@ Logging out... ⣽`,
     const {args, flags} = this.parse(LogOut);
 
     try {
-      cli.action.start('Logging out');
+      cli.action.start('❯ Logging out');
       await logout(flags.profile);
       cli.action.stop();
     } catch (error) {
       cli.action.stop('failed');
-      this.log(error);
+      this.error(error);
     }
   }
 }

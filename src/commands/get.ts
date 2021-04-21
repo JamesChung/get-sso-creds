@@ -2,7 +2,7 @@ import { Command, flags } from '@oclif/command';
 import { output } from '../lib/output-helper';
 
 export default class Get extends Command {
-  static description = 'get AWS SSO credentials by profile';
+  static description = 'get AWS SSO credentials by ~/.aws/config profile';
 
   static examples = [
 `$ gsc get --profile my-profile

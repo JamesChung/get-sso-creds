@@ -9,6 +9,7 @@ import {
   getRoleCredentials
 } from '../lib/select-helper';
 import * as inquirer from 'inquirer';
+import * as chalk from 'chalk';
 import cli from 'cli-ux';
 
 export default class Select extends Command {
@@ -30,9 +31,10 @@ export default class Select extends Command {
 
   static flags = {
     help: flags.help({ char: 'h', description: undefined }),
-    credentials: flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials as default', default: false }),
+    credentials: flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials (will use default as the profile name if --profile-name flag is not used)', default: false }),
     quiet: flags.boolean({ name: 'quiet', char: 'q', default: false }),
     json: flags.boolean({ name: 'json', default: false }),
+    'profile-name': flags.string({ helpValue: 'name', char: 'n', dependsOn: ['credentials'], description: 'name of custom profile when using --credentials flag' }),
   };
 
   static args = [];
@@ -48,7 +50,7 @@ export default class Select extends Command {
       }
 
       if (urlChoices.length === 0) {
-        throw '❯ Sign in first (aws sso login | gsc login)';
+        throw `sign in first ${chalk.red('(aws sso login | gsc login)')}`;
       }
 
       const accounts = await getAccounts(ssoConfigs);
@@ -84,15 +86,15 @@ export default class Select extends Command {
 
       const roleCreds = await getRoleCredentials(ssoRoleResponse.ssoRole, accountValue, accessToken);
       if (flags.credentials) {
-        cli.action.start('Writing to credentials file');
-        writeCredentialsFile(roleCreds);
+        cli.action.start('❯ Writing to credentials file');
+        writeCredentialsFile(roleCreds, flags['profile-name']);
         cli.action.stop();
         return;
       }
       roleOutput(this, ssoRoleResponse.ssoRole, roleCreds, flags);
     } catch (error) {
       cli.action.stop('failed');
-      this.log(error);
+      this.error(error);
     }
   }
 }
