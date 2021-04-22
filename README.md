@@ -32,7 +32,7 @@ USAGE
   $ gsc [COMMAND]
 
 COMMANDS
-  clear           clears default credentials in ~/.aws/credentials
+  clear           clears credentials in ~/.aws/credentials
   get             get AWS SSO credentials by profile
   help            display help for gsc
   login           initiates AWS SSO login
