@@ -62,7 +62,7 @@ export default class Select extends Command {
     const { args, flags } = this.parse(Select);
 
     try {
-      cli.action.start('❯ loading');
+      cli.action.start('❯ Loading');
 
       const ssoConfigs = await getSsoConfigs();
       const urlChoices: string[] = [];
