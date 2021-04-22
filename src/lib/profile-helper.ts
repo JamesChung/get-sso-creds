@@ -53,6 +53,19 @@ export function getProfiles(): Map<string, IProfile> {
   return profiles;
 }
 
+export function getCredProfiles(): string[] {
+  const credFile = readFileSync(`${homedir()}/.aws/credentials`, 'utf-8');
+  const iniConfig = ini.parse(credFile);
+  const profiles: string[] = [];
+  for (let profileName in iniConfig) {
+    profiles.push(profileName);
+  }
+  if (profiles.length > 0) {
+    return profiles;
+  }
+  throw `no profiles exist in ~/.aws/credentials`;
+}
+
 export function getProfileInfo(profile: string = 'default'): IProfile {
   const profiles = getProfiles();
   if (profiles.has(profile)) {

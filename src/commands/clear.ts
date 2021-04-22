@@ -16,7 +16,7 @@ export default class Clear extends Command {
     }),
     profile: flags.string({
       char: 'p',
-      description: 'clears given profile credentials in ~/.aws/credentials'
+      description: 'clears given profile credentials in ~/.aws/credentials',
     }),
   };
 

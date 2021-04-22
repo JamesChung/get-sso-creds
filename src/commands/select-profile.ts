@@ -2,8 +2,8 @@ import { Command, flags } from '@oclif/command';
 import { getProfileNames } from '../lib/profile-helper';
 import { output } from '../lib/output-helper';
 import { IFlags } from '../lib/interfaces';
-import * as inquirer from 'inquirer';
 import { getProfileCredentials, writeCredentialsFile } from '../lib/creds-helper';
+import * as inquirer from 'inquirer';
 import cli from 'cli-ux';
 
 export default class SelectProfile extends Command {

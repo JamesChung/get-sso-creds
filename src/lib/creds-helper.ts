@@ -111,14 +111,12 @@ export function clearCredentials(command: Command, profile: string = 'default') 
   }
   const parsedCredentials = ini.parse(readFileSync(credentialsFilePath, 'utf-8'));
   if (parsedCredentials[profile]) {
-    parsedCredentials[profile].aws_access_key_id = '';
-    parsedCredentials[profile].aws_secret_access_key = '';
-    parsedCredentials[profile].aws_session_token = '';
+    delete parsedCredentials[profile];
     const encodedCredentials = ini.encode(parsedCredentials);
     writeFileSync(credentialsFilePath, encodedCredentials, {encoding: 'utf-8'});
     return;
   }
-  throw `profile does not exist`;
+  throw `${chalk.red(profile)} does not exist`;
 }
 
 export async function getProfileCredentials(profile: string = 'default') {
