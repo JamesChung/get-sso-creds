@@ -62,6 +62,8 @@ export default class Select extends Command {
     const { args, flags } = this.parse(Select);
 
     try {
+      cli.action.start('❯ loading');
+
       const ssoConfigs = await getSsoConfigs();
       const urlChoices: string[] = [];
       for (let ssoConfig of ssoConfigs) {
@@ -73,6 +75,8 @@ export default class Select extends Command {
       }
 
       const accounts = await getAccounts(ssoConfigs);
+
+      cli.action.stop();
 
       const ssoUrlResponse = await inquirer.prompt([{
         name: 'ssoUrl',
