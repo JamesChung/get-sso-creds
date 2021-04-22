@@ -6,13 +6,19 @@ export default class LogOut extends Command {
   static description = 'initiates AWS SSO logout';
 
   static examples = [
-    `$ gsc logout --profile your-profile
+`$ gsc logout --profile your-profile
 Logging out... ⣽`,
   ];
 
   static flags = {
-    help: flags.help({ char: 'h', description: undefined }),
-    profile: flags.string({ char: 'p', default: 'default' })
+    help: flags.help({
+      char: 'h',
+      description: undefined
+    }),
+    profile: flags.string({
+      char: 'p',
+      default: 'default'
+    })
   };
 
   static args = [];

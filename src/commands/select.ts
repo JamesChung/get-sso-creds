@@ -16,7 +16,7 @@ export default class Select extends Command {
   static description = 'get AWS SSO credentials by interactive AWS SSO selection';
 
   static examples = [
-    `$ gsc select
+`$ gsc select
 ? Select an SSO url: (Use arrow keys)
 ❯ https://alpha.awsapps.com/start
  https://delta.awsapps.com/start
@@ -30,11 +30,30 @@ export default class Select extends Command {
   ];
 
   static flags = {
-    help: flags.help({ char: 'h', description: undefined }),
-    credentials: flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials (will use default as the profile name if --profile-name flag is not used)', default: false }),
-    quiet: flags.boolean({ name: 'quiet', char: 'q', default: false }),
-    json: flags.boolean({ name: 'json', default: false }),
-    'profile-name': flags.string({ helpValue: 'name', char: 'n', dependsOn: ['credentials'], description: 'name of custom profile when using --credentials flag' }),
+    help: flags.help({
+      char: 'h',
+      description: undefined
+    }),
+    credentials: flags.boolean({
+      char: 'c',
+      description: 'writes credentials to ~/.aws/credentials (will use default as the profile name if --profile-name flag is not used)',
+      default: false
+    }),
+    quiet: flags.boolean({
+      name: 'quiet',
+      char: 'q',
+      default: false
+    }),
+    json: flags.boolean({
+      name: 'json',
+      default: false
+    }),
+    'profile-name': flags.string({
+      helpValue: 'name',
+      char: 'n',
+      dependsOn: ['credentials'],
+      description: 'name of custom profile when using --credentials flag'
+    }),
   };
 
   static args = [];

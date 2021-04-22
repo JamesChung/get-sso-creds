@@ -6,13 +6,19 @@ export default class LogIn extends Command {
   static description = 'initiates AWS SSO login';
 
   static examples = [
-    `$ gsc login --profile your-profile
+`$ gsc login --profile your-profile
 Logging in... ⣽`,
   ];
 
   static flags = {
-    help: flags.help({ char: 'h', description: undefined }),
-    profile: flags.string({ char: 'p', default: 'default' })
+    help: flags.help({
+      char: 'h',
+      description: undefined
+    }),
+    profile: flags.string({
+      char: 'p',
+      default: 'default'
+    })
   };
 
   static args = [];

@@ -10,8 +10,14 @@ export default class Clear extends Command {
   ];
 
   static flags = {
-    help: flags.help({ char: 'h', description: undefined }),
-    profile: flags.string({ char: 'p', description: 'clears given profile credentials in ~/.aws/credentials' }),
+    help: flags.help({
+      char: 'h',
+      description: undefined
+    }),
+    profile: flags.string({
+      char: 'p',
+      description: 'clears given profile credentials in ~/.aws/credentials'
+    }),
   };
 
   static args = [];

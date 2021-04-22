@@ -10,7 +10,7 @@ export default class SelectProfile extends Command {
   static description = 'get AWS SSO credentials by interactive profile selection';
 
   static examples = [
-    `$ gsc select-profile
+`$ gsc select-profile
 ? Select a profile: (Use arrow keys)
 ❯ default
  dev
@@ -19,11 +19,29 @@ export default class SelectProfile extends Command {
   ];
 
   static flags = {
-    help: flags.help({ char: 'h', description: undefined }),
-    credentials: flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used)', default: false }),
-    preserve: flags.boolean({ char: 'P', description: 'uses selected profile name when using --credentials flag', dependsOn: ['credentials'] }),
-    quiet: flags.boolean({ name: 'quiet', char: 'q', default: false }),
-    json: flags.boolean({ name: 'json', default: false }),
+    help: flags.help({
+      char: 'h',
+      description: undefined
+    }),
+    credentials: flags.boolean({
+      char: 'c',
+      description: 'writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used)',
+      default: false
+    }),
+    preserve: flags.boolean({
+      char: 'P',
+      description: 'uses selected profile name when using --credentials flag',
+      dependsOn: ['credentials']
+    }),
+    quiet: flags.boolean({
+      name: 'quiet',
+      char: 'q',
+      default: false
+    }),
+    json: flags.boolean({
+      name: 'json',
+      default: false
+    }),
   };
 
   static args = [];

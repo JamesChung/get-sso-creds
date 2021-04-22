@@ -15,10 +15,24 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
   ];
 
   static flags = {
-    help: flags.help({ char: 'h', description: undefined }),
-    profile: flags.string({ name: 'profile', char: 'p', default: 'default' }),
-    quiet: flags.boolean({ name: 'quiet', char: 'q', default: false }),
-    json: flags.boolean({ name: 'json', default: false }),
+    help: flags.help({
+      char: 'h',
+      description: undefined
+    }),
+    profile: flags.string({
+      name: 'profile',
+      char: 'p',
+      default: 'default'
+    }),
+    quiet: flags.boolean({
+      name: 'quiet',
+      char: 'q',
+      default: false
+    }),
+    json: flags.boolean({
+      name: 'json',
+      default: false
+    }),
   };
 
   static args = [];
