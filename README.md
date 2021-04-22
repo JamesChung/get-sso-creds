@@ -33,11 +33,12 @@ USAGE
 
 COMMANDS
   clear           clears credentials in ~/.aws/credentials
-  get             get AWS SSO credentials by profile
+  get             get AWS SSO credentials by ~/.aws/config profile
   help            display help for gsc
   login           initiates AWS SSO login
   logout          initiates AWS SSO logout
   select          get AWS SSO credentials by interactive AWS SSO selection
+  select-clear    clears credentials in ~/.aws/credentials by interactive profile selection
   select-profile  get AWS SSO credentials by interactive profile selection
 ```
 
@@ -120,6 +121,24 @@ EXAMPLE
   ❯ default
     dev
     prod
+    personal
+```
+
+### `select-clear` command
+
+```sh-session
+clears credentials in ~/.aws/credentials by interactive profile selection
+
+USAGE
+  $ gsc select-clear
+
+OPTIONS
+  -h, --help
+
+EXAMPLE
+  $ gsc clear-profile
+  ? Select a profile: (Use arrow keys)
+  ❯ default
     personal
 ```
 
