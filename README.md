@@ -3,8 +3,8 @@ get-sso-creds
 
 CLI tool to get AWS SSO temporary credentials.
 
-[![Version](https://img.shields.io/npm/v/get-sso-creds.svg)](https://npmjs.org/package/get-sso-creds)
-[![Downloads/week](https://img.shields.io/npm/dw/get-sso-creds.svg)](https://npmjs.org/package/get-sso-creds)
+[![Version](https://img.shields.io/npm/v/get-sso-creds)](https://npmjs.org/package/get-sso-creds)
+[![Downloads/week](https://img.shields.io/npm/dw/get-sso-creds)](https://npmjs.org/package/get-sso-creds)
 [![License](https://img.shields.io/npm/l/get-sso-creds)](https://github.com/JamesChung/get-sso-creds/blob/main/LICENSE)
 
 <!-- toc -->
