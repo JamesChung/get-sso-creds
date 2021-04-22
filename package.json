@@ -1,7 +1,7 @@
 {
   "name": "get-sso-creds",
   "description": "CLI tool to get AWS SSO temporary credentials.",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "author": "James Chung @JamesChung",
   "bin": {
     "gsc": "./bin/run"
@@ -11,7 +11,7 @@
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
     "@oclif/plugin-help": "^3.2.2",
-    "aws-sdk": "^2.889.0",
+    "aws-sdk": "^2.891.0",
     "chalk": "^4.1.1",
     "cli-ux": "^5.5.1",
     "ini": "^2.0.0",
