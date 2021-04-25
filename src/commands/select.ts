@@ -71,7 +71,7 @@ export default class Select extends Command {
       }
 
       if (urlChoices.length === 0) {
-        throw `sign in first ${chalk.red('(aws sso login | gsc login)')}`;
+        throw new Error(`sign in first ${chalk.red('(aws sso login | gsc login)')}`);
       }
 
       const accounts = await getAccounts(ssoConfigs);
@@ -117,7 +117,7 @@ export default class Select extends Command {
       roleOutput(this, ssoRoleResponse.ssoRole, roleCreds, flags);
     } catch (error) {
       cli.action.stop('failed');
-      this.error(error);
+      this.error(error.message);
     }
   }
 }

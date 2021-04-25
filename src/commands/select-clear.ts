@@ -38,7 +38,7 @@ export default class SelectClear extends Command {
       cli.action.stop();
     } catch (error) {
       cli.action.stop('failed');
-      this.error(error);
+      this.error(error.message);
     }
   }
 }

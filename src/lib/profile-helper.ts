@@ -18,15 +18,25 @@ export function isProfile(profile: any): boolean {
 }
 
 export function getProfileNames(): string[] {
-  const configFile = readFileSync(`${homedir()}/.aws/config`, 'utf-8');
-  const iniConfig = ini.parse(configFile);
-  const profiles: string[] = [];
-  for (let profileConfig in iniConfig) {
-    let confSplit = profileConfig.split(' ');
-    let profileName = confSplit[confSplit.length - 1].trim();
-    profiles.push(profileName);
+  try {
+    const configFile = readFileSync(`${homedir()}/.aws/config`, 'utf-8');
+    const iniConfig = ini.parse(configFile);
+    const profiles: string[] = [];
+    for (let profileConfig in iniConfig) {
+      let confSplit = profileConfig.split(' ');
+      let profileName = confSplit[confSplit.length - 1].trim();
+      profiles.push(profileName);
+    }
+    if (profiles.length > 0) {
+      return profiles;
+    }
+    throw new Error(`no profiles exist in ~/.aws/config`);
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      throw new Error(`~/.aws/config file does not exist`);
+    }
+    throw error;
   }
-  return profiles;
 }
 
 export function getProfiles(): Map<string, IProfile> {
@@ -54,16 +64,23 @@ export function getProfiles(): Map<string, IProfile> {
 }
 
 export function getCredProfiles(): string[] {
-  const credFile = readFileSync(`${homedir()}/.aws/credentials`, 'utf-8');
-  const iniConfig = ini.parse(credFile);
-  const profiles: string[] = [];
-  for (let profileName in iniConfig) {
-    profiles.push(profileName);
+  try {
+    const credFile = readFileSync(`${homedir()}/.aws/credentials`, 'utf-8');
+    const iniConfig = ini.parse(credFile);
+    const profiles: string[] = [];
+    for (let profileName in iniConfig) {
+      profiles.push(profileName);
+    }
+    if (profiles.length > 0) {
+      return profiles;
+    }
+    throw new Error(`no profiles exist in ~/.aws/credentials`);
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      throw new Error(`~/.aws/credentials file does not exist`);
+    }
+    throw error;
   }
-  if (profiles.length > 0) {
-    return profiles;
-  }
-  throw `no profiles exist in ~/.aws/credentials`;
 }
 
 export function getProfileInfo(profile: string = 'default'): IProfile {
@@ -71,5 +88,5 @@ export function getProfileInfo(profile: string = 'default'): IProfile {
   if (profiles.has(profile)) {
     return profiles.get(profile)!;
   }
-  throw `${chalk.redBright(profile)} is not a valid profile.`;
+  throw new Error(`${chalk.redBright(profile)} is not a valid profile.`);
 }

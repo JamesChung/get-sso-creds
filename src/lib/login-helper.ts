@@ -4,7 +4,7 @@ import * as chalk from 'chalk';
 
 export async function login(profile: string) {
   if (!isProfile(profile)) {
-    throw `${chalk.redBright(profile)} is not a valid profile`;
+    throw new Error(`${chalk.redBright(profile)} is not a valid profile`);
   }
 
   return new Promise((resolve, reject) => {

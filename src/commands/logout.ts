@@ -32,7 +32,7 @@ Logging out... ⣽`,
       cli.action.stop();
     } catch (error) {
       cli.action.stop('failed');
-      this.error(error);
+      this.error(error.message);
     }
   }
 }

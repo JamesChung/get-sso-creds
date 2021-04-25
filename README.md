@@ -37,6 +37,7 @@ COMMANDS
   help            display help for gsc
   login           initiates AWS SSO login
   logout          initiates AWS SSO logout
+  ls              lists profile names by file
   select          get AWS SSO credentials by interactive AWS SSO selection
   select-clear    clears credentials in ~/.aws/credentials by interactive profile selection
   select-profile  get AWS SSO credentials by interactive profile selection
@@ -140,6 +141,24 @@ EXAMPLE
   ? Select a profile: (Use arrow keys)
   ❯ default
     personal
+```
+
+### `ls` command
+
+```sh-session
+lists profile names by file
+
+USAGE
+  $ gsc ls
+
+OPTIONS
+  -h, --help
+
+EXAMPLE
+  $ gsc ls
+  ? Select a file: (Use arrow keys)
+  ❯ config
+    credentials
 ```
 
 ### `login` command

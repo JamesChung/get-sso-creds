@@ -43,7 +43,7 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
     try {
       await output(this, flags);
     } catch (error) {
-      this.error(error);
+      this.error(error.message);
     }
   }
 }

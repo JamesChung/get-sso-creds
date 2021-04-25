@@ -76,7 +76,7 @@ export default class SelectProfile extends Command {
 
       await output(this, input);
     } catch (error) {
-      this.error(error);
+      this.error(error.message);
     }
   }
 }

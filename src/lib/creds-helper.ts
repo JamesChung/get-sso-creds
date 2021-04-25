@@ -10,7 +10,7 @@ const ini = require('ini');
 
 export async function initCredentials(profile: string = 'default'): Promise<IUserIdentity> {
   if (!isProfile(profile)) {
-    throw `${chalk.redBright(profile)} is not a valid profile`;
+    throw new Error(`${chalk.redBright(profile)} is not a valid profile`);
   }
 
   const runStsCommand = `aws sts get-caller-identity --profile ${profile} --output json`;
@@ -84,7 +84,7 @@ export async function getCredentials(profile: IProfile): Promise<ICredentials> {
       return creds;
     }
   }
-  throw `no valid credentials`;
+  throw new Error(`no valid credentials`);
 }
 
 export function writeCredentialsFile(credentials: ICredentials, profile: string = 'default') {
@@ -107,7 +107,7 @@ export function writeCredentialsFile(credentials: ICredentials, profile: string 
 export function clearCredentials(command: Command, profile: string = 'default') {
   const credentialsFilePath = `${homedir()}/.aws/credentials`;
   if (!existsSync(credentialsFilePath)) {
-    throw `credentials file does not exist`;
+    throw new Error(`credentials file does not exist`);
   }
   const parsedCredentials = ini.parse(readFileSync(credentialsFilePath, 'utf-8'));
   if (parsedCredentials[profile]) {
@@ -116,7 +116,7 @@ export function clearCredentials(command: Command, profile: string = 'default') 
     writeFileSync(credentialsFilePath, encodedCredentials, {encoding: 'utf-8'});
     return;
   }
-  throw `${chalk.red(profile)} does not exist`;
+  throw new Error(`${chalk.red(profile)} does not exist`);
 }
 
 export async function getProfileCredentials(profile: string = 'default') {
