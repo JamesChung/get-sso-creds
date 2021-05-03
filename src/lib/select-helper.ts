@@ -42,7 +42,7 @@ async function ssoListAccounts(accessToken: string): Promise<string> {
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (stderr) {
-        reject(stderr);
+        reject(new Error(stderr));
       }
       if (stdout) {
         resolve(stdout);
@@ -75,7 +75,7 @@ async function getSsoRoles(accountId: string, accessToken: string): Promise<stri
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (stderr) {
-        reject(stderr);
+        reject(new Error(stderr));
       }
       if (stdout) {
         resolve(stdout);
@@ -93,7 +93,7 @@ async function getSsoRoleCredentials(roleName: string, accountId: string, access
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (stderr) {
-        reject(stderr);
+        reject(new Error(stderr));
       }
       if (stdout) {
         resolve(stdout);

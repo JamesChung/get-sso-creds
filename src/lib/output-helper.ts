@@ -31,7 +31,7 @@ export async function output(command: Command, flags: IFlags) {
     exportHeaderOutput(command, profileInfo, credentials);
     exportOutput(command, credentials);
   } catch (error) {
-    command.error(error);
+    command.error(error.message);
   }
 }
 
@@ -51,6 +51,6 @@ export async function roleOutput(command: Command, roleName: string, credentials
     command.log(`${chalk.yellowBright('Credentials expire at:')} ${chalk.cyan((new Date(credentials.expiration)).toLocaleTimeString())}\n`);
     exportOutput(command, credentials);
   } catch (error) {
-    command.error(error);
+    command.error(error.message);
   }
 }

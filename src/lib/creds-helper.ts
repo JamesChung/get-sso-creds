@@ -18,7 +18,7 @@ export async function initCredentials(profile: string = 'default'): Promise<IUse
   return new Promise((resolve, reject) => {
     exec(runStsCommand, (error, stdout, stderr) => {
       if (stderr) {
-        reject(stderr);
+        reject(new Error(stderr));
       }
       if (stdout) {
         const { UserId, Account, Arn } = JSON.parse(stdout);

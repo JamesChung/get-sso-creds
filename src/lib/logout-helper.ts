@@ -10,7 +10,7 @@ export async function logout(profile: string) {
   return new Promise((resolve, reject) => {
     exec(`aws sso logout --profile ${profile}`, (error, stdout, stderr) => {
       if (stderr) {
-        reject(stderr);
+        reject(new Error(stderr));
       }
       if (stdout) {
         resolve(stdout);
