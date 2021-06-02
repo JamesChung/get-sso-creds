@@ -1,7 +1,7 @@
 {
   "name": "get-sso-creds",
   "description": "CLI tool to get AWS SSO temporary credentials.",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "author": "James Chung @JamesChung",
   "bin": {
     "gsc": "./bin/run"

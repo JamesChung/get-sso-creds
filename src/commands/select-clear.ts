@@ -5,7 +5,7 @@ import * as inquirer from 'inquirer';
 import cli from 'cli-ux';
 
 export default class SelectClear extends Command {
-  static description = 'clears credentials in ~/.aws/credentials by interactive profile selection';
+  static description = 'clear selected credential in ~/.aws/credentials';
 
   static examples = [
 `$ gsc clear-profile
@@ -24,7 +24,7 @@ export default class SelectClear extends Command {
   static args = [];
 
   async run() {
-    const {args, flags} = this.parse(SelectClear);
+    const { args, flags } = this.parse(SelectClear);
 
     try {
       const response = await inquirer.prompt([{

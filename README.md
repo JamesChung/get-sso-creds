@@ -4,7 +4,6 @@ get-sso-creds
 CLI tool to get AWS SSO temporary credentials.
 
 [![Version](https://img.shields.io/npm/v/get-sso-creds)](https://npmjs.org/package/get-sso-creds)
-[![Downloads/week](https://img.shields.io/npm/dw/get-sso-creds)](https://npmjs.org/package/get-sso-creds)
 [![License](https://img.shields.io/npm/l/get-sso-creds)](https://github.com/JamesChung/get-sso-creds/blob/main/LICENSE)
 
 <!-- toc -->
@@ -32,14 +31,14 @@ USAGE
   $ gsc [COMMAND]
 
 COMMANDS
-  clear           clears credentials in ~/.aws/credentials
+  clear           clears all credentials in ~/.aws/credentials
   get             get AWS SSO credentials by ~/.aws/config profile
   help            display help for gsc
   login           initiates AWS SSO login
   logout          initiates AWS SSO logout
   ls              lists profile names by file
   select          get AWS SSO credentials by interactive AWS SSO selection
-  select-clear    clears credentials in ~/.aws/credentials by interactive profile selection
+  select-clear    clear selected credential in ~/.aws/credentials
   select-profile  get AWS SSO credentials by interactive profile selection
 ```
 

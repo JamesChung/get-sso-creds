@@ -24,7 +24,7 @@ Logging in... ⣽`,
   static args = [];
 
   async run() {
-    const {args, flags} = this.parse(LogIn);
+    const { args, flags } = this.parse(LogIn);
 
     try {
       cli.action.start('❯ Logging in');

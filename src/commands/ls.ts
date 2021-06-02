@@ -23,7 +23,7 @@ export default class Ls extends Command {
   static args = [];
 
   async run() {
-    const {args, flags} = this.parse(Ls);
+    const { args, flags } = this.parse(Ls);
 
     try {
       const response = await inquirer.prompt([{

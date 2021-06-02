@@ -3,7 +3,7 @@ import { clearCredentials } from '../lib/creds-helper';
 import cli from 'cli-ux';
 
 export default class Clear extends Command {
-  static description = 'clears credentials in ~/.aws/credentials';
+  static description = 'clears all credentials in ~/.aws/credentials';
 
   static examples = [
     `$ gsc clear`,
@@ -23,7 +23,7 @@ export default class Clear extends Command {
   static args = [];
 
   async run() {
-    const {args, flags} = this.parse(Clear);
+    const { args, flags } = this.parse(Clear);
 
     try {
       cli.action.start('❯ Clearing');

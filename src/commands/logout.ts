@@ -24,7 +24,7 @@ Logging out... ⣽`,
   static args = [];
 
   async run() {
-    const {args, flags} = this.parse(LogOut);
+    const { args, flags } = this.parse(LogOut);
 
     try {
       cli.action.start('❯ Logging out');
