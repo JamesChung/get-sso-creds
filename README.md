@@ -25,42 +25,51 @@ $ npm install -g get-sso-creds
 ```
 
 ```sh-session
-CLI tool to get AWS SSO temporary credentials.
+CLI tool to retrieve or set AWS SSO credentials
 
 USAGE
   $ gsc [COMMAND]
 
+TOPICS
+  plugins  List installed plugins.
+
 COMMANDS
-  clear           clears all credentials in ~/.aws/credentials
-  get             get AWS SSO credentials by ~/.aws/config profile
-  help            display help for gsc
-  login           initiates AWS SSO login
-  logout          initiates AWS SSO logout
-  ls              lists profile names by file
-  select          get AWS SSO credentials by interactive AWS SSO selection
-  select-clear    clear selected credential in ~/.aws/credentials
-  select-profile  get AWS SSO credentials by interactive profile selection
+  clear    Clears selected credentials in ~/.aws/credentials
+  get      Get AWS SSO credentials via existing profile in ~/.aws/config
+  help     Display help for gsc.
+  login    Initiates AWS SSO login
+  logout   Initiates AWS SSO logout
+  ls       Lists profile names in ~/.aws/config or ~/.aws/credentials
+  plugins  List installed plugins.
+  select   Get AWS SSO credentials via AWS SSO
 ```
 
 ### `get` command
 
 ```sh-session
-get AWS SSO credentials by ~/.aws/config profile
+Get AWS SSO credentials via existing profile in ~/.aws/config
 
 USAGE
+  $ gsc get [--help] [-P -c] [--json]
+
+FLAGS
+  -P, --preserve     Sets selected profile name as the profile name in ~/.aws/credentials when using --credentials flag
+  -c, --credentials  Writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used)
+  --help             Show CLI help.
+  --json             Outputs credentials in json format
+
+DESCRIPTION
+  Get AWS SSO credentials via existing profile in ~/.aws/config
+
+EXAMPLES
   $ gsc get
-
-OPTIONS
-  -h, --help
-  -p, --profile=profile  [default: default]
-  -q, --quiet
-  --json
-
-EXAMPLE
-  $ gsc get --profile my-profile
+  ? Select a profile: (Use arrow keys)
+  ❯ default
+    dev
+    prod
+    personal
   Profile: my-profile
   Credentials expire at: 6:20:24 PM
-
   export AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>
   export AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY>
   export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>
@@ -69,19 +78,21 @@ EXAMPLE
 ### `select` command
 
 ```sh-session
-get AWS SSO credentials by interactive AWS SSO selection
+Get AWS SSO credentials via AWS SSO
 
 USAGE
-  $ gsc select
+  $ gsc select [--help] [--json] [-n <value> -c]
 
-OPTIONS
-  -c, --credentials        writes credentials to ~/.aws/credentials (will use default as the profile name if --profile-name flag is not used)
-  -h, --help
-  -n, --profile-name=name  name of custom profile when using --credentials flag
-  -q, --quiet
-  --json
+FLAGS
+  -c, --credentials  writes credentials to ~/.aws/credentials (will use default as the profile name if --set-profile-as flag is not used)
+  -n, --set-as=name  Desired name of profile when setting credentials via --credentials flag
+  --help             Show CLI help.
+  --json             Outputs credentials in json format
 
-EXAMPLE
+DESCRIPTION
+  Get AWS SSO credentials via AWS SSO
+
+EXAMPLES
   $ gsc select
   ? Select an SSO url: (Use arrow keys)
   ❯ https://alpha.awsapps.com/start
@@ -92,68 +103,24 @@ EXAMPLE
   ? Select an SSO role: (Use arrow keys)
   ❯ AWSServiceCatalogEndUserAccess
     AWSAdministratorAccess
-    ...
-    Credentials expire at: 6:06:34 AM
-
-    export AWS_ACCESS_KEY_ID=<Access Key ID>
-    export AWS_SECRET_ACCESS_KEY=<Secret Access Key>
-    export AWS_SESSION_TOKEN=<Session Token>
-```
-
-### `select-profile` command
-
-```sh-session
-get AWS SSO credentials by interactive profile selection
-
-USAGE
-  $ gsc select-profile
-
-OPTIONS
-  -P, --preserve     uses selected profile name when using --credentials flag
-  -c, --credentials  writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used)
-  -h, --help
-  -q, --quiet
-  --json
-
-EXAMPLE
-  $ gsc select-profile
-  ? Select a profile: (Use arrow keys)
-  ❯ default
-    dev
-    prod
-    personal
-```
-
-### `select-clear` command
-
-```sh-session
-clears credentials in ~/.aws/credentials by interactive profile selection
-
-USAGE
-  $ gsc select-clear
-
-OPTIONS
-  -h, --help
-
-EXAMPLE
-  $ gsc clear-profile
-  ? Select a profile: (Use arrow keys)
-  ❯ default
-    personal
+   ...
 ```
 
 ### `ls` command
 
 ```sh-session
-lists profile names by file
+Lists profile names in ~/.aws/config or ~/.aws/credentials
 
 USAGE
-  $ gsc ls
+  $ gsc ls [--help]
 
-OPTIONS
-  -h, --help
+FLAGS
+  --help  Show CLI help.
 
-EXAMPLE
+DESCRIPTION
+  Lists profile names in ~/.aws/config or ~/.aws/credentials
+
+EXAMPLES
   $ gsc ls
   ? Select a file: (Use arrow keys)
   ❯ config
@@ -163,16 +130,19 @@ EXAMPLE
 ### `login` command
 
 ```sh-session
-initiates AWS SSO login
+Initiates AWS SSO login
 
 USAGE
-  $ gsc login
+  $ gsc login [--help] [-p <value>]
 
-OPTIONS
-  -h, --help
-  -p, --profile=profile  [default: default]
+FLAGS
+  -p, --profile=<value>  [default: default] Profile name to use for login
+  --help                 Show CLI help.
 
-EXAMPLE
+DESCRIPTION
+  Initiates AWS SSO login
+
+EXAMPLES
   $ gsc login --profile your-profile
   Logging in... ⣽
 ```
@@ -180,16 +150,19 @@ EXAMPLE
 ### `logout` command
 
 ```sh-session
-initiates AWS SSO logout
+Initiates AWS SSO logout
 
 USAGE
-  $ gsc logout
+  $ gsc logout [--help] [-p <value>]
 
-OPTIONS
-  -h, --help
-  -p, --profile=profile  [default: default]
+FLAGS
+  -p, --profile=<value>  [default: default] Profile name to use for logout
+  --help                 Show CLI help.
 
-EXAMPLE
+DESCRIPTION
+  Initiates AWS SSO logout
+
+EXAMPLES
   $ gsc logout --profile your-profile
   Logging out... ⣽
 ```
@@ -197,17 +170,22 @@ EXAMPLE
 ### `clear` command
 
 ```sh-session
-clears credentials in ~/.aws/credentials
+Clears selected credentials in ~/.aws/credentials
 
 USAGE
-  $ gsc clear
+  $ gsc clear [--help]
 
-OPTIONS
-  -h, --help
-  -p, --profile=profile  clears given profile credentials in ~/.aws/credentials
+FLAGS
+  --help  Show CLI help.
 
-EXAMPLE
+DESCRIPTION
+  Clears selected credentials in ~/.aws/credentials
+
+EXAMPLES
   $ gsc clear
+  ? Select a profile: (Use arrow keys)
+  ❯ default
+    personal
 ```
 
 <!-- usagestop -->

@@ -17,7 +17,7 @@ async function readFilePromise(file: string | Buffer): Promise<string> {
   });
 }
 
-export async function getSsoConfigs(): Promise<ISsoConfig[]> {
+export async function getSSOConfigs(): Promise<ISsoConfig[]> {
   const cacheFiles = readdirSync(`${homedir()}/.aws/sso/cache`, 'utf-8');
   const ssoConfigs: ISsoConfig[] = [];
   const promiseFiles: Promise<string>[] = [];
@@ -84,14 +84,14 @@ async function getSsoRoles(accountId: string, accessToken: string): Promise<stri
   });
 }
 
-export async function getRoles(accountId: string, accessToken: string) {
+export async function getRoles(accountId: string, accessToken: string): Promise<any> {
   return JSON.parse(await getSsoRoles(accountId, accessToken)).roleList.map((value: any) => value.roleName);
 }
 
 async function getSsoRoleCredentials(roleName: string, accountId: string, accessToken: string): Promise<string> {
   const command = `aws sso get-role-credentials --role-name ${roleName} --account-id ${accountId} --access-token ${accessToken} --output json`;
   return new Promise((resolve, reject) => {
-    exec(command, (error, stdout, stderr) => {
+    exec(command, (error, stdout, stderr): void => {
       if (stderr) {
         reject(new Error(stderr));
       }

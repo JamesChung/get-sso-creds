@@ -1,37 +1,34 @@
-import { Command, flags } from '@oclif/command';
+import { Command, Flags, CliUx } from '@oclif/core';
 import { logout } from '../lib/logout-helper';
-import cli from 'cli-ux';
 
 export default class LogOut extends Command {
-  static description = 'initiates AWS SSO logout';
+  static description = 'Initiates AWS SSO logout';
 
   static examples = [
-`$ gsc logout --profile your-profile
+    `$ gsc logout --profile your-profile
 Logging out... ⣽`,
   ];
 
   static flags = {
-    help: flags.help({
-      char: 'h',
-      description: undefined
-    }),
-    profile: flags.string({
+    help: Flags.help(),
+    profile: Flags.string({
       char: 'p',
-      default: 'default'
+      default: 'default',
+      description: 'Profile name to use for logout',
     })
   };
 
   static args = [];
 
-  async run() {
-    const { args, flags } = this.parse(LogOut);
+  public async run(): Promise<void> {
+    const { flags } = await this.parse(LogOut);
 
     try {
-      cli.action.start('❯ Logging out');
+      CliUx.ux.action.start('❯ Logging out');
       await logout(flags.profile);
-      cli.action.stop();
-    } catch (error) {
-      cli.action.stop('failed');
+      CliUx.ux.action.stop();
+    } catch (error: any) {
+      CliUx.ux.action.stop('failed');
       this.error(error.message);
     }
   }
