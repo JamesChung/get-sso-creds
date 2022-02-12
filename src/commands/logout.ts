@@ -2,7 +2,7 @@ import { Command, Flags, CliUx } from '@oclif/core';
 import { logout } from '../lib/logout-helper';
 
 export default class LogOut extends Command {
-  static description = 'initiates AWS SSO logout';
+  static description = 'Initiates AWS SSO logout';
 
   static examples = [
     `$ gsc logout --profile your-profile

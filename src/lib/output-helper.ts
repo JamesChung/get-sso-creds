@@ -3,18 +3,18 @@ import { getProfileCredentials } from '../lib/creds-helper';
 import { ICredentials, IProfile, IFlags } from './interfaces';
 import * as chalk from 'chalk';
 
-function exportHeaderOutput(command: Command, profileInfo: IProfile, credentials: ICredentials) {
+function exportHeaderOutput(command: Command, profileInfo: IProfile, credentials: ICredentials): void {
   command.log(`${chalk.yellowBright('Profile:')} ${chalk.cyan(profileInfo.profileName)}`);
   command.log(`${chalk.yellowBright('Credentials expire at:')} ${chalk.cyan((new Date(credentials.expiration)).toLocaleTimeString())}\n`);
 }
 
-function exportOutput(command: Command, credentials: ICredentials) {
+function exportOutput(command: Command, credentials: ICredentials): void {
   command.log(`${chalk.yellow('export')} ${chalk.blue('AWS_ACCESS_KEY_ID')}=${chalk.green(credentials.accessKeyId)}`);
   command.log(`${chalk.yellow('export')} ${chalk.blue('AWS_SECRET_ACCESS_KEY')}=${chalk.green(credentials.secretAccessKey)}`);
   command.log(`${chalk.yellow('export')} ${chalk.blue('AWS_SESSION_TOKEN')}=${chalk.green(credentials.sessionToken)}`);
 }
 
-export async function output(command: Command, flags: IFlags) {
+export async function output(command: Command, flags: IFlags): Promise<void> {
   try {
     const { profileInfo, credentials } = await getProfileCredentials(flags.profile);
 
@@ -35,7 +35,7 @@ export async function output(command: Command, flags: IFlags) {
   }
 }
 
-export async function roleOutput(command: Command, roleName: string, credentials: ICredentials, flags: IFlags) {
+export async function roleOutput(command: Command, roleName: string, credentials: ICredentials, flags: IFlags): Promise<void> {
   try {
     if (flags?.json) {
       command.log(JSON.stringify(credentials));

@@ -2,7 +2,7 @@ import { Command, Flags, CliUx } from '@oclif/core';
 import { login } from '../lib/login-helper';
 
 export default class LogIn extends Command {
-  static description = 'initiates AWS SSO login';
+  static description = 'Initiates AWS SSO login';
 
   static examples = [
     `$ gsc login --profile your-profile

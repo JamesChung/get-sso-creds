@@ -84,14 +84,14 @@ async function getSsoRoles(accountId: string, accessToken: string): Promise<stri
   });
 }
 
-export async function getRoles(accountId: string, accessToken: string) {
+export async function getRoles(accountId: string, accessToken: string): Promise<any> {
   return JSON.parse(await getSsoRoles(accountId, accessToken)).roleList.map((value: any) => value.roleName);
 }
 
 async function getSsoRoleCredentials(roleName: string, accountId: string, accessToken: string): Promise<string> {
   const command = `aws sso get-role-credentials --role-name ${roleName} --account-id ${accountId} --access-token ${accessToken} --output json`;
   return new Promise((resolve, reject) => {
-    exec(command, (error, stdout, stderr) => {
+    exec(command, (error, stdout, stderr): void => {
       if (stderr) {
         reject(new Error(stderr));
       }

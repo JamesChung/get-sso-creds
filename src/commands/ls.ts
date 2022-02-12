@@ -3,7 +3,7 @@ import { getCredProfiles, getProfileNames } from '../lib/profile-helper';
 import * as inquirer from 'inquirer';
 
 export default class Ls extends Command {
-  static description = 'lists profile names by file';
+  static description = 'Lists profile names in ~/.aws/config or ~/.aws/credentials';
 
   static examples = [
     `$ gsc ls

@@ -1,11 +1,16 @@
 import { Command, Flags, CliUx } from '@oclif/core';
+import { getCredProfiles } from '../lib/profile-helper';
 import { clearCredentials } from '../lib/creds-helper';
+import * as inquirer from 'inquirer';
 
 export default class Clear extends Command {
-  static description = 'clears all credentials in ~/.aws/credentials';
+  static description = 'Clears selected credentials in ~/.aws/credentials';
 
   static examples = [
-    `$ gsc clear`,
+    `$ gsc clear
+? Select a profile: (Use arrow keys)
+❯ default
+ personal`,
   ];
 
   static flags = {
@@ -13,20 +18,20 @@ export default class Clear extends Command {
       char: 'h',
       description: undefined
     }),
-    profile: Flags.string({
-      char: 'p',
-      description: 'clears given profile credentials in ~/.aws/credentials',
-    }),
   };
 
   static args = [];
 
   public async run(): Promise<void> {
-    const { flags } = await this.parse(Clear);
-
     try {
+      const response = await inquirer.prompt([{
+        name: 'profile',
+        message: 'Select a profile:',
+        type: 'list',
+        choices: getCredProfiles()
+      }]);
       CliUx.ux.action.start('❯ Clearing');
-      clearCredentials(this, flags.profile);
+      clearCredentials(this, response.profile);
       CliUx.ux.action.stop();
     } catch (error: any) {
       CliUx.ux.action.stop('failed');

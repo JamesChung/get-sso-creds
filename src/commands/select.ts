@@ -12,7 +12,7 @@ import * as inquirer from 'inquirer';
 import * as chalk from 'chalk';
 
 export default class Select extends Command {
-  static description = 'get AWS SSO credentials by interactive AWS SSO selection';
+  static description = 'Get AWS SSO credentials via AWS SSO';
 
   static examples = [
     `$ gsc select

@@ -87,7 +87,7 @@ export async function getCredentials(profile: IProfile): Promise<ICredentials> {
   throw new Error(`no valid credentials`);
 }
 
-export function writeCredentialsFile(credentials: ICredentials, profile: string = 'default') {
+export function writeCredentialsFile(credentials: ICredentials, profile: string = 'default'): void {
   const credentialsFilePath = `${homedir()}/.aws/credentials`;
   if (!existsSync(credentialsFilePath)) {
     writeFileSync(credentialsFilePath, '[default]', { encoding: 'utf-8' });
@@ -104,7 +104,7 @@ export function writeCredentialsFile(credentials: ICredentials, profile: string 
   writeFileSync(credentialsFilePath, encodedCredentials, { encoding: 'utf-8' });
 }
 
-export function clearCredentials(command: Command, profile: string = 'default') {
+export function clearCredentials(command: Command, profile: string = 'default'): void {
   const credentialsFilePath = `${homedir()}/.aws/credentials`;
   if (!existsSync(credentialsFilePath)) {
     throw new Error(`credentials file does not exist`);
@@ -119,9 +119,9 @@ export function clearCredentials(command: Command, profile: string = 'default') 
   throw new Error(`${chalk.red(profile)} does not exist`);
 }
 
-export async function getProfileCredentials(profile: string = 'default') {
-  const profileInfo = getProfileInfo(profile);
+export async function getProfileCredentials(profile: string = 'default'): Promise<{ profileInfo: IProfile, credentials: ICredentials }> {
+  const profileInfo: IProfile = getProfileInfo(profile);
   profileInfo.identity = await initCredentials(profileInfo.profileName);
-  const credentials = await getCredentials(profileInfo);
+  const credentials: ICredentials = await getCredentials(profileInfo);
   return { profileInfo, credentials };
 }
