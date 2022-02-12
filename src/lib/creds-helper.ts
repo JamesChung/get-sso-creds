@@ -4,9 +4,9 @@ import { exec } from 'child_process';
 import { STS } from 'aws-sdk';
 import { ICredentials, IUserIdentity, IProfile } from './interfaces';
 import { getProfileInfo, isProfile } from './profile-helper';
-import Command from '@oclif/command';
+import { Command } from '@oclif/core';
 import * as chalk from 'chalk';
-const ini = require('ini');
+import { encode, parse } from 'ini';
 
 export async function initCredentials(profile: string = 'default'): Promise<IUserIdentity> {
   if (!isProfile(profile)) {
@@ -90,18 +90,18 @@ export async function getCredentials(profile: IProfile): Promise<ICredentials> {
 export function writeCredentialsFile(credentials: ICredentials, profile: string = 'default') {
   const credentialsFilePath = `${homedir()}/.aws/credentials`;
   if (!existsSync(credentialsFilePath)) {
-    writeFileSync(credentialsFilePath, '[default]', {encoding: 'utf-8'});
+    writeFileSync(credentialsFilePath, '[default]', { encoding: 'utf-8' });
   }
-  let parsedCredentials = ini.parse(readFileSync(credentialsFilePath, 'utf-8'));
+  let parsedCredentials = parse(readFileSync(credentialsFilePath, 'utf-8'));
   if (!parsedCredentials[profile]) {
     appendFileSync(credentialsFilePath, `[${profile}]`, { encoding: 'utf-8' });
-    parsedCredentials = ini.parse(readFileSync(credentialsFilePath, 'utf-8'));
+    parsedCredentials = parse(readFileSync(credentialsFilePath, 'utf-8'));
   }
   parsedCredentials[profile].aws_access_key_id = credentials.accessKeyId;
   parsedCredentials[profile].aws_secret_access_key = credentials.secretAccessKey;
   parsedCredentials[profile].aws_session_token = credentials.sessionToken;
-  const encodedCredentials = ini.encode(parsedCredentials);
-  writeFileSync(credentialsFilePath, encodedCredentials, {encoding: 'utf-8'});
+  const encodedCredentials = encode(parsedCredentials);
+  writeFileSync(credentialsFilePath, encodedCredentials, { encoding: 'utf-8' });
 }
 
 export function clearCredentials(command: Command, profile: string = 'default') {
@@ -109,11 +109,11 @@ export function clearCredentials(command: Command, profile: string = 'default') 
   if (!existsSync(credentialsFilePath)) {
     throw new Error(`credentials file does not exist`);
   }
-  const parsedCredentials = ini.parse(readFileSync(credentialsFilePath, 'utf-8'));
+  const parsedCredentials = parse(readFileSync(credentialsFilePath, 'utf-8'));
   if (parsedCredentials[profile]) {
     delete parsedCredentials[profile];
-    const encodedCredentials = ini.encode(parsedCredentials);
-    writeFileSync(credentialsFilePath, encodedCredentials, {encoding: 'utf-8'});
+    const encodedCredentials = encode(parsedCredentials);
+    writeFileSync(credentialsFilePath, encodedCredentials, { encoding: 'utf-8' });
     return;
   }
   throw new Error(`${chalk.red(profile)} does not exist`);

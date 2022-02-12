@@ -1,22 +1,21 @@
-import { Command, flags } from '@oclif/command';
+import { Command, Flags, CliUx } from '@oclif/core';
 import { roleOutput } from '../lib/output-helper';
 import { writeCredentialsFile } from '../lib/creds-helper';
 import {
-  getSsoConfigs,
+  getSSOConfigs,
   getAccounts,
   getToken,
   getRoles,
-  getRoleCredentials
+  getRoleCredentials,
 } from '../lib/select-helper';
 import * as inquirer from 'inquirer';
 import * as chalk from 'chalk';
-import cli from 'cli-ux';
 
 export default class Select extends Command {
   static description = 'get AWS SSO credentials by interactive AWS SSO selection';
 
   static examples = [
-`$ gsc select
+    `$ gsc select
 ? Select an SSO url: (Use arrow keys)
 ❯ https://alpha.awsapps.com/start
  https://delta.awsapps.com/start
@@ -30,41 +29,34 @@ export default class Select extends Command {
   ];
 
   static flags = {
-    help: flags.help({
-      char: 'h',
-      description: undefined
-    }),
-    credentials: flags.boolean({
-      char: 'c',
-      description: 'writes credentials to ~/.aws/credentials (will use default as the profile name if --profile-name flag is not used)',
-      default: false
-    }),
-    quiet: flags.boolean({
+    help: Flags.string({ char: 'h', description: 'Help' }),
+    credentials: Flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials (will use default as the profile name if --profile-name flag is not used)' }),
+    quiet: Flags.boolean({
       name: 'quiet',
       char: 'q',
       default: false
     }),
-    json: flags.boolean({
+    json: Flags.boolean({
       name: 'json',
       default: false
     }),
-    'profile-name': flags.string({
+    'profile-name': Flags.string({
       helpValue: 'name',
       char: 'n',
       dependsOn: ['credentials'],
       description: 'name of custom profile when using --credentials flag'
     }),
-  };
+  }
 
   static args = [];
 
-  async run() {
-    const { args, flags } = this.parse(Select);
+  public async run(): Promise<void> {
+    const { flags } = await this.parse(Select);
 
     try {
-      cli.action.start('❯ Loading');
+      CliUx.ux.action.start('❯ Loading');
 
-      const ssoConfigs = await getSsoConfigs();
+      const ssoConfigs = await getSSOConfigs();
       const urlChoices: string[] = [];
       for (let ssoConfig of ssoConfigs) {
         urlChoices.push(ssoConfig.startUrl);
@@ -76,7 +68,7 @@ export default class Select extends Command {
 
       const accounts = await getAccounts(ssoConfigs);
 
-      cli.action.stop();
+      CliUx.ux.action.stop();
 
       const ssoUrlResponse = await inquirer.prompt([{
         name: 'ssoUrl',
@@ -95,7 +87,7 @@ export default class Select extends Command {
         type: 'list',
         choices: ssoAccountNames
       }]);
-      
+
       const accountValue = ssoAccountResponse.ssoAccount.split('|').pop().trim();
       const accessToken = getToken(ssoUrlResponse.ssoUrl, ssoConfigs);
       const ssoRoleNames = await getRoles(accountValue, accessToken);
@@ -109,14 +101,14 @@ export default class Select extends Command {
 
       const roleCreds = await getRoleCredentials(ssoRoleResponse.ssoRole, accountValue, accessToken);
       if (flags.credentials) {
-        cli.action.start('❯ Writing to credentials file');
+        CliUx.ux.action.start('❯ Writing to credentials file');
         writeCredentialsFile(roleCreds, flags['profile-name']);
-        cli.action.stop();
+        CliUx.ux.action.stop();
         return;
       }
       roleOutput(this, ssoRoleResponse.ssoRole, roleCreds, flags);
-    } catch (error) {
-      cli.action.stop('failed');
+    } catch (error: any) {
+      CliUx.ux.action.stop('failed');
       this.error(error.message);
     }
   }

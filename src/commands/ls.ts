@@ -1,20 +1,19 @@
-import { Command, flags } from '@oclif/command';
+import { Command, Flags, CliUx } from '@oclif/core';
 import { getCredProfiles, getProfileNames } from '../lib/profile-helper';
 import * as inquirer from 'inquirer';
-import cli from 'cli-ux';
 
 export default class Ls extends Command {
   static description = 'lists profile names by file';
 
   static examples = [
-`$ gsc ls
+    `$ gsc ls
 ? Select a file: (Use arrow keys)
 ❯ config
  credentials`,
   ];
 
   static flags = {
-    help: flags.help({
+    help: Flags.help({
       char: 'h',
       description: undefined
     }),
@@ -22,9 +21,7 @@ export default class Ls extends Command {
 
   static args = [];
 
-  async run() {
-    const { args, flags } = this.parse(Ls);
-
+  public async run(): Promise<void> {
     try {
       const response = await inquirer.prompt([{
         name: 'file',
@@ -46,8 +43,8 @@ export default class Ls extends Command {
         }
         return;
       }
-    } catch (error) {
-      cli.action.stop('failed');
+    } catch (error: any) {
+      CliUx.ux.action.stop('failed');
       this.error(error.message);
     }
   }

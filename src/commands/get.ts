@@ -1,11 +1,11 @@
-import { Command, flags } from '@oclif/command';
+import { Command, Flags } from '@oclif/core';
 import { output } from '../lib/output-helper';
 
 export default class Get extends Command {
   static description = 'get AWS SSO credentials by ~/.aws/config profile';
 
   static examples = [
-`$ gsc get --profile my-profile
+    `$ gsc get --profile my-profile
 Profile: my-profile
 Credentials expire at: 6:20:24 PM
 
@@ -15,21 +15,21 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
   ];
 
   static flags = {
-    help: flags.help({
+    help: Flags.help({
       char: 'h',
       description: undefined
     }),
-    profile: flags.string({
+    profile: Flags.string({
       name: 'profile',
       char: 'p',
       default: 'default'
     }),
-    quiet: flags.boolean({
+    quiet: Flags.boolean({
       name: 'quiet',
       char: 'q',
       default: false
     }),
-    json: flags.boolean({
+    json: Flags.boolean({
       name: 'json',
       default: false
     }),
@@ -37,12 +37,12 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
 
   static args = [];
 
-  async run() {
-    const { flags } = this.parse(Get);
+  public async run(): Promise<void> {
+    const { flags } = await this.parse(Get);
 
     try {
       await output(this, flags);
-    } catch (error) {
+    } catch (error: any) {
       this.error(error.message);
     }
   }

@@ -1,6 +1,5 @@
-import { Command, flags } from '@oclif/command';
+import { Command, Flags, CliUx } from '@oclif/core';
 import { clearCredentials } from '../lib/creds-helper';
-import cli from 'cli-ux';
 
 export default class Clear extends Command {
   static description = 'clears all credentials in ~/.aws/credentials';
@@ -10,11 +9,11 @@ export default class Clear extends Command {
   ];
 
   static flags = {
-    help: flags.help({
+    help: Flags.help({
       char: 'h',
       description: undefined
     }),
-    profile: flags.string({
+    profile: Flags.string({
       char: 'p',
       description: 'clears given profile credentials in ~/.aws/credentials',
     }),
@@ -22,15 +21,15 @@ export default class Clear extends Command {
 
   static args = [];
 
-  async run() {
-    const { args, flags } = this.parse(Clear);
+  public async run(): Promise<void> {
+    const { flags } = await this.parse(Clear);
 
     try {
-      cli.action.start('❯ Clearing');
+      CliUx.ux.action.start('❯ Clearing');
       clearCredentials(this, flags.profile);
-      cli.action.stop();
-    } catch (error) {
-      cli.action.stop('failed');
+      CliUx.ux.action.stop();
+    } catch (error: any) {
+      CliUx.ux.action.stop('failed');
       this.error(error.message);
     }
   }

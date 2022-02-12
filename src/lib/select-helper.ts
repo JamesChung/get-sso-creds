@@ -17,7 +17,7 @@ async function readFilePromise(file: string | Buffer): Promise<string> {
   });
 }
 
-export async function getSsoConfigs(): Promise<ISsoConfig[]> {
+export async function getSSOConfigs(): Promise<ISsoConfig[]> {
   const cacheFiles = readdirSync(`${homedir()}/.aws/sso/cache`, 'utf-8');
   const ssoConfigs: ISsoConfig[] = [];
   const promiseFiles: Promise<string>[] = [];
