@@ -10,13 +10,11 @@ Logging in... ⣽`,
   ];
 
   static flags = {
-    help: Flags.help({
-      char: 'h',
-      description: undefined
-    }),
+    help: Flags.help(),
     profile: Flags.string({
       char: 'p',
-      default: 'default'
+      default: 'default',
+      description: 'Profile name to use for login',
     })
   };
 

@@ -10,14 +10,11 @@ export default class Clear extends Command {
     `$ gsc clear
 ? Select a profile: (Use arrow keys)
 ❯ default
- personal`,
+  personal`,
   ];
 
   static flags = {
-    help: Flags.help({
-      char: 'h',
-      description: undefined
-    }),
+    help: Flags.help(),
   };
 
   static args = [];

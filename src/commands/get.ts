@@ -9,12 +9,12 @@ export default class Get extends Command {
   static description = 'Get AWS SSO credentials via existing profile in ~/.aws/config';
 
   static examples = [
-    `$ gsc select-profile
+    `$ gsc get
 ? Select a profile: (Use arrow keys)
 ❯ default
- dev
- prod
- personal
+  dev
+  prod
+  personal
 
 Profile: my-profile
 Credentials expire at: 6:20:24 PM
@@ -25,28 +25,21 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
   ];
 
   static flags = {
-    help: Flags.help({
-      char: 'h',
-      description: undefined
-    }),
+    help: Flags.help(),
     credentials: Flags.boolean({
       char: 'c',
-      description: 'writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used)',
-      default: false
+      description: 'Writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used)',
+      default: false,
     }),
     preserve: Flags.boolean({
       char: 'P',
-      description: 'uses selected profile name when using --credentials flag',
-      dependsOn: ['credentials']
-    }),
-    quiet: Flags.boolean({
-      name: 'quiet',
-      char: 'q',
-      default: false
+      description: 'Sets selected profile name as the profile name in ~/.aws/credentials when using --credentials flag',
+      dependsOn: ['credentials'],
     }),
     json: Flags.boolean({
       name: 'json',
-      default: false
+      default: false,
+      description: 'Outputs credentials in json format',
     }),
   };
 
@@ -65,7 +58,6 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
 
       const input: IFlags = {
         profile: response.profile,
-        quiet: flags.quiet,
         json: flags.json,
       };
 

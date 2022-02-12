@@ -9,14 +9,11 @@ export default class Ls extends Command {
     `$ gsc ls
 ? Select a file: (Use arrow keys)
 ❯ config
- credentials`,
+  credentials`,
   ];
 
   static flags = {
-    help: Flags.help({
-      char: 'h',
-      description: undefined
-    }),
+    help: Flags.help(),
   };
 
   static args = [];

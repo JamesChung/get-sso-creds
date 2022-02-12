@@ -1,7 +1,7 @@
 {
   "name": "get-sso-creds",
   "version": "5.0.0",
-  "description": "CLI tool to retrieve or store AWS SSO credentials based on profiles.",
+  "description": "CLI tool to retrieve or set AWS SSO credentials",
   "author": "James Chung @JamesChung",
   "bin": {
     "gsc": "./bin/run"

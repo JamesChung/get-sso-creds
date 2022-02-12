@@ -18,33 +18,29 @@ export default class Select extends Command {
     `$ gsc select
 ? Select an SSO url: (Use arrow keys)
 ❯ https://alpha.awsapps.com/start
- https://delta.awsapps.com/start
+  https://delta.awsapps.com/start
 ? Select an SSO account:
 ❯ Log archive | ctlogs@google.com | 111111111111
- test-alpha | testalpha@yahoo.com | 222222222222
+  test-alpha | testalpha@yahoo.com | 222222222222
 ? Select an SSO role: (Use arrow keys)
 ❯ AWSServiceCatalogEndUserAccess
- AWSAdministratorAccess
+  AWSAdministratorAccess
  ...`,
   ];
 
   static flags = {
-    help: Flags.string({ char: 'h', description: 'Help' }),
-    credentials: Flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials (will use default as the profile name if --profile-name flag is not used)' }),
-    quiet: Flags.boolean({
-      name: 'quiet',
-      char: 'q',
-      default: false
-    }),
+    help: Flags.help(),
+    credentials: Flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials (will use default as the profile name if --set-profile-as flag is not used)' }),
     json: Flags.boolean({
       name: 'json',
-      default: false
+      default: false,
+      description: 'Outputs credentials in json format',
     }),
-    'profile-name': Flags.string({
+    'set-as': Flags.string({
       helpValue: 'name',
       char: 'n',
       dependsOn: ['credentials'],
-      description: 'name of custom profile when using --credentials flag'
+      description: 'Desired name of profile when setting credentials via --credentials flag'
     }),
   }
 
@@ -102,7 +98,7 @@ export default class Select extends Command {
       const roleCreds = await getRoleCredentials(ssoRoleResponse.ssoRole, accountValue, accessToken);
       if (flags.credentials) {
         CliUx.ux.action.start('❯ Writing to credentials file');
-        writeCredentialsFile(roleCreds, flags['profile-name']);
+        writeCredentialsFile(roleCreds, flags['set-as']);
         CliUx.ux.action.stop();
         return;
       }
