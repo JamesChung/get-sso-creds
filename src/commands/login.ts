@@ -1,37 +1,34 @@
-import { Command, flags } from '@oclif/command';
+import { Command, Flags, CliUx } from '@oclif/core';
 import { login } from '../lib/login-helper';
-import cli from 'cli-ux';
 
 export default class LogIn extends Command {
-  static description = 'initiates AWS SSO login';
+  static description = 'Initiates AWS SSO login';
 
   static examples = [
-`$ gsc login --profile your-profile
+    `$ gsc login --profile your-profile
 Logging in... ⣽`,
   ];
 
   static flags = {
-    help: flags.help({
-      char: 'h',
-      description: undefined
-    }),
-    profile: flags.string({
+    help: Flags.help(),
+    profile: Flags.string({
       char: 'p',
-      default: 'default'
+      default: 'default',
+      description: 'Profile name to use for login',
     })
   };
 
   static args = [];
 
-  async run() {
-    const { args, flags } = this.parse(LogIn);
+  public async run(): Promise<void> {
+    const { flags } = await this.parse(LogIn);
 
     try {
-      cli.action.start('❯ Logging in');
+      CliUx.ux.action.start('❯ Logging in');
       await login(flags.profile);
-      cli.action.stop();
-    } catch (error) {
-      cli.action.stop('failed');
+      CliUx.ux.action.stop();
+    } catch (error: any) {
+      CliUx.ux.action.stop('failed');
       this.error(error.message);
     }
   }

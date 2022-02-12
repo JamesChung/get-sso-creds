@@ -1,11 +1,21 @@
-import { Command, flags } from '@oclif/command';
+import { Command, Flags, CliUx } from '@oclif/core';
+import { getProfileNames } from '../lib/profile-helper';
 import { output } from '../lib/output-helper';
+import { IFlags } from '../lib/interfaces';
+import { getProfileCredentials, writeCredentialsFile } from '../lib/creds-helper';
+import * as inquirer from 'inquirer';
 
 export default class Get extends Command {
-  static description = 'get AWS SSO credentials by ~/.aws/config profile';
+  static description = 'Get AWS SSO credentials via existing profile in ~/.aws/config';
 
   static examples = [
-`$ gsc get --profile my-profile
+    `$ gsc get
+? Select a profile: (Use arrow keys)
+❯ default
+  dev
+  prod
+  personal
+
 Profile: my-profile
 Credentials expire at: 6:20:24 PM
 
@@ -15,34 +25,55 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
   ];
 
   static flags = {
-    help: flags.help({
-      char: 'h',
-      description: undefined
+    help: Flags.help(),
+    credentials: Flags.boolean({
+      char: 'c',
+      description: 'Writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used)',
+      default: false,
     }),
-    profile: flags.string({
-      name: 'profile',
-      char: 'p',
-      default: 'default'
+    preserve: Flags.boolean({
+      char: 'P',
+      description: 'Sets selected profile name as the profile name in ~/.aws/credentials when using --credentials flag',
+      dependsOn: ['credentials'],
     }),
-    quiet: flags.boolean({
-      name: 'quiet',
-      char: 'q',
-      default: false
-    }),
-    json: flags.boolean({
+    json: Flags.boolean({
       name: 'json',
-      default: false
+      default: false,
+      description: 'Outputs credentials in json format',
     }),
   };
 
   static args = [];
 
-  async run() {
-    const { flags } = this.parse(Get);
+  public async run(): Promise<void> {
+    const { flags } = await this.parse(Get);
 
     try {
-      await output(this, flags);
-    } catch (error) {
+      const response = await inquirer.prompt([{
+        name: 'profile',
+        message: 'Select a profile:',
+        type: 'list',
+        choices: getProfileNames()
+      }]);
+
+      const input: IFlags = {
+        profile: response.profile,
+        json: flags.json,
+      };
+
+      if (flags.credentials) {
+        const { credentials } = await getProfileCredentials(response.profile);
+        CliUx.ux.action.start('❯ Writing to credentials file');
+        if (flags.preserve) {
+          writeCredentialsFile(credentials, response.profile);
+        }
+        writeCredentialsFile(credentials);
+        CliUx.ux.action.stop();
+        return;
+      }
+
+      await output(this, input);
+    } catch (error: any) {
       this.error(error.message);
     }
   }

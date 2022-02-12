@@ -1,36 +1,37 @@
-import { Command, flags } from '@oclif/command';
+import { Command, Flags, CliUx } from '@oclif/core';
+import { getCredProfiles } from '../lib/profile-helper';
 import { clearCredentials } from '../lib/creds-helper';
-import cli from 'cli-ux';
+import * as inquirer from 'inquirer';
 
 export default class Clear extends Command {
-  static description = 'clears all credentials in ~/.aws/credentials';
+  static description = 'Clears selected credentials in ~/.aws/credentials';
 
   static examples = [
-    `$ gsc clear`,
+    `$ gsc clear
+? Select a profile: (Use arrow keys)
+❯ default
+  personal`,
   ];
 
   static flags = {
-    help: flags.help({
-      char: 'h',
-      description: undefined
-    }),
-    profile: flags.string({
-      char: 'p',
-      description: 'clears given profile credentials in ~/.aws/credentials',
-    }),
+    help: Flags.help(),
   };
 
   static args = [];
 
-  async run() {
-    const { args, flags } = this.parse(Clear);
-
+  public async run(): Promise<void> {
     try {
-      cli.action.start('❯ Clearing');
-      clearCredentials(this, flags.profile);
-      cli.action.stop();
-    } catch (error) {
-      cli.action.stop('failed');
+      const response = await inquirer.prompt([{
+        name: 'profile',
+        message: 'Select a profile:',
+        type: 'list',
+        choices: getCredProfiles()
+      }]);
+      CliUx.ux.action.start('❯ Clearing');
+      clearCredentials(this, response.profile);
+      CliUx.ux.action.stop();
+    } catch (error: any) {
+      CliUx.ux.action.stop('failed');
       this.error(error.message);
     }
   }
