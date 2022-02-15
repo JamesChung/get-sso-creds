@@ -4,7 +4,7 @@ import { clearCredentials } from '../lib/creds-helper';
 import * as inquirer from 'inquirer';
 
 export default class Clear extends Command {
-  static description = 'Clears selected credentials in ~/.aws/credentials';
+  static description = 'Clears selected credentials in ~/.aws/credentials.';
 
   static examples = [
     `$ gsc clear

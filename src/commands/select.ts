@@ -12,7 +12,7 @@ import * as inquirer from 'inquirer';
 import * as chalk from 'chalk';
 
 export default class Select extends Command {
-  static description = 'Get AWS SSO credentials via AWS SSO';
+  static description = 'Get AWS SSO credentials via AWS SSO.';
 
   static examples = [
     `$ gsc select
@@ -30,17 +30,22 @@ export default class Select extends Command {
 
   static flags = {
     help: Flags.help(),
-    credentials: Flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials (will use default as the profile name if --set-profile-as flag is not used)' }),
+    credentials: Flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials (will use default as the profile name if --set-profile-as flag is not used).' }),
     json: Flags.boolean({
       name: 'json',
       default: false,
-      description: 'Outputs credentials in json format',
+      description: 'Outputs credentials in json format.',
     }),
     'set-as': Flags.string({
       helpValue: 'name',
       char: 'n',
       dependsOn: ['credentials'],
-      description: 'Desired name of profile when setting credentials via --credentials flag'
+      description: 'Desired name of profile when setting credentials via --credentials flag.'
+    }),
+    'profile': Flags.string({
+      helpValue: 'default',
+      char: 'p',
+      description: '(Optional) Desired SSO config profile to use. If not specified, will use default profile.'
     }),
   }
 
@@ -62,7 +67,7 @@ export default class Select extends Command {
         throw new Error(`sign in first ${chalk.red('(aws sso login | gsc login)')}`);
       }
 
-      const accounts = await getAccounts(ssoConfigs);
+      const accounts = await getAccounts(ssoConfigs, flags.profile);
 
       CliUx.ux.action.stop();
 
@@ -86,7 +91,7 @@ export default class Select extends Command {
 
       const accountValue = ssoAccountResponse.ssoAccount.split('|').pop().trim();
       const accessToken = getToken(ssoUrlResponse.ssoUrl, ssoConfigs);
-      const ssoRoleNames = await getRoles(accountValue, accessToken);
+      const ssoRoleNames = await getRoles(accountValue, accessToken, flags.profile);
 
       const ssoRoleResponse = await inquirer.prompt([{
         name: 'ssoRole',
@@ -95,7 +100,7 @@ export default class Select extends Command {
         choices: ssoRoleNames
       }]);
 
-      const roleCreds = await getRoleCredentials(ssoRoleResponse.ssoRole, accountValue, accessToken);
+      const roleCreds = await getRoleCredentials(ssoRoleResponse.ssoRole, accountValue, accessToken, flags.profile);
       if (flags.credentials) {
         CliUx.ux.action.start('❯ Writing to credentials file');
         writeCredentialsFile(roleCreds, flags['set-as']);
@@ -105,7 +110,7 @@ export default class Select extends Command {
       roleOutput(this, ssoRoleResponse.ssoRole, roleCreds, flags);
     } catch (error: any) {
       CliUx.ux.action.stop('failed');
-      this.error(error.message);
+      this.error(`${error.message}\nOr specify a profile via --profile="profile-name", you may have not specified a valid SSO profile from your ~/.aws/config file. Will attempt to use default profile if flag is not set.`);
     }
   }
 }

@@ -6,7 +6,7 @@ import { getProfileCredentials, writeCredentialsFile } from '../lib/creds-helper
 import * as inquirer from 'inquirer';
 
 export default class Get extends Command {
-  static description = 'Get AWS SSO credentials via existing profile in ~/.aws/config';
+  static description = 'Get AWS SSO credentials via existing profile in ~/.aws/config.';
 
   static examples = [
     `$ gsc get
@@ -28,18 +28,18 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
     help: Flags.help(),
     credentials: Flags.boolean({
       char: 'c',
-      description: 'Writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used)',
+      description: 'Writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used).',
       default: false,
     }),
     preserve: Flags.boolean({
       char: 'P',
-      description: 'Sets selected profile name as the profile name in ~/.aws/credentials when using --credentials flag',
+      description: 'Sets selected profile name as the profile name in ~/.aws/credentials when using --credentials flag.',
       dependsOn: ['credentials'],
     }),
     json: Flags.boolean({
       name: 'json',
       default: false,
-      description: 'Outputs credentials in json format',
+      description: 'Outputs credentials in json format.',
     }),
   };
 
