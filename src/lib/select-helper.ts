@@ -37,8 +37,8 @@ export async function getSSOConfigs(): Promise<ISsoConfig[]> {
   return ssoConfigs;
 }
 
-async function ssoListAccounts(accessToken: string): Promise<string> {
-  const command = `aws sso list-accounts --access-token ${accessToken} --output json`;
+async function ssoListAccounts(accessToken: string, profile: string = 'default'): Promise<string> {
+  const command = `aws sso list-accounts --access-token ${accessToken} --output json --profile ${profile}`;
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (stderr) {
@@ -51,10 +51,10 @@ async function ssoListAccounts(accessToken: string): Promise<string> {
   });
 }
 
-export async function getAccounts(ssoConfigs: ISsoConfig[]) {
+export async function getAccounts(ssoConfigs: ISsoConfig[], profile: string = 'default') {
   const accounts = new Map();
   for (let ssoConfig of ssoConfigs) {
-    const accountList = JSON.parse(await ssoListAccounts(ssoConfig.accessToken));
+    const accountList = JSON.parse(await ssoListAccounts(ssoConfig.accessToken, profile));
     accounts.set(ssoConfig.startUrl, accountList);
   }
   return accounts;
@@ -70,8 +70,8 @@ export function getToken(ssoUrl: string, ssoConfigs: ISsoConfig[]): string {
   return token;
 }
 
-async function getSsoRoles(accountId: string, accessToken: string): Promise<string> {
-  const command = `aws sso list-account-roles --account-id ${accountId} --access-token ${accessToken} --output json`;
+async function getSsoRoles(accountId: string, accessToken: string, profile: string = 'default'): Promise<string> {
+  const command = `aws sso list-account-roles --account-id ${accountId} --access-token ${accessToken} --output json --profile ${profile}`;
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (stderr) {
@@ -84,12 +84,12 @@ async function getSsoRoles(accountId: string, accessToken: string): Promise<stri
   });
 }
 
-export async function getRoles(accountId: string, accessToken: string): Promise<any> {
-  return JSON.parse(await getSsoRoles(accountId, accessToken)).roleList.map((value: any) => value.roleName);
+export async function getRoles(accountId: string, accessToken: string, profile: string = 'default'): Promise<any> {
+  return JSON.parse(await getSsoRoles(accountId, accessToken, profile)).roleList.map((value: any) => value.roleName);
 }
 
-async function getSsoRoleCredentials(roleName: string, accountId: string, accessToken: string): Promise<string> {
-  const command = `aws sso get-role-credentials --role-name ${roleName} --account-id ${accountId} --access-token ${accessToken} --output json`;
+async function getSsoRoleCredentials(roleName: string, accountId: string, accessToken: string, profile: string = 'default'): Promise<string> {
+  const command = `aws sso get-role-credentials --role-name ${roleName} --account-id ${accountId} --access-token ${accessToken} --output json --profile ${profile}`;
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr): void => {
       if (stderr) {
@@ -102,13 +102,13 @@ async function getSsoRoleCredentials(roleName: string, accountId: string, access
   });
 }
 
-export async function getRoleCredentials(roleName: string, accountId: string, accessToken: string): Promise<ICredentials> {
+export async function getRoleCredentials(roleName: string, accountId: string, accessToken: string, profile: string = 'default'): Promise<ICredentials> {
   const {
     accessKeyId,
     secretAccessKey,
     sessionToken,
     expiration
-  } = JSON.parse(await getSsoRoleCredentials(roleName, accountId, accessToken)).roleCredentials;
+  } = JSON.parse(await getSsoRoleCredentials(roleName, accountId, accessToken, profile)).roleCredentials;
 
   const creds: ICredentials = {
     accessKeyId,
