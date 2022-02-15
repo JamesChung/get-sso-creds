@@ -1,28 +1,44 @@
-get-sso-creds
-=============
+# get-sso-creds
 
 CLI tool to get AWS SSO temporary credentials.
 
 [![Version](https://img.shields.io/npm/v/get-sso-creds)](https://npmjs.org/package/get-sso-creds)
 [![License](https://img.shields.io/npm/l/get-sso-creds)](https://github.com/JamesChung/get-sso-creds/blob/main/LICENSE)
 
-<!-- toc -->
 * [Prerequisites](#Prerequisites)
 * [Usage](#usage)
-<!-- tocstop -->
 
-# Prerequisites
-<!-- prerequisites -->
+## Prerequisites
+
+In order for `get-sso-creds` to work properly AWS CLI v2 must be installed beforehand.
+
 AWS CLI v2
 
-https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
-<!-- prerequisitesstop -->
+<https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html>
 
-# Usage
-<!-- usage -->
+## Install
+
 ```sh-session
-$ npm install -g get-sso-creds
+npm install -g get-sso-creds
 ```
+
+## Examples
+
+> AWS CLI will use the default profile if no profile is given. Out of convenience the `-c` flag from the `select` command will set the default profile in ~/.aws/credentials for you. Thus subsequent `awscli` commands will no longer require you to use `--profile` if you plan on using a specific set of credentials for a period of time. ie. rather than typeing `aws s3 ls --profile="my-profile"` you can just type `aws s3 ls` after allowing `gsc` to set the credentials for you.
+
+```shell
+gsc select -c
+```
+
+> Conversely if you prefer to store named credentials you can use the `--set-as=name` flag with `select`. This will allow you to set credentials as the specified profile name.
+
+```shell
+gsc select -c --set-as="dev-profile"
+
+aws s3 ls --profile="dev-profile"
+```
+
+## Commands
 
 ```sh-session
 CLI tool to retrieve or set AWS SSO credentials
@@ -78,19 +94,21 @@ EXAMPLES
 ### `select` command
 
 ```sh-session
-Get AWS SSO credentials via AWS SSO
+Get AWS SSO credentials via AWS SSO.
 
 USAGE
-  $ gsc select [--help] [--json] [-n <value> -c]
+  $ gsc select [--help] [--json] [-n <value> -c] [-p <value>]
 
 FLAGS
-  -c, --credentials  writes credentials to ~/.aws/credentials (will use default as the profile name if --set-profile-as flag is not used)
-  -n, --set-as=name  Desired name of profile when setting credentials via --credentials flag
-  --help             Show CLI help.
-  --json             Outputs credentials in json format
+  -c, --credentials      writes credentials to ~/.aws/credentials (will use default as the profile name if --set-profile-as flag is not
+                         used).
+  -n, --set-as=name      Desired name of profile when setting credentials via --credentials flag.
+  -p, --profile=default  (Optional) Desired SSO config profile to use. If not specified, will use default profile.
+  --help                 Show CLI help.
+  --json                 Outputs credentials in json format.
 
 DESCRIPTION
-  Get AWS SSO credentials via AWS SSO
+  Get AWS SSO credentials via AWS SSO.
 
 EXAMPLES
   $ gsc select
@@ -187,5 +205,3 @@ EXAMPLES
   ❯ default
     personal
 ```
-
-<!-- usagestop -->
