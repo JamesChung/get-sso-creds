@@ -1,7 +1,7 @@
 {
   "name": "get-sso-creds",
-  "version": "5.0.0",
-  "description": "CLI tool to retrieve or set AWS SSO credentials",
+  "version": "5.1.0",
+  "description": "CLI tool to retrieve or set AWS SSO credentials.",
   "author": "James Chung @JamesChung",
   "bin": {
     "gsc": "./bin/run"
@@ -49,12 +49,7 @@
       "@oclif/plugin-help",
       "@oclif/plugin-plugins"
     ],
-    "topicSeparator": " ",
-    "topics": {
-      "hello": {
-        "description": "Say hello to the world and others"
-      }
-    }
+    "topicSeparator": " "
   },
   "scripts": {
     "build": "shx rm -rf dist && tsc -b",
