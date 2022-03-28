@@ -41,7 +41,10 @@ aws s3 ls --profile="dev-profile"
 ## Commands
 
 ```sh-session
-CLI tool to retrieve or set AWS SSO credentials
+CLI tool to retrieve or set AWS SSO credentials.
+
+VERSION
+  get-sso-creds/5.2.0 darwin-arm64 node-v16.14.2
 
 USAGE
   $ gsc [COMMAND]
@@ -50,14 +53,15 @@ TOPICS
   plugins  List installed plugins.
 
 COMMANDS
-  clear    Clears selected credentials in ~/.aws/credentials
-  get      Get AWS SSO credentials via existing profile in ~/.aws/config
+  assume   Assumes AWS Role.
+  clear    Clears selected credentials in ~/.aws/credentials.
+  get      Get AWS SSO credentials via existing profile in ~/.aws/config.
   help     Display help for gsc.
-  login    Initiates AWS SSO login
-  logout   Initiates AWS SSO logout
-  ls       Lists profile names in ~/.aws/config or ~/.aws/credentials
+  login    Initiates AWS SSO login.
+  logout   Initiates AWS SSO logout.
+  ls       Lists profile names in ~/.aws/config or ~/.aws/credentials.
   plugins  List installed plugins.
-  select   Get AWS SSO credentials via AWS SSO
+  select   Get AWS SSO credentials via AWS SSO.
 ```
 
 ### `get` command
@@ -122,6 +126,32 @@ EXAMPLES
   ❯ AWSServiceCatalogEndUserAccess
     AWSAdministratorAccess
    ...
+```
+
+### `assume` command
+
+```sh-session
+Assumes AWS Role.
+
+USAGE
+  $ gsc assume [--help] [--json] [-n <value> -c] (-s <value> -r <value>) [-p <value>]
+
+FLAGS
+  -c, --credentials           writes credentials to ~/.aws/credentials (will use [default] as the profile name if --set-as flag is not used).
+  -n, --set-as=<value>        Desired name of profile when setting credentials via --credentials flag.
+  -p, --profile=<value>       [default: default] Desired SSO config profile to use.
+  -r, --role=<value>          (required) ARN of the role to assume.
+  -s, --session-name=<value>  [default: gsc-session] Desired name for the role session.
+  --help                      Show CLI help.
+  --json                      Outputs credentials in json format.
+
+DESCRIPTION
+  Assumes AWS Role.
+
+EXAMPLES
+  $ gsc assume --role arn:aws:iam::996942091142:role/test-role
+
+  $ gsc assume --role arn:aws:iam::996942091142:role/test-role -c --set-as 'my-profile'
 ```
 
 ### `ls` command
