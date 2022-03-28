@@ -17,13 +17,13 @@
     "/oclif.manifest.json"
   ],
   "dependencies": {
-    "@oclif/core": "^1",
-    "@oclif/plugin-help": "^5",
-    "@oclif/plugin-plugins": "^2.0.1",
-    "aws-sdk": "^2.1073.0",
+    "@oclif/core": "^1.6.1",
+    "@oclif/plugin-help": "^5.1.11",
+    "@oclif/plugin-plugins": "^2.1.0",
+    "aws-sdk": "^2.1101.0",
     "chalk": "^4.1.2",
     "ini": "^2.0.0",
-    "inquirer": "^8.2.0"
+    "inquirer": "^8.2.2"
   },
   "devDependencies": {
     "@oclif/test": "^2",
