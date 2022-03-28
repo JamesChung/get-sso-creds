@@ -37,7 +37,6 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
       dependsOn: ['credentials'],
     }),
     json: Flags.boolean({
-      name: 'json',
       default: false,
       description: 'Outputs credentials in json format.',
     }),

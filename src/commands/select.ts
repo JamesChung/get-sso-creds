@@ -30,22 +30,20 @@ export default class Select extends Command {
 
   static flags = {
     help: Flags.help(),
-    credentials: Flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials (will use default as the profile name if --set-profile-as flag is not used).' }),
+    credentials: Flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials (will use [default] as the profile name if --set-as flag is not used).' }),
     json: Flags.boolean({
-      name: 'json',
       default: false,
       description: 'Outputs credentials in json format.',
     }),
     'set-as': Flags.string({
-      helpValue: 'name',
       char: 'n',
       dependsOn: ['credentials'],
       description: 'Desired name of profile when setting credentials via --credentials flag.'
     }),
     'profile': Flags.string({
-      helpValue: 'default',
       char: 'p',
-      description: '(Optional) Desired SSO config profile to use. If not specified, will use default profile.'
+      default: 'default',
+      description: 'Desired SSO config profile to use.'
     }),
   }
 
@@ -107,7 +105,7 @@ export default class Select extends Command {
         CliUx.ux.action.stop();
         return;
       }
-      roleOutput(this, ssoRoleResponse.ssoRole, roleCreds, flags);
+      await roleOutput(this, ssoRoleResponse.ssoRole, roleCreds, flags);
     } catch (error: any) {
       CliUx.ux.action.stop('failed');
       this.error(`${error.message}\nOr specify a profile via --profile="profile-name", you may have not specified a valid SSO profile from your ~/.aws/config file. Will attempt to use default profile if flag is not set.`);
