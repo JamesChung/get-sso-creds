@@ -1,6 +1,6 @@
 {
   "name": "get-sso-creds",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "CLI tool to retrieve or set AWS SSO credentials.",
   "author": "James Chung @JamesChung",
   "bin": {
@@ -64,7 +64,10 @@
   },
   "bugs": "https://github.com/JamesChung/get-sso-creds/issues",
   "keywords": [
-    "oclif"
+    "oclif",
+    "aws",
+    "cli",
+    "sso"
   ],
   "types": "dist/index.d.ts"
 }
