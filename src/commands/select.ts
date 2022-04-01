@@ -1,5 +1,5 @@
 import { Command, Flags, CliUx } from '@oclif/core';
-import { roleOutput } from '../lib/output-helper';
+import { roleOutput, clipboardOutput } from '../lib/output-helper';
 import { writeCredentialsFile } from '../lib/creds-helper';
 import {
   getSSOConfigs,
@@ -30,7 +30,18 @@ export default class Select extends Command {
 
   static flags = {
     help: Flags.help(),
-    credentials: Flags.boolean({ char: 'c', description: 'writes credentials to ~/.aws/credentials (will use [default] as the profile name if --set-as flag is not used).' }),
+    credentials: Flags.boolean({
+      char: 'c',
+      default: false,
+      description: 'Writes credentials to ~/.aws/credentials (will use [default] as the profile name if --set-as flag is not used).',
+      exclusive: ['clipboard'],
+    }),
+    clipboard: Flags.boolean({
+      char: 'b',
+      default: false,
+      description: 'Writes credentials to clipboard.',
+      exclusive: ['credentials'],
+    }),
     json: Flags.boolean({
       default: false,
       description: 'Outputs credentials in json format.',
@@ -99,13 +110,19 @@ export default class Select extends Command {
       }]);
 
       const roleCreds = await getRoleCredentials(ssoRoleResponse.ssoRole, accountValue, accessToken, flags.profile);
-      if (flags.credentials) {
+
+      if (flags.clipboard) {
+        CliUx.ux.action.start('❯ Saving to clipboard');
+        clipboardOutput(roleCreds);
+        CliUx.ux.action.stop();
+      } else if (flags.credentials) {
         CliUx.ux.action.start('❯ Writing to credentials file');
         writeCredentialsFile(roleCreds, flags['set-as']);
         CliUx.ux.action.stop();
         return;
+      } else {
+        await roleOutput(this, ssoRoleResponse.ssoRole, roleCreds, flags);
       }
-      await roleOutput(this, ssoRoleResponse.ssoRole, roleCreds, flags);
     } catch (error: any) {
       CliUx.ux.action.stop('failed');
       this.error(`${error.message}\nOr specify a profile via --profile="profile-name", you may have not specified a valid SSO profile from your ~/.aws/config file. Will attempt to use default profile if flag is not set.`);

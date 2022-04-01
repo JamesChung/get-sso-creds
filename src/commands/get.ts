@@ -1,12 +1,12 @@
 import { Command, Flags, CliUx } from '@oclif/core';
 import { getProfileNames } from '../lib/profile-helper';
-import { output } from '../lib/output-helper';
+import { output, clipboardOutput } from '../lib/output-helper';
 import { IFlags } from '../lib/interfaces';
 import { getProfileCredentials, writeCredentialsFile } from '../lib/creds-helper';
 import * as inquirer from 'inquirer';
 
 export default class Get extends Command {
-  static description = 'Get AWS SSO credentials via existing profile in ~/.aws/config.';
+  static description = 'Get AWS SSO credentials from existing profiles in ~/.aws/config.';
 
   static examples = [
     `$ gsc get
@@ -28,8 +28,15 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
     help: Flags.help(),
     credentials: Flags.boolean({
       char: 'c',
-      description: 'Writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used).',
       default: false,
+      description: 'Writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used).',
+      exclusive: ['clipboard'],
+    }),
+    clipboard: Flags.boolean({
+      char: 'b',
+      default: false,
+      description: 'Writes credentials to clipboard.',
+      exclusive: ['credentials'],
     }),
     preserve: Flags.boolean({
       char: 'P',
@@ -60,18 +67,22 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
         json: flags.json,
       };
 
-      if (flags.credentials) {
-        const { credentials } = await getProfileCredentials(response.profile);
+      const { credentials } = await getProfileCredentials(response.profile);
+
+      if (flags.clipboard) {
+        CliUx.ux.action.start('❯ Saving to clipboard');
+        clipboardOutput(credentials);
+        CliUx.ux.action.stop();
+      } else if (flags.credentials) {
         CliUx.ux.action.start('❯ Writing to credentials file');
         if (flags.preserve) {
           writeCredentialsFile(credentials, response.profile);
         }
         writeCredentialsFile(credentials);
         CliUx.ux.action.stop();
-        return;
+      } else {
+        await output(this, input);
       }
-
-      await output(this, input);
     } catch (error: any) {
       this.error(error.message);
     }
