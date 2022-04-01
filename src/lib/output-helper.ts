@@ -1,6 +1,7 @@
 import { Command } from '@oclif/core';
 import { getProfileCredentials } from '../lib/creds-helper';
 import { ICredentials, IProfile, IFlags } from './interfaces';
+import { writeSync } from 'clipboardy';
 import * as chalk from 'chalk';
 
 function exportHeaderOutput(command: Command, profileInfo: IProfile, credentials: ICredentials): void {
@@ -12,6 +13,13 @@ function exportOutput(command: Command, credentials: ICredentials): void {
   command.log(`${chalk.yellow('export')} ${chalk.blue('AWS_ACCESS_KEY_ID')}=${chalk.green(credentials.accessKeyId)}`);
   command.log(`${chalk.yellow('export')} ${chalk.blue('AWS_SECRET_ACCESS_KEY')}=${chalk.green(credentials.secretAccessKey)}`);
   command.log(`${chalk.yellow('export')} ${chalk.blue('AWS_SESSION_TOKEN')}=${chalk.green(credentials.sessionToken)}`);
+}
+
+export function clipboardOutput(credentials: ICredentials): void {
+  const accessKeyId = `export AWS_ACCESS_KEY_ID=${credentials.accessKeyId}`;
+  const secretAccessKey = `export AWS_SECRET_ACCESS_KEY=${credentials.secretAccessKey}`;
+  const sessionToken = `export AWS_SESSION_TOKEN=${credentials.sessionToken}`;
+  writeSync(`${accessKeyId}\n${secretAccessKey}\n${sessionToken}`);
 }
 
 export async function output(command: Command, flags: IFlags): Promise<void> {
