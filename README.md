@@ -30,29 +30,29 @@ npm install -g get-sso-creds
 
 > Will write credentials to ~/.aws/credentials as [default]
 ```sh-session
-gsc select -c
+gscreds select -c
 ```
 
 > Will write credentials to ~/.aws/credentials as [helloworld]
 ```sh-session
-gsc select -c --set-as="helloworld"
+gscreds select -c --set-as="helloworld"
 ```
 
 > Will write credentials as export statements to your clipboard which you can simply paste into your shell and press enter.
 ```sh-session
-gsc select -b
+gscreds select -b
 ```
 
 > Uses credentials from the "default" profile to assume the role "arn:aws:iam::996942091142:role/test-role" with default values for session-name etc. (Review `assume` documentation to see default values).
 
 ```sh-session
-gsc assume --role="arn:aws:iam::996942091142:role/test-role"
+gscreds assume --role="arn:aws:iam::996942091142:role/test-role"
 ```
 
 > Uses credentials from the "dev" profile to assume the role "arn:aws:iam::996942091142:role/test-role" then sets those newly assumed credentials as the profile [helloworld] in "~/.aws/credentials".
 
 ```sh-session
-gsc assume --role="arn:aws:iam::996942091142:role/test-role" --profile="dev" -c --set-as="helloworld"
+gscreds assume --role="arn:aws:iam::996942091142:role/test-role" --profile="dev" -c --set-as="helloworld"
 ```
 
 ## Commands
@@ -87,7 +87,7 @@ COMMANDS
 Get AWS SSO credentials from existing profiles in ~/.aws/config.
 
 USAGE
-  $ gsc get [--help] [-P [-c | -b]] [--json]
+  $ gscreds get [--help] [-P [-c | -b]] [--json]
 
 FLAGS
   -P, --preserve     Sets selected profile name as the profile name in ~/.aws/credentials when using --credentials flag.
@@ -100,7 +100,7 @@ DESCRIPTION
   Get AWS SSO credentials from existing profiles in ~/.aws/config.
 
 EXAMPLES
-  $ gsc get
+  $ gscreds get
   ? Select a profile: (Use arrow keys)
   ❯ default
     dev
@@ -119,7 +119,7 @@ EXAMPLES
 Get AWS SSO credentials via AWS SSO.
 
 USAGE
-  $ gsc select [--help] [--json] [-n <value> [-c | -b]] [-p <value>]
+  $ gscreds select [--help] [--json] [-n <value> [-c | -b]] [-p <value>]
 
 FLAGS
   -b, --clipboard        Writes credentials to clipboard.
@@ -133,7 +133,7 @@ DESCRIPTION
   Get AWS SSO credentials via AWS SSO.
 
 EXAMPLES
-  $ gsc select
+  $ gscreds select
   ? Select an SSO url: (Use arrow keys)
   ❯ https://alpha.awsapps.com/start
     https://delta.awsapps.com/start
@@ -152,7 +152,7 @@ EXAMPLES
 Assumes AWS Role.
 
 USAGE
-  $ gsc assume [--help] [--json] [-n <value> [-c | -b]] (-s <value> -r <value>) [-p <value>]
+  $ gscreds assume [--help] [--json] [-n <value> [-c | -b]] (-s <value> -r <value>) [-p <value>]
 
 FLAGS
   -b, --clipboard             Writes credentials to clipboard.
@@ -160,7 +160,7 @@ FLAGS
   -n, --set-as=<value>        Desired name of profile when setting credentials via --credentials flag.
   -p, --profile=<value>       [default: default] Desired SSO config profile to use.
   -r, --role=<value>          (required) ARN of the role to assume.
-  -s, --session-name=<value>  [default: gsc-session] Desired name for the role session.
+  -s, --session-name=<value>  [default: gscreds-session] Desired name for the role session.
   --help                      Show CLI help.
   --json                      Outputs credentials in json format.
 
@@ -168,9 +168,9 @@ DESCRIPTION
   Assumes AWS Role.
 
 EXAMPLES
-  $ gsc assume --role arn:aws:iam::996942091142:role/test-role
+  $ gscreds assume --role arn:aws:iam::996942091142:role/test-role
 
-  $ gsc assume --role arn:aws:iam::996942091142:role/test-role -c --set-as 'my-profile'
+  $ gscreds assume --role arn:aws:iam::996942091142:role/test-role -c --set-as 'my-profile'
 ```
 
 ### `ls` command
@@ -179,7 +179,7 @@ EXAMPLES
 Lists profile names in ~/.aws/config or ~/.aws/credentials.
 
 USAGE
-  $ gsc ls [--help]
+  $ gscreds ls [--help]
 
 FLAGS
   --help  Show CLI help.
@@ -188,7 +188,7 @@ DESCRIPTION
   Lists profile names in ~/.aws/config or ~/.aws/credentials.
 
 EXAMPLES
-  $ gsc ls
+  $ gscreds ls
   ? Select a file: (Use arrow keys)
   ❯ config
     credentials
@@ -200,7 +200,7 @@ EXAMPLES
 Initiates AWS SSO login.
 
 USAGE
-  $ gsc login [--help] [-p <value>]
+  $ gscreds login [--help] [-p <value>]
 
 FLAGS
   -p, --profile=<value>  [default: default] Profile name to use for login.
@@ -210,7 +210,7 @@ DESCRIPTION
   Initiates AWS SSO login.
 
 EXAMPLES
-  $ gsc login --profile your-profile
+  $ gscreds login --profile your-profile
   Logging in... ⣽
 ```
 
@@ -220,7 +220,7 @@ EXAMPLES
 Initiates AWS SSO logout.
 
 USAGE
-  $ gsc logout [--help] [-p <value>]
+  $ gscreds logout [--help] [-p <value>]
 
 FLAGS
   -p, --profile=<value>  [default: default] Profile name to use for logout.
@@ -230,7 +230,7 @@ DESCRIPTION
   Initiates AWS SSO logout.
 
 EXAMPLES
-  $ gsc logout --profile your-profile
+  $ gscreds logout --profile your-profile
   Logging out... ⣽
 ```
 
@@ -240,7 +240,7 @@ EXAMPLES
 Clears selected credentials in ~/.aws/credentials.
 
 USAGE
-  $ gsc clear [--help]
+  $ gscreds clear [--help]
 
 FLAGS
   --help  Show CLI help.
@@ -249,7 +249,7 @@ DESCRIPTION
   Clears selected credentials in ~/.aws/credentials.
 
 EXAMPLES
-  $ gsc clear
+  $ gscreds clear
   ? Select a profile: (Use arrow keys)
   ❯ default
     personal

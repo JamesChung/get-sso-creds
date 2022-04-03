@@ -7,8 +7,8 @@ export default class Assume extends Command {
   static description = 'Assumes AWS Role.';
 
   static examples = [
-    `$ gsc assume --role arn:aws:iam::996942091142:role/test-role`,
-    `$ gsc assume --role arn:aws:iam::996942091142:role/test-role -c --set-as 'my-profile'`,
+    `$ gscreds assume --role arn:aws:iam::996942091142:role/test-role`,
+    `$ gscreds assume --role arn:aws:iam::996942091142:role/test-role -c --set-as 'my-profile'`,
   ];
 
   static flags = {

@@ -5,7 +5,7 @@ export default class LogIn extends Command {
   static description = 'Initiates AWS SSO login.';
 
   static examples = [
-    `$ gsc login --profile your-profile
+    `$ gscreds login --profile your-profile
 Logging in... ⣽`,
   ];
 

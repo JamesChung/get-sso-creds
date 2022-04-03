@@ -7,7 +7,7 @@ export default class Clear extends Command {
   static description = 'Clears selected credentials in ~/.aws/credentials.';
 
   static examples = [
-    `$ gsc clear
+    `$ gscreds clear
 ? Select a profile: (Use arrow keys)
 ❯ default
   personal`,
