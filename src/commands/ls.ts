@@ -6,7 +6,7 @@ export default class Ls extends Command {
   static description = 'Lists profile names in ~/.aws/config or ~/.aws/credentials.';
 
   static examples = [
-    `$ gsc ls
+    `$ gscreds ls
 ? Select a file: (Use arrow keys)
 ❯ config
   credentials`,

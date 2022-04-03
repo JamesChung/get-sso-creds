@@ -9,7 +9,7 @@ export default class Get extends Command {
   static description = 'Get AWS SSO credentials from existing profiles in ~/.aws/config.';
 
   static examples = [
-    `$ gsc get
+    `$ gscreds get
 ? Select a profile: (Use arrow keys)
 ❯ default
   dev

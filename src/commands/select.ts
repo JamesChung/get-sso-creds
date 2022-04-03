@@ -15,7 +15,7 @@ export default class Select extends Command {
   static description = 'Get AWS SSO credentials via AWS SSO.';
 
   static examples = [
-    `$ gsc select
+    `$ gscreds select
 ? Select an SSO url: (Use arrow keys)
 ❯ https://alpha.awsapps.com/start
   https://delta.awsapps.com/start

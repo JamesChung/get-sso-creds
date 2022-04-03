@@ -5,7 +5,7 @@ export default class LogOut extends Command {
   static description = 'Initiates AWS SSO logout.';
 
   static examples = [
-    `$ gsc logout --profile your-profile
+    `$ gscreds logout --profile your-profile
 Logging out... ⣽`,
   ];
 
