@@ -61,10 +61,10 @@ gsc assume --role="arn:aws:iam::996942091142:role/test-role" --profile="dev" -c 
 CLI tool to retrieve or set AWS SSO credentials.
 
 VERSION
-  get-sso-creds/5.3.0 darwin-arm64 node-v16.14.2
+  get-sso-creds/6.0.0 darwin-arm64 node-v16.14.2
 
 USAGE
-  $ gsc [COMMAND]
+  $ gscreds [COMMAND]
 
 TOPICS
   plugins  List installed plugins.
@@ -73,7 +73,7 @@ COMMANDS
   assume   Assumes AWS Role.
   clear    Clears selected credentials in ~/.aws/credentials.
   get      Get AWS SSO credentials from existing profiles in ~/.aws/config.
-  help     Display help for gsc.
+  help     Display help for gscreds.
   login    Initiates AWS SSO login.
   logout   Initiates AWS SSO logout.
   ls       Lists profile names in ~/.aws/config or ~/.aws/credentials.
