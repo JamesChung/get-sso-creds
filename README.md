@@ -60,9 +60,6 @@ gscreds assume --role="arn:aws:iam::996942091142:role/test-role" --profile="dev"
 ```sh-session
 CLI tool to retrieve or set AWS SSO credentials.
 
-VERSION
-  get-sso-creds/6.0.0 darwin-arm64 node-v16.14.2
-
 USAGE
   $ gscreds [COMMAND]
 
