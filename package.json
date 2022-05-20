@@ -1,6 +1,6 @@
 {
   "name": "get-sso-creds",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "description": "CLI tool to retrieve or set AWS SSO credentials.",
   "author": "James Chung @JamesChung",
   "bin": {
@@ -17,14 +17,14 @@
     "/oclif.manifest.json"
   ],
   "dependencies": {
-    "@oclif/core": "^1.7.0",
+    "@oclif/core": "^1.9.0",
     "@oclif/plugin-help": "^5.1.12",
     "@oclif/plugin-plugins": "^2.1.0",
-    "aws-sdk": "^2.1101.0",
+    "aws-sdk": "^2.1140.0",
     "chalk": "^4.1.2",
     "clipboardy": "^2.3.0",
-    "ini": "^2.0.0",
-    "inquirer": "^8.2.2"
+    "ini": "^3.0.0",
+    "inquirer": "^8.2.4"
   },
   "devDependencies": {
     "@oclif/test": "^2",
