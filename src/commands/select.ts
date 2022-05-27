@@ -73,7 +73,7 @@ export default class Select extends Command {
       }
 
       if (urlChoices.length === 0) {
-        throw new Error(`sign in first ${chalk.red('(aws sso login | gsc login)')}`);
+        throw new Error(`sign in first ${chalk.red('(aws sso login | gscreds login)')}`);
       }
 
       const accounts = await getAccounts(ssoConfigs, flags.profile);
