@@ -57,39 +57,81 @@ gscreds assume --role="arn:aws:iam::996942091142:role/test-role" --profile="dev"
 
 ## Commands
 
-```sh-session
-CLI tool to retrieve or set AWS SSO credentials.
+  <!-- commands -->
+* [`gscreds assume`](#gscreds-assume)
+* [`gscreds clear`](#gscreds-clear)
+* [`gscreds get`](#gscreds-get)
+* [`gscreds login`](#gscreds-login)
+* [`gscreds logout`](#gscreds-logout)
+* [`gscreds ls`](#gscreds-ls)
+* [`gscreds select`](#gscreds-select)
 
+## `gscreds assume`
+
+Assumes AWS Role.
+
+```
 USAGE
-  $ gscreds [COMMAND]
+  $ gscreds assume [--help] [--json] [-n <value> [-c | -b]] (-s <value> -r <value>) [-p <value>]
 
-TOPICS
-  plugins  List installed plugins.
+FLAGS
+  -b, --clipboard             Writes credentials to clipboard.
+  -c, --credentials           Writes credentials to ~/.aws/credentials (will use [default] as the profile name if
+                              --set-as flag is not used).
+  -n, --set-as=<value>        Desired name of profile when setting credentials via --credentials flag.
+  -p, --profile=<value>       [default: default] Desired SSO config profile to use.
+  -r, --role=<value>          (required) ARN of the role to assume.
+  -s, --session-name=<value>  [default: gsc-session] Desired name for the role session.
+  --help                      Show CLI help.
+  --json                      Outputs credentials in json format.
 
-COMMANDS
-  assume   Assumes AWS Role.
-  clear    Clears selected credentials in ~/.aws/credentials.
-  get      Get AWS SSO credentials from existing profiles in ~/.aws/config.
-  help     Display help for gscreds.
-  login    Initiates AWS SSO login.
-  logout   Initiates AWS SSO logout.
-  ls       Lists profile names in ~/.aws/config or ~/.aws/credentials.
-  plugins  List installed plugins.
-  select   Get AWS SSO credentials via AWS SSO.
+DESCRIPTION
+  Assumes AWS Role.
+
+EXAMPLES
+  $ gscreds assume --role arn:aws:iam::996942091142:role/test-role
+
+  $ gscreds assume --role arn:aws:iam::996942091142:role/test-role -c --set-as 'my-profile'
 ```
 
-### `get` command
+_See code: [dist/commands/assume.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.0.3/dist/commands/assume.ts)_
 
-```sh-session
+## `gscreds clear`
+
+Clears selected credentials in ~/.aws/credentials.
+
+```
+USAGE
+  $ gscreds clear [--help]
+
+FLAGS
+  --help  Show CLI help.
+
+DESCRIPTION
+  Clears selected credentials in ~/.aws/credentials.
+
+EXAMPLES
+  $ gscreds clear
+  ? Select a profile: (Use arrow keys)
+  ❯ default
+    personal
+```
+
+_See code: [dist/commands/clear.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.0.3/dist/commands/clear.ts)_
+
+## `gscreds get`
+
 Get AWS SSO credentials from existing profiles in ~/.aws/config.
 
+```
 USAGE
   $ gscreds get [--help] [-P [-c | -b]] [--json]
 
 FLAGS
   -P, --preserve     Sets selected profile name as the profile name in ~/.aws/credentials when using --credentials flag.
   -b, --clipboard    Writes credentials to clipboard.
-  -c, --credentials  Writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used).
+  -c, --credentials  Writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag
+                     is not used).
   --help             Show CLI help.
   --json             Outputs credentials in json format.
 
@@ -110,17 +152,87 @@ EXAMPLES
   export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>
 ```
 
-### `select` command
+_See code: [dist/commands/get.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.0.3/dist/commands/get.ts)_
 
-```sh-session
+## `gscreds login`
+
+Initiates AWS SSO login.
+
+```
+USAGE
+  $ gscreds login [--help] [-p <value>]
+
+FLAGS
+  -p, --profile=<value>  [default: default] Profile name to use for login.
+  --help                 Show CLI help.
+
+DESCRIPTION
+  Initiates AWS SSO login.
+
+EXAMPLES
+  $ gscreds login --profile your-profile
+  Logging in... ⣽
+```
+
+_See code: [dist/commands/login.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.0.3/dist/commands/login.ts)_
+
+## `gscreds logout`
+
+Initiates AWS SSO logout.
+
+```
+USAGE
+  $ gscreds logout [--help] [-p <value>]
+
+FLAGS
+  -p, --profile=<value>  [default: default] Profile name to use for logout.
+  --help                 Show CLI help.
+
+DESCRIPTION
+  Initiates AWS SSO logout.
+
+EXAMPLES
+  $ gscreds logout --profile your-profile
+  Logging out... ⣽
+```
+
+_See code: [dist/commands/logout.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.0.3/dist/commands/logout.ts)_
+
+## `gscreds ls`
+
+Lists profile names in ~/.aws/config or ~/.aws/credentials.
+
+```
+USAGE
+  $ gscreds ls [--help]
+
+FLAGS
+  --help  Show CLI help.
+
+DESCRIPTION
+  Lists profile names in ~/.aws/config or ~/.aws/credentials.
+
+EXAMPLES
+  $ gscreds ls
+  ? Select a file: (Use arrow keys)
+  ❯ config
+    credentials
+```
+
+_See code: [dist/commands/ls.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.0.3/dist/commands/ls.ts)_
+
+## `gscreds select`
+
 Get AWS SSO credentials via AWS SSO.
 
+```
 USAGE
   $ gscreds select [--help] [--json] [-n <value> [-c | -b]] [-p <value>]
 
 FLAGS
   -b, --clipboard        Writes credentials to clipboard.
-  -c, --credentials      Writes credentials to ~/.aws/credentials (will use [default] as the profile name if --set-as flag is not used).
+  -c, --credentials      Writes credentials to ~/.aws/credentials (will use [default] as the profile name if --set-as
+                         flag is not used).
   -n, --set-as=<value>   Desired name of profile when setting credentials via --credentials flag.
   -p, --profile=<value>  [default: default] Desired SSO config profile to use.
   --help                 Show CLI help.
@@ -143,111 +255,5 @@ EXAMPLES
    ...
 ```
 
-### `assume` command
-
-```sh-session
-Assumes AWS Role.
-
-USAGE
-  $ gscreds assume [--help] [--json] [-n <value> [-c | -b]] (-s <value> -r <value>) [-p <value>]
-
-FLAGS
-  -b, --clipboard             Writes credentials to clipboard.
-  -c, --credentials           Writes credentials to ~/.aws/credentials (will use [default] as the profile name if --set-as flag is not used).
-  -n, --set-as=<value>        Desired name of profile when setting credentials via --credentials flag.
-  -p, --profile=<value>       [default: default] Desired SSO config profile to use.
-  -r, --role=<value>          (required) ARN of the role to assume.
-  -s, --session-name=<value>  [default: gscreds-session] Desired name for the role session.
-  --help                      Show CLI help.
-  --json                      Outputs credentials in json format.
-
-DESCRIPTION
-  Assumes AWS Role.
-
-EXAMPLES
-  $ gscreds assume --role arn:aws:iam::996942091142:role/test-role
-
-  $ gscreds assume --role arn:aws:iam::996942091142:role/test-role -c --set-as 'my-profile'
-```
-
-### `ls` command
-
-```sh-session
-Lists profile names in ~/.aws/config or ~/.aws/credentials.
-
-USAGE
-  $ gscreds ls [--help]
-
-FLAGS
-  --help  Show CLI help.
-
-DESCRIPTION
-  Lists profile names in ~/.aws/config or ~/.aws/credentials.
-
-EXAMPLES
-  $ gscreds ls
-  ? Select a file: (Use arrow keys)
-  ❯ config
-    credentials
-```
-
-### `login` command
-
-```sh-session
-Initiates AWS SSO login.
-
-USAGE
-  $ gscreds login [--help] [-p <value>]
-
-FLAGS
-  -p, --profile=<value>  [default: default] Profile name to use for login.
-  --help                 Show CLI help.
-
-DESCRIPTION
-  Initiates AWS SSO login.
-
-EXAMPLES
-  $ gscreds login --profile your-profile
-  Logging in... ⣽
-```
-
-### `logout` command
-
-```sh-session
-Initiates AWS SSO logout.
-
-USAGE
-  $ gscreds logout [--help] [-p <value>]
-
-FLAGS
-  -p, --profile=<value>  [default: default] Profile name to use for logout.
-  --help                 Show CLI help.
-
-DESCRIPTION
-  Initiates AWS SSO logout.
-
-EXAMPLES
-  $ gscreds logout --profile your-profile
-  Logging out... ⣽
-```
-
-### `clear` command
-
-```sh-session
-Clears selected credentials in ~/.aws/credentials.
-
-USAGE
-  $ gscreds clear [--help]
-
-FLAGS
-  --help  Show CLI help.
-
-DESCRIPTION
-  Clears selected credentials in ~/.aws/credentials.
-
-EXAMPLES
-  $ gscreds clear
-  ? Select a profile: (Use arrow keys)
-  ❯ default
-    personal
-```
+_See code: [dist/commands/select.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.0.3/dist/commands/select.ts)_
+<!-- commandsstop -->

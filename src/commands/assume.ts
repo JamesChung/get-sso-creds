@@ -42,7 +42,7 @@ export default class Assume extends Command {
     'session-name': Flags.string({
       char: 's',
       dependsOn: ['role'],
-      default: 'gsc-session',
+      default: 'gscreds-session',
       description: 'Desired name for the role session.'
     }),
     profile: Flags.string({
