@@ -60,6 +60,7 @@ gscreds assume --role="arn:aws:iam::996942091142:role/test-role" --profile="dev"
   <!-- commands -->
 * [`gscreds assume`](#gscreds-assume)
 * [`gscreds clear`](#gscreds-clear)
+* [`gscreds console`](#gscreds-console)
 * [`gscreds get`](#gscreds-get)
 * [`gscreds login`](#gscreds-login)
 * [`gscreds logout`](#gscreds-logout)
@@ -81,7 +82,7 @@ FLAGS
   -n, --set-as=<value>        Desired name of profile when setting credentials via --credentials flag.
   -p, --profile=<value>       [default: default] Desired SSO config profile to use.
   -r, --role=<value>          (required) ARN of the role to assume.
-  -s, --session-name=<value>  [default: gsc-session] Desired name for the role session.
+  -s, --session-name=<value>  [default: gscreds-session] Desired name for the role session.
   --help                      Show CLI help.
   --json                      Outputs credentials in json format.
 
@@ -94,7 +95,7 @@ EXAMPLES
   $ gscreds assume --role arn:aws:iam::996942091142:role/test-role -c --set-as 'my-profile'
 ```
 
-_See code: [dist/commands/assume.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.0.3/dist/commands/assume.ts)_
+_See code: [dist/commands/assume.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/assume.ts)_
 
 ## `gscreds clear`
 
@@ -117,7 +118,31 @@ EXAMPLES
     personal
 ```
 
-_See code: [dist/commands/clear.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.0.3/dist/commands/clear.ts)_
+_See code: [dist/commands/clear.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/clear.ts)_
+
+## `gscreds console`
+
+Opens AWS Console for a selected profile.
+
+```
+USAGE
+  $ gscreds console [--help] [--browser <value>]
+
+FLAGS
+  --browser=<value>
+  --help             Show CLI help.
+
+DESCRIPTION
+  Opens AWS Console for a selected profile.
+
+EXAMPLES
+  $ gscreds console
+  ? Select a profile: (Use arrow keys)
+  ❯ default
+    personal
+```
+
+_See code: [dist/commands/console.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/console.ts)_
 
 ## `gscreds get`
 
@@ -152,7 +177,7 @@ EXAMPLES
   export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>
 ```
 
-_See code: [dist/commands/get.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.0.3/dist/commands/get.ts)_
+_See code: [dist/commands/get.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/get.ts)_
 
 ## `gscreds login`
 
@@ -174,7 +199,7 @@ EXAMPLES
   Logging in... ⣽
 ```
 
-_See code: [dist/commands/login.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.0.3/dist/commands/login.ts)_
+_See code: [dist/commands/login.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/login.ts)_
 
 ## `gscreds logout`
 
@@ -196,7 +221,7 @@ EXAMPLES
   Logging out... ⣽
 ```
 
-_See code: [dist/commands/logout.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.0.3/dist/commands/logout.ts)_
+_See code: [dist/commands/logout.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/logout.ts)_
 
 ## `gscreds ls`
 
@@ -219,7 +244,7 @@ EXAMPLES
     credentials
 ```
 
-_See code: [dist/commands/ls.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.0.3/dist/commands/ls.ts)_
+_See code: [dist/commands/ls.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/ls.ts)_
 
 ## `gscreds select`
 
@@ -255,5 +280,5 @@ EXAMPLES
    ...
 ```
 
-_See code: [dist/commands/select.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.0.3/dist/commands/select.ts)_
+_See code: [dist/commands/select.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/select.ts)_
 <!-- commandsstop -->
