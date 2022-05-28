@@ -28,7 +28,7 @@ export default class Clear extends Command {
         choices: getCredProfiles()
       }]);
       CliUx.ux.action.start('❯ Clearing');
-      clearCredentials(this, response.profile);
+      clearCredentials(response.profile);
       CliUx.ux.action.stop();
     } catch (error: any) {
       CliUx.ux.action.stop('failed');
