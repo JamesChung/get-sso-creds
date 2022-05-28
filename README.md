@@ -126,11 +126,10 @@ Opens AWS Console for a selected profile.
 
 ```
 USAGE
-  $ gscreds console [--help] [--browser <value>]
+  $ gscreds console [--help]
 
 FLAGS
-  --browser=<value>
-  --help             Show CLI help.
+  --help  Show CLI help.
 
 DESCRIPTION
   Opens AWS Console for a selected profile.
