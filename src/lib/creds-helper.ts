@@ -46,7 +46,7 @@ async function readCredsFile(path: string): Promise<string> {
   });
 }
 
-export async function getCredentialsFromCredentialFiles(): Promise<ICredentials[]> {
+export async function getCredentialsFromCacheFiles(): Promise<ICredentials[]> {
   const credsList: ICredentials[] = [];
   const credfileNames = readdirSync(`${homedir()}/.aws/cli/cache`, 'utf-8');
   const credFilePromises: Promise<string>[] = [];
@@ -70,7 +70,7 @@ export async function getCredentialsFromCredentialFiles(): Promise<ICredentials[
 }
 
 export async function getCredentials(profile: IProfile): Promise<ICredentials> {
-  const credsList = await getCredentialsFromCredentialFiles();
+  const credsList = await getCredentialsFromCacheFiles();
   const sts = new STS({ region: profile?.region });
   for (let creds of credsList) {
     sts.config.credentials = {
@@ -104,7 +104,7 @@ export function writeCredentialsFile(credentials: ICredentials, profile: string 
   writeFileSync(credentialsFilePath, encodedCredentials, { encoding: 'utf-8' });
 }
 
-export function clearCredentials(command: Command, profile: string = 'default'): void {
+export function clearCredentials(profile: string = 'default'): void {
   const credentialsFilePath = `${homedir()}/.aws/credentials`;
   if (!existsSync(credentialsFilePath)) {
     throw new Error(`credentials file does not exist`);
@@ -115,6 +115,23 @@ export function clearCredentials(command: Command, profile: string = 'default'):
     const encodedCredentials = encode(parsedCredentials);
     writeFileSync(credentialsFilePath, encodedCredentials, { encoding: 'utf-8' });
     return;
+  }
+  throw new Error(`${chalk.red(profile)} does not exist`);
+}
+
+export function getCredentialsFromCredentialsFile(profile: string = 'default'): ICredentials {
+  const credentialsFilePath = `${homedir()}/.aws/credentials`;
+  if (!existsSync(credentialsFilePath)) {
+    throw new Error(`credentials file does not exist`);
+  }
+  const parsedCredentials = parse(readFileSync(credentialsFilePath, 'utf-8'));
+  if (parsedCredentials[profile]) {
+    return {
+      accessKeyId: parsedCredentials[profile]?.aws_access_key_id,
+      secretAccessKey: parsedCredentials[profile]?.aws_secret_access_key,
+      sessionToken: parsedCredentials[profile]?.aws_session_token,
+      expiration: '',
+    };
   }
   throw new Error(`${chalk.red(profile)} does not exist`);
 }
