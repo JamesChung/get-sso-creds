@@ -18,9 +18,6 @@ export default class Console extends Command {
 
   static flags = {
     help: Flags.help(),
-    browser: Flags.string({
-
-    }),
   };
 
   static args = [];
