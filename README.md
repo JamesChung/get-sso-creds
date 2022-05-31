@@ -126,10 +126,14 @@ Opens AWS Console for a selected profile.
 
 ```
 USAGE
-  $ gscreds console [--help]
+  $ gscreds console [--help] [-b <value>]
 
 FLAGS
-  --help  Show CLI help.
+  -b, --browser=<value>  Opens designated browser over the system default.
+                         Suggested values: ["chrome", "firefox", "edge"]
+                         You may also pass in the app's full path. For example on WSL, this can be /mnt/c/Program Files
+                         (x86)/Google/Chrome/Application/chrome.exe for the Windows installation of Chrome.
+  --help                 Show CLI help.
 
 DESCRIPTION
   Opens AWS Console for a selected profile.
