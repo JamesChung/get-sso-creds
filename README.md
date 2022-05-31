@@ -95,7 +95,7 @@ EXAMPLES
   $ gscreds assume --role arn:aws:iam::996942091142:role/test-role -c --set-as 'my-profile'
 ```
 
-_See code: [dist/commands/assume.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/assume.ts)_
+_See code: [dist/commands/assume.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.2.0/dist/commands/assume.ts)_
 
 ## `gscreds clear`
 
@@ -118,7 +118,7 @@ EXAMPLES
     personal
 ```
 
-_See code: [dist/commands/clear.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/clear.ts)_
+_See code: [dist/commands/clear.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.2.0/dist/commands/clear.ts)_
 
 ## `gscreds console`
 
@@ -126,14 +126,14 @@ Opens AWS Console for a selected profile.
 
 ```
 USAGE
-  $ gscreds console [--help] [-b <value>]
+  $ gscreds console [--help] [-b chrome|firefox|edge]
 
 FLAGS
-  -b, --browser=<value>  Opens designated browser over the system default.
-                         Suggested values: ["chrome", "firefox", "edge"]
-                         You may also pass in the app's full path. For example on WSL, this can be /mnt/c/Program Files
-                         (x86)/Google/Chrome/Application/chrome.exe for the Windows installation of Chrome.
-  --help                 Show CLI help.
+  -b, --browser=<option>  Opens designated browser over the system default.
+
+                          Suggested values: ["chrome", "firefox", "edge"]
+                          <options: chrome|firefox|edge>
+  --help                  Show CLI help.
 
 DESCRIPTION
   Opens AWS Console for a selected profile.
@@ -145,7 +145,7 @@ EXAMPLES
     personal
 ```
 
-_See code: [dist/commands/console.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/console.ts)_
+_See code: [dist/commands/console.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.2.0/dist/commands/console.ts)_
 
 ## `gscreds get`
 
@@ -180,7 +180,7 @@ EXAMPLES
   export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>
 ```
 
-_See code: [dist/commands/get.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/get.ts)_
+_See code: [dist/commands/get.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.2.0/dist/commands/get.ts)_
 
 ## `gscreds login`
 
@@ -202,7 +202,7 @@ EXAMPLES
   Logging in... ⣽
 ```
 
-_See code: [dist/commands/login.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/login.ts)_
+_See code: [dist/commands/login.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.2.0/dist/commands/login.ts)_
 
 ## `gscreds logout`
 
@@ -224,7 +224,7 @@ EXAMPLES
   Logging out... ⣽
 ```
 
-_See code: [dist/commands/logout.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/logout.ts)_
+_See code: [dist/commands/logout.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.2.0/dist/commands/logout.ts)_
 
 ## `gscreds ls`
 
@@ -247,7 +247,7 @@ EXAMPLES
     credentials
 ```
 
-_See code: [dist/commands/ls.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/ls.ts)_
+_See code: [dist/commands/ls.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.2.0/dist/commands/ls.ts)_
 
 ## `gscreds select`
 
@@ -283,5 +283,5 @@ EXAMPLES
    ...
 ```
 
-_See code: [dist/commands/select.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.1.0/dist/commands/select.ts)_
+_See code: [dist/commands/select.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.2.0/dist/commands/select.ts)_
 <!-- commandsstop -->
