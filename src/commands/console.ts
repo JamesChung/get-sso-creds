@@ -2,9 +2,9 @@ import { Command, Flags, CliUx } from '@oclif/core';
 import { getProfileCredentials, getCredentialsFromCredentialsFile } from '../lib/creds-helper';
 import { generateLoginURL } from '../lib/console-helper';
 import { getCredProfiles, getProfileNames } from '../lib/profile-helper';
+import { ICredentials } from '../lib';
 import * as inquirer from 'inquirer';
 import * as open from 'open';
-import { ICredentials } from '../lib';
 
 export default class Console extends Command {
   static description = 'Opens AWS Console for a selected profile.';
@@ -18,12 +18,35 @@ export default class Console extends Command {
 
   static flags = {
     help: Flags.help(),
+    browser: Flags.string({
+      char: 'b',
+      options: ['chrome', 'firefox', 'edge'],
+      description: `Opens designated browser over the system default.\n
+      Suggested values: ["chrome", "firefox", "edge"]`
+    }),
   };
 
   static args = [];
 
+  private credentials!: ICredentials;
+  private loginURL!: string;
+
   public async run(): Promise<void> {
     const { flags } = await this.parse(Console);
+
+    let browser: string | readonly string[] = '';
+
+    switch (flags.browser) {
+      case 'chrome':
+        browser = open.apps.chrome;
+        break;
+      case 'firefox':
+        browser = open.apps.firefox;
+        break;
+      case 'edge':
+        browser = open.apps.edge;
+        break;
+    }
 
     try {
       const { profileType } = await inquirer.prompt([{
@@ -42,15 +65,23 @@ export default class Console extends Command {
 
       CliUx.ux.action.start('❯ Opening Console');
       if (profileType === 'config') {
-        const credentials = (await getProfileCredentials(profile)).credentials;
-        const loginURL = await generateLoginURL(credentials);
-        open(loginURL, {});
+        this.credentials = (await getProfileCredentials(profile)).credentials;
       }
       if (profileType === 'credentials') {
-        const credentials = getCredentialsFromCredentialsFile(profile);
-        const loginURL = await generateLoginURL(credentials);
-        open(loginURL, {});
+        this.credentials = getCredentialsFromCredentialsFile(profile);
       }
+      this.loginURL = await generateLoginURL(this.credentials);
+      await open(this.loginURL, {
+        newInstance: true,
+        wait: true,
+        app: {
+          name: browser,
+        }
+      }).then(result => {
+        if (typeof result.exitCode === 'number' && result.exitCode > 0) {
+          throw new Error('Could not open browser.');
+        }
+      });
       CliUx.ux.action.stop();
     } catch (error: any) {
       CliUx.ux.action.stop('failed');
