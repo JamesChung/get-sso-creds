@@ -288,5 +288,4 @@ EXAMPLES
 ```
 
 _See code: [dist/commands/select.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.2.0/dist/commands/select.ts)_
-
 <!-- commandsstop -->

@@ -22,10 +22,17 @@ export default class Console extends Command {
   static flags = {
     help: Flags.help(),
     browser: Flags.string({
+<<<<<<< HEAD
       char: "b",
       options: ["chrome", "firefox", "edge"],
       description: `Opens designated browser over the system default.\n
       Suggested values: ["chrome", "firefox", "edge"]`,
+=======
+      char: 'b',
+      options: ['chrome', 'firefox', 'edge'],
+      description: `Opens designated browser over the system default.\n
+      Suggested values: ["chrome", "firefox", "edge"]`
+>>>>>>> main
     }),
   };
 
@@ -37,6 +44,7 @@ export default class Console extends Command {
   public async run(): Promise<void> {
     const { flags } = await this.parse(Console);
 
+<<<<<<< HEAD
     let browser: string | readonly string[] = "";
 
     switch (flags.browser) {
@@ -47,6 +55,18 @@ export default class Console extends Command {
         browser = open.apps.firefox;
         break;
       case "edge":
+=======
+    let browser: string | readonly string[] = '';
+
+    switch (flags.browser) {
+      case 'chrome':
+        browser = open.apps.chrome;
+        break;
+      case 'firefox':
+        browser = open.apps.firefox;
+        break;
+      case 'edge':
+>>>>>>> main
         browser = open.apps.edge;
         break;
     }
@@ -71,11 +91,19 @@ export default class Console extends Command {
         },
       ]);
 
+<<<<<<< HEAD
       CliUx.ux.action.start("❯ Opening Console");
       if (profileType === "config") {
         this.credentials = (await getProfileCredentials(profile)).credentials;
       }
       if (profileType === "credentials") {
+=======
+      CliUx.ux.action.start('❯ Opening Console');
+      if (profileType === 'config') {
+        this.credentials = (await getProfileCredentials(profile)).credentials;
+      }
+      if (profileType === 'credentials') {
+>>>>>>> main
         this.credentials = getCredentialsFromCredentialsFile(profile);
       }
       this.loginURL = await generateLoginURL(this.credentials);
@@ -84,10 +112,17 @@ export default class Console extends Command {
         wait: true,
         app: {
           name: browser,
+<<<<<<< HEAD
         },
       }).then((result) => {
         if (typeof result.exitCode === "number" && result.exitCode > 0) {
           throw new Error("Could not open browser.");
+=======
+        }
+      }).then(result => {
+        if (typeof result.exitCode === 'number' && result.exitCode > 0) {
+          throw new Error('Could not open browser.');
+>>>>>>> main
         }
       });
       CliUx.ux.action.stop();
