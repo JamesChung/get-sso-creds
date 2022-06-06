@@ -1,15 +1,15 @@
-import { readFileSync } from 'fs';
-import { homedir } from 'os';
-import { IProfile } from './interfaces';
-import { parse } from 'ini';
-import * as chalk from 'chalk';
+import { readFileSync } from "fs";
+import { homedir } from "os";
+import { IProfile } from "./interfaces";
+import { parse } from "ini";
+import * as chalk from "chalk";
 
 export function isProfile(profile: any): boolean {
-  const configFile = readFileSync(`${homedir()}/.aws/config`, 'utf-8');
+  const configFile = readFileSync(`${homedir()}/.aws/config`, "utf-8");
   const iniConfig = parse(configFile);
   const profiles = [];
   for (let prof in iniConfig) {
-    profiles.push(prof.split(' ').pop()?.trim());
+    profiles.push(prof.split(" ").pop()?.trim());
   }
   if (profiles.includes(profile)) {
     return true;
@@ -19,11 +19,11 @@ export function isProfile(profile: any): boolean {
 
 export function getProfileNames(): string[] {
   try {
-    const configFile = readFileSync(`${homedir()}/.aws/config`, 'utf-8');
+    const configFile = readFileSync(`${homedir()}/.aws/config`, "utf-8");
     const iniConfig = parse(configFile);
     const profiles: string[] = [];
     for (let profileConfig in iniConfig) {
-      let confSplit = profileConfig.split(' ');
+      let confSplit = profileConfig.split(" ");
       let profileName = confSplit[confSplit.length - 1].trim();
       profiles.push(profileName);
     }
@@ -32,7 +32,7 @@ export function getProfileNames(): string[] {
     }
     throw new Error(`no profiles exist in ~/.aws/config`);
   } catch (error: any) {
-    if (error.code === 'ENOENT') {
+    if (error.code === "ENOENT") {
       throw new Error(`~/.aws/config file does not exist`);
     }
     throw error;
@@ -40,11 +40,11 @@ export function getProfileNames(): string[] {
 }
 
 export function getProfiles(): Map<string, IProfile> {
-  const configFile = readFileSync(`${homedir()}/.aws/config`, 'utf-8');
+  const configFile = readFileSync(`${homedir()}/.aws/config`, "utf-8");
   const iniConfig = parse(configFile);
   const profiles: Map<string, IProfile> = new Map();
   for (let profileConfig in iniConfig) {
-    let confSplit = profileConfig.split(' ');
+    let confSplit = profileConfig.split(" ");
     let profileName = confSplit[confSplit.length - 1].trim();
     const profileInfo: IProfile = {
       profileName: profileName,
@@ -53,10 +53,10 @@ export function getProfiles(): Map<string, IProfile> {
       ssoRoleName: iniConfig[profileConfig].sso_role_name,
       region: iniConfig[profileConfig].region,
       identity: {
-        account: '',
-        userId: '',
-        arn: '',
-      }
+        account: "",
+        userId: "",
+        arn: "",
+      },
     };
     profiles.set(profileInfo.profileName, profileInfo);
   }
@@ -65,7 +65,7 @@ export function getProfiles(): Map<string, IProfile> {
 
 export function getCredProfiles(): string[] {
   try {
-    const credFile = readFileSync(`${homedir()}/.aws/credentials`, 'utf-8');
+    const credFile = readFileSync(`${homedir()}/.aws/credentials`, "utf-8");
     const iniConfig = parse(credFile);
     const profiles: string[] = [];
     for (let profileName in iniConfig) {
@@ -76,14 +76,14 @@ export function getCredProfiles(): string[] {
     }
     throw new Error(`no profiles exist in ~/.aws/credentials`);
   } catch (error: any) {
-    if (error.code === 'ENOENT') {
+    if (error.code === "ENOENT") {
       throw new Error(`~/.aws/credentials file does not exist`);
     }
     throw error;
   }
 }
 
-export function getProfileInfo(profile: string = 'default'): IProfile {
+export function getProfileInfo(profile: string = "default"): IProfile {
   const profiles = getProfiles();
   if (profiles.has(profile)) {
     return profiles.get(profile)!;

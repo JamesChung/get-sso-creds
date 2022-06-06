@@ -1,12 +1,12 @@
-import { expect, test } from '@oclif/test'
+import { expect, test } from "@oclif/test";
 
-describe('select', () => {
+describe("select", () => {
   test
     .stdout()
-    .command(['select'])
-    .it('runs loading', ctx => {
-      expect(ctx.stdout).to.contain('Loading')
-    })
+    .command(["select"])
+    .it("runs loading", (ctx) => {
+      expect(ctx.stdout).to.contain("Loading");
+    });
 
   // test
   //   .stdout()
@@ -14,4 +14,4 @@ describe('select', () => {
   //   .it('runs hello --name jeff', ctx => {
   //     expect(ctx.stdout).to.contain('hello jeff')
   //   })
-})
+});
