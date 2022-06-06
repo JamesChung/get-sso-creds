@@ -1,12 +1,12 @@
-import { readdirSync, readFile } from 'fs';
-import { homedir } from 'os';
-import { exec } from 'child_process';
-import { ICredentials, ISsoConfig } from './interfaces';
+import { readdirSync, readFile } from "fs";
+import { homedir } from "os";
+import { exec } from "child_process";
+import { ICredentials, ISsoConfig } from "./interfaces";
 
 async function readFilePromise(file: string | Buffer): Promise<string> {
   const path = `${homedir()}/.aws/sso/cache/${file}`;
   return new Promise((resolve, reject) => {
-    readFile(path, 'utf-8', (err, data) => {
+    readFile(path, "utf-8", (err, data) => {
       if (err) {
         reject(err);
       }
@@ -18,7 +18,7 @@ async function readFilePromise(file: string | Buffer): Promise<string> {
 }
 
 export async function getSSOConfigs(): Promise<ISsoConfig[]> {
-  const cacheFiles = readdirSync(`${homedir()}/.aws/sso/cache`, 'utf-8');
+  const cacheFiles = readdirSync(`${homedir()}/.aws/sso/cache`, "utf-8");
   const ssoConfigs: ISsoConfig[] = [];
   const promiseFiles: Promise<string>[] = [];
 
@@ -28,8 +28,8 @@ export async function getSSOConfigs(): Promise<ISsoConfig[]> {
   const filesData = await Promise.all(promiseFiles);
   for (let data of filesData) {
     const jsonData = JSON.parse(data);
-    if ((new Date(jsonData.expiresAt)).getTime() > (new Date()).getTime()) {
-      if ('startUrl' in jsonData) {
+    if (new Date(jsonData.expiresAt).getTime() > new Date().getTime()) {
+      if ("startUrl" in jsonData) {
         ssoConfigs.push(jsonData);
       }
     }
@@ -37,7 +37,10 @@ export async function getSSOConfigs(): Promise<ISsoConfig[]> {
   return ssoConfigs;
 }
 
-async function ssoListAccounts(accessToken: string, profile: string = 'default'): Promise<string> {
+async function ssoListAccounts(
+  accessToken: string,
+  profile: string = "default"
+): Promise<string> {
   const command = `aws sso list-accounts --access-token ${accessToken} --output json --profile ${profile}`;
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
@@ -51,17 +54,22 @@ async function ssoListAccounts(accessToken: string, profile: string = 'default')
   });
 }
 
-export async function getAccounts(ssoConfigs: ISsoConfig[], profile: string = 'default') {
+export async function getAccounts(
+  ssoConfigs: ISsoConfig[],
+  profile: string = "default"
+) {
   const accounts = new Map();
   for (let ssoConfig of ssoConfigs) {
-    const accountList = JSON.parse(await ssoListAccounts(ssoConfig.accessToken, profile));
+    const accountList = JSON.parse(
+      await ssoListAccounts(ssoConfig.accessToken, profile)
+    );
     accounts.set(ssoConfig.startUrl, accountList);
   }
   return accounts;
 }
 
 export function getToken(ssoUrl: string, ssoConfigs: ISsoConfig[]): string {
-  let token: string = '';
+  let token: string = "";
   for (let ssoConfig of ssoConfigs) {
     if (ssoConfig.startUrl === ssoUrl) {
       token = ssoConfig.accessToken;
@@ -70,7 +78,11 @@ export function getToken(ssoUrl: string, ssoConfigs: ISsoConfig[]): string {
   return token;
 }
 
-async function getSsoRoles(accountId: string, accessToken: string, profile: string = 'default'): Promise<string> {
+async function getSsoRoles(
+  accountId: string,
+  accessToken: string,
+  profile: string = "default"
+): Promise<string> {
   const command = `aws sso list-account-roles --account-id ${accountId} --access-token ${accessToken} --output json --profile ${profile}`;
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
@@ -84,11 +96,22 @@ async function getSsoRoles(accountId: string, accessToken: string, profile: stri
   });
 }
 
-export async function getRoles(accountId: string, accessToken: string, profile: string = 'default'): Promise<any> {
-  return JSON.parse(await getSsoRoles(accountId, accessToken, profile)).roleList.map((value: any) => value.roleName);
+export async function getRoles(
+  accountId: string,
+  accessToken: string,
+  profile: string = "default"
+): Promise<any> {
+  return JSON.parse(
+    await getSsoRoles(accountId, accessToken, profile)
+  ).roleList.map((value: any) => value.roleName);
 }
 
-async function getSsoRoleCredentials(roleName: string, accountId: string, accessToken: string, profile: string = 'default'): Promise<string> {
+async function getSsoRoleCredentials(
+  roleName: string,
+  accountId: string,
+  accessToken: string,
+  profile: string = "default"
+): Promise<string> {
   const command = `aws sso get-role-credentials --role-name ${roleName} --account-id ${accountId} --access-token ${accessToken} --output json --profile ${profile}`;
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr): void => {
@@ -102,13 +125,15 @@ async function getSsoRoleCredentials(roleName: string, accountId: string, access
   });
 }
 
-export async function getRoleCredentials(roleName: string, accountId: string, accessToken: string, profile: string = 'default'): Promise<ICredentials> {
-  const {
-    accessKeyId,
-    secretAccessKey,
-    sessionToken,
-    expiration
-  } = JSON.parse(await getSsoRoleCredentials(roleName, accountId, accessToken, profile)).roleCredentials;
+export async function getRoleCredentials(
+  roleName: string,
+  accountId: string,
+  accessToken: string,
+  profile: string = "default"
+): Promise<ICredentials> {
+  const { accessKeyId, secretAccessKey, sessionToken, expiration } = JSON.parse(
+    await getSsoRoleCredentials(roleName, accountId, accessToken, profile)
+  ).roleCredentials;
 
   const creds: ICredentials = {
     accessKeyId,
