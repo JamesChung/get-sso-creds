@@ -1,12 +1,16 @@
-import { Command, Flags, CliUx } from '@oclif/core';
-import { getProfileNames } from '../lib/profile-helper';
-import { output, clipboardOutput } from '../lib/output-helper';
-import { IFlags } from '../lib/interfaces';
-import { getProfileCredentials, writeCredentialsFile } from '../lib/creds-helper';
-import * as inquirer from 'inquirer';
+import { Command, Flags, CliUx } from "@oclif/core";
+import { getProfileNames } from "../lib/profile-helper";
+import { output, clipboardOutput } from "../lib/output-helper";
+import { IFlags } from "../lib/interfaces";
+import {
+  getProfileCredentials,
+  writeCredentialsFile,
+} from "../lib/creds-helper";
+import * as inquirer from "inquirer";
 
 export default class Get extends Command {
-  static description = 'Get AWS SSO credentials from existing profiles in ~/.aws/config.';
+  static description =
+    "Get AWS SSO credentials from existing profiles in ~/.aws/config.";
 
   static examples = [
     `$ gscreds get
@@ -27,25 +31,27 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
   static flags = {
     help: Flags.help(),
     credentials: Flags.boolean({
-      char: 'c',
+      char: "c",
       default: false,
-      description: 'Writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used).',
-      exclusive: ['clipboard'],
+      description:
+        "Writes credentials to ~/.aws/credentials (will use default as the profile name if --preserve flag is not used).",
+      exclusive: ["clipboard"],
     }),
     clipboard: Flags.boolean({
-      char: 'b',
+      char: "b",
       default: false,
-      description: 'Writes credentials to clipboard.',
-      exclusive: ['credentials'],
+      description: "Writes credentials to clipboard.",
+      exclusive: ["credentials"],
     }),
     preserve: Flags.boolean({
-      char: 'P',
-      description: 'Sets selected profile name as the profile name in ~/.aws/credentials when using --credentials flag.',
-      dependsOn: ['credentials'],
+      char: "P",
+      description:
+        "Sets selected profile name as the profile name in ~/.aws/credentials when using --credentials flag.",
+      dependsOn: ["credentials"],
     }),
     json: Flags.boolean({
       default: false,
-      description: 'Outputs credentials in json format.',
+      description: "Outputs credentials in json format.",
     }),
   };
 
@@ -55,12 +61,14 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
     const { flags } = await this.parse(Get);
 
     try {
-      const response = await inquirer.prompt([{
-        name: 'profile',
-        message: 'Select a profile:',
-        type: 'list',
-        choices: getProfileNames()
-      }]);
+      const response = await inquirer.prompt([
+        {
+          name: "profile",
+          message: "Select a profile:",
+          type: "list",
+          choices: getProfileNames(),
+        },
+      ]);
 
       const input: IFlags = {
         profile: response.profile,
@@ -70,11 +78,11 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
       const { credentials } = await getProfileCredentials(response.profile);
 
       if (flags.clipboard) {
-        CliUx.ux.action.start('❯ Saving to clipboard');
+        CliUx.ux.action.start("❯ Saving to clipboard");
         clipboardOutput(credentials);
         CliUx.ux.action.stop();
       } else if (flags.credentials) {
-        CliUx.ux.action.start('❯ Writing to credentials file');
+        CliUx.ux.action.start("❯ Writing to credentials file");
         if (flags.preserve) {
           writeCredentialsFile(credentials, response.profile);
         }

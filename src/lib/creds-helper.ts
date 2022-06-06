@@ -1,14 +1,22 @@
-import { homedir } from 'os';
-import { readFile, readFileSync, readdirSync, writeFileSync, appendFileSync, existsSync } from 'fs';
-import { exec } from 'child_process';
-import { STS } from 'aws-sdk';
-import { ICredentials, IUserIdentity, IProfile } from './interfaces';
-import { getProfileInfo, isProfile } from './profile-helper';
-import { Command } from '@oclif/core';
-import * as chalk from 'chalk';
-import { encode, parse } from 'ini';
+import { homedir } from "os";
+import {
+  readFile,
+  readFileSync,
+  readdirSync,
+  writeFileSync,
+  appendFileSync,
+  existsSync,
+} from "fs";
+import { exec } from "child_process";
+import { STS } from "aws-sdk";
+import { ICredentials, IUserIdentity, IProfile } from "./interfaces";
+import { getProfileInfo, isProfile } from "./profile-helper";
+import * as chalk from "chalk";
+import { encode, parse } from "ini";
 
-export async function initCredentials(profile: string = 'default'): Promise<IUserIdentity> {
+export async function initCredentials(
+  profile: string = "default"
+): Promise<IUserIdentity> {
   if (!isProfile(profile)) {
     throw new Error(`${chalk.redBright(profile)} is not a valid profile`);
   }
@@ -35,7 +43,7 @@ export async function initCredentials(profile: string = 'default'): Promise<IUse
 
 async function readCredsFile(path: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    readFile(path, 'utf-8', (err, data) => {
+    readFile(path, "utf-8", (err, data) => {
       if (err) {
         reject(err);
       }
@@ -48,10 +56,12 @@ async function readCredsFile(path: string): Promise<string> {
 
 export async function getCredentialsFromCacheFiles(): Promise<ICredentials[]> {
   const credsList: ICredentials[] = [];
-  const credfileNames = readdirSync(`${homedir()}/.aws/cli/cache`, 'utf-8');
+  const credfileNames = readdirSync(`${homedir()}/.aws/cli/cache`, "utf-8");
   const credFilePromises: Promise<string>[] = [];
   for (let credFile of credfileNames) {
-    credFilePromises.push(readCredsFile(`${homedir()}/.aws/cli/cache/${credFile}`));
+    credFilePromises.push(
+      readCredsFile(`${homedir()}/.aws/cli/cache/${credFile}`)
+    );
   }
   const credentialsList = await Promise.all(credFilePromises);
   for (let credData of credentialsList) {
@@ -61,8 +71,8 @@ export async function getCredentialsFromCacheFiles(): Promise<ICredentials[]> {
       secretAccessKey: creds.SecretAccessKey,
       sessionToken: creds.SessionToken,
       expiration: creds.Expiration,
-    }
-    if ((new Date(credentials.expiration)).getTime() > (new Date()).getTime()) {
+    };
+    if (new Date(credentials.expiration).getTime() > new Date().getTime()) {
       credsList.push(credentials);
     }
   }
@@ -87,56 +97,66 @@ export async function getCredentials(profile: IProfile): Promise<ICredentials> {
   throw new Error(`no valid credentials`);
 }
 
-export function writeCredentialsFile(credentials: ICredentials, profile: string = 'default'): void {
+export function writeCredentialsFile(
+  credentials: ICredentials,
+  profile: string = "default"
+): void {
   const credentialsFilePath = `${homedir()}/.aws/credentials`;
   if (!existsSync(credentialsFilePath)) {
-    writeFileSync(credentialsFilePath, '[default]', { encoding: 'utf-8' });
+    writeFileSync(credentialsFilePath, "[default]", { encoding: "utf-8" });
   }
-  let parsedCredentials = parse(readFileSync(credentialsFilePath, 'utf-8'));
+  let parsedCredentials = parse(readFileSync(credentialsFilePath, "utf-8"));
   if (!parsedCredentials[profile]) {
-    appendFileSync(credentialsFilePath, `[${profile}]`, { encoding: 'utf-8' });
-    parsedCredentials = parse(readFileSync(credentialsFilePath, 'utf-8'));
+    appendFileSync(credentialsFilePath, `[${profile}]`, { encoding: "utf-8" });
+    parsedCredentials = parse(readFileSync(credentialsFilePath, "utf-8"));
   }
   parsedCredentials[profile].aws_access_key_id = credentials.accessKeyId;
-  parsedCredentials[profile].aws_secret_access_key = credentials.secretAccessKey;
+  parsedCredentials[profile].aws_secret_access_key =
+    credentials.secretAccessKey;
   parsedCredentials[profile].aws_session_token = credentials.sessionToken;
   const encodedCredentials = encode(parsedCredentials);
-  writeFileSync(credentialsFilePath, encodedCredentials, { encoding: 'utf-8' });
+  writeFileSync(credentialsFilePath, encodedCredentials, { encoding: "utf-8" });
 }
 
-export function clearCredentials(profile: string = 'default'): void {
+export function clearCredentials(profile: string = "default"): void {
   const credentialsFilePath = `${homedir()}/.aws/credentials`;
   if (!existsSync(credentialsFilePath)) {
     throw new Error(`credentials file does not exist`);
   }
-  const parsedCredentials = parse(readFileSync(credentialsFilePath, 'utf-8'));
+  const parsedCredentials = parse(readFileSync(credentialsFilePath, "utf-8"));
   if (parsedCredentials[profile]) {
     delete parsedCredentials[profile];
     const encodedCredentials = encode(parsedCredentials);
-    writeFileSync(credentialsFilePath, encodedCredentials, { encoding: 'utf-8' });
+    writeFileSync(credentialsFilePath, encodedCredentials, {
+      encoding: "utf-8",
+    });
     return;
   }
   throw new Error(`${chalk.red(profile)} does not exist`);
 }
 
-export function getCredentialsFromCredentialsFile(profile: string = 'default'): ICredentials {
+export function getCredentialsFromCredentialsFile(
+  profile: string = "default"
+): ICredentials {
   const credentialsFilePath = `${homedir()}/.aws/credentials`;
   if (!existsSync(credentialsFilePath)) {
     throw new Error(`credentials file does not exist`);
   }
-  const parsedCredentials = parse(readFileSync(credentialsFilePath, 'utf-8'));
+  const parsedCredentials = parse(readFileSync(credentialsFilePath, "utf-8"));
   if (parsedCredentials[profile]) {
     return {
       accessKeyId: parsedCredentials[profile]?.aws_access_key_id,
       secretAccessKey: parsedCredentials[profile]?.aws_secret_access_key,
       sessionToken: parsedCredentials[profile]?.aws_session_token,
-      expiration: '',
+      expiration: "",
     };
   }
   throw new Error(`${chalk.red(profile)} does not exist`);
 }
 
-export async function getProfileCredentials(profile: string = 'default'): Promise<{ profileInfo: IProfile, credentials: ICredentials }> {
+export async function getProfileCredentials(
+  profile: string = "default"
+): Promise<{ profileInfo: IProfile; credentials: ICredentials }> {
   const profileInfo: IProfile = getProfileInfo(profile);
   profileInfo.identity = await initCredentials(profileInfo.profileName);
   const credentials: ICredentials = await getCredentials(profileInfo);

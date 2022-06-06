@@ -5,8 +5,8 @@ CLI tool to get AWS SSO temporary credentials.
 [![Version](https://img.shields.io/npm/v/get-sso-creds)](https://npmjs.org/package/get-sso-creds)
 [![License](https://img.shields.io/npm/l/get-sso-creds)](https://github.com/JamesChung/get-sso-creds/blob/main/LICENSE)
 
-* [Prerequisites](#Prerequisites)
-* [Usage](#usage)
+- [Prerequisites](#Prerequisites)
+- [Usage](#usage)
 
 ## Prerequisites
 
@@ -29,16 +29,19 @@ npm install -g get-sso-creds
 ---
 
 > Will write credentials to ~/.aws/credentials as [default]
+
 ```sh-session
 gscreds select -c
 ```
 
 > Will write credentials to ~/.aws/credentials as [helloworld]
+
 ```sh-session
 gscreds select -c --set-as="helloworld"
 ```
 
 > Will write credentials as export statements to your clipboard which you can simply paste into your shell and press enter.
+
 ```sh-session
 gscreds select -b
 ```
@@ -58,14 +61,15 @@ gscreds assume --role="arn:aws:iam::996942091142:role/test-role" --profile="dev"
 ## Commands
 
   <!-- commands -->
-* [`gscreds assume`](#gscreds-assume)
-* [`gscreds clear`](#gscreds-clear)
-* [`gscreds console`](#gscreds-console)
-* [`gscreds get`](#gscreds-get)
-* [`gscreds login`](#gscreds-login)
-* [`gscreds logout`](#gscreds-logout)
-* [`gscreds ls`](#gscreds-ls)
-* [`gscreds select`](#gscreds-select)
+
+- [`gscreds assume`](#gscreds-assume)
+- [`gscreds clear`](#gscreds-clear)
+- [`gscreds console`](#gscreds-console)
+- [`gscreds get`](#gscreds-get)
+- [`gscreds login`](#gscreds-login)
+- [`gscreds logout`](#gscreds-logout)
+- [`gscreds ls`](#gscreds-ls)
+- [`gscreds select`](#gscreds-select)
 
 ## `gscreds assume`
 
