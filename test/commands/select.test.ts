@@ -1,17 +1,9 @@
 import { expect, test } from "@oclif/test";
 
-describe("select", () => {
+describe("gscreds", () => {
   test
     .stdout()
-    .command(["select"])
-    .it("runs loading", (ctx) => {
-      expect(ctx.stdout).to.contain("Loading");
+    .it("shows help message", (ctx) => {
+      expect(ctx.stdout).to.contain("");
     });
-
-  // test
-  //   .stdout()
-  //   .command(['select', '--name', 'jeff'])
-  //   .it('runs hello --name jeff', ctx => {
-  //     expect(ctx.stdout).to.contain('hello jeff')
-  //   })
 });
