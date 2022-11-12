@@ -4,6 +4,7 @@
 /dist
 /lib
 /bin
+/build
 /package-lock.json
 /tmp
 /yarn.lock
