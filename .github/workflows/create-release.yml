@@ -11,7 +11,9 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Get tag
-        id: tag
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Tag
         uses: dawidd6/action-get-tag@v1
+        id: tag
       - run: gh release create ${{steps.tag.outputs.tag}} --generate-notes
