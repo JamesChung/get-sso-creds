@@ -1,0 +1,17 @@
+name: Create Release
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get tag
+        id: tag
+        uses: dawidd6/action-get-tag@v1
+      - run: gh release create ${{steps.tag.outputs.tag}} --generate-notes

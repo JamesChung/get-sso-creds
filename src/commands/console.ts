@@ -80,8 +80,6 @@ export default class Console extends Command {
       }
       this.loginURL = await generateLoginURL(this.credentials);
       await open(this.loginURL, {
-        newInstance: true,
-        wait: true,
         app: {
           name: browser,
         },
