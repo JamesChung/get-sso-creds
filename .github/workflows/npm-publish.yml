@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '.github/**'
 
 jobs:
   build:
@@ -16,7 +18,18 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm ci
+      - run: npm ci && npm run build
+
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@main
+      - run: >
+          git tag -a ${{steps.package-version.outputs.current-version}}
+            -m ${{steps.package-version.outputs.current-version}}
 
   publish-npm:
     needs: build
