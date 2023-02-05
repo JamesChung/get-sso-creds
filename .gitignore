@@ -2,10 +2,6 @@
 *-error.log
 /.nyc_output
 /build
-/lib
-/bin
-/package-lock.json
 /tmp
-/yarn.lock
 node_modules
 oclif.manifest.json
