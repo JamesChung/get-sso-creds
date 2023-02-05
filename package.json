@@ -55,8 +55,8 @@
     "topicSeparator": " "
   },
   "scripts": {
-    "build": "npm install && shx rm -rf dist && tsc -b && npm run build:all",
-    "build:all": "npm run build:linux-bins && npm run build:macos-bins && npm run build:win-bins",
+    "build": "npm install && shx rm -rf dist && tsc -b",
+    "build:bins": "npm run build:linux-bins && npm run build:macos-bins && npm run build:win-bins",
     "build:linux-bins": "npm run build:linux-arm64 && npm run build:linux-x64",
     "build:linux-arm64": "pkg -o build/linux/arm64/gscreds -t node16-linux-arm64 .",
     "build:linux-x64": "pkg -o build/linux/x64/gscreds -t node16-linux-x64 .",
