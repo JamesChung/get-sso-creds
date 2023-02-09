@@ -16,4 +16,4 @@ jobs:
       - name: Tag
         uses: olegtarasov/get-tag@v2.1.2
         id: tag
-      - run: gh release create $GIT_TAG_NAME --generate-notes
+      - run: gh release create ${{steps.tag.outputs.tag}} --generate-notes
