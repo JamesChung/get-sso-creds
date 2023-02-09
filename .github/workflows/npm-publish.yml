@@ -10,7 +10,6 @@ on:
     paths-ignore:
       - '.github/**'
       - '.*'
-      - '*.json'
 
 jobs:
   build:
