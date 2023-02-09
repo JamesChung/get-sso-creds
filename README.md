@@ -98,7 +98,7 @@ EXAMPLES
   $ gscreds assume --role arn:aws:iam::996942091142:role/test-role -c --set-as 'my-profile'
 ```
 
-_See code: [dist/commands/assume.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.1/dist/commands/assume.ts)_
+_See code: [dist/commands/assume.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.4/dist/commands/assume.ts)_
 
 ## `gscreds clear`
 
@@ -121,7 +121,7 @@ EXAMPLES
     personal
 ```
 
-_See code: [dist/commands/clear.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.1/dist/commands/clear.ts)_
+_See code: [dist/commands/clear.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.4/dist/commands/clear.ts)_
 
 ## `gscreds console`
 
@@ -148,7 +148,7 @@ EXAMPLES
     personal
 ```
 
-_See code: [dist/commands/console.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.1/dist/commands/console.ts)_
+_See code: [dist/commands/console.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.4/dist/commands/console.ts)_
 
 ## `gscreds get`
 
@@ -183,7 +183,7 @@ EXAMPLES
   export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>
 ```
 
-_See code: [dist/commands/get.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.1/dist/commands/get.ts)_
+_See code: [dist/commands/get.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.4/dist/commands/get.ts)_
 
 ## `gscreds login`
 
@@ -205,7 +205,7 @@ EXAMPLES
   Logging in... ⣽
 ```
 
-_See code: [dist/commands/login.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.1/dist/commands/login.ts)_
+_See code: [dist/commands/login.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.4/dist/commands/login.ts)_
 
 ## `gscreds logout`
 
@@ -227,7 +227,7 @@ EXAMPLES
   Logging out... ⣽
 ```
 
-_See code: [dist/commands/logout.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.1/dist/commands/logout.ts)_
+_See code: [dist/commands/logout.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.4/dist/commands/logout.ts)_
 
 ## `gscreds ls`
 
@@ -250,7 +250,7 @@ EXAMPLES
     credentials
 ```
 
-_See code: [dist/commands/ls.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.1/dist/commands/ls.ts)_
+_See code: [dist/commands/ls.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.4/dist/commands/ls.ts)_
 
 ## `gscreds select`
 
@@ -286,5 +286,5 @@ EXAMPLES
    ...
 ```
 
-_See code: [dist/commands/select.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.1/dist/commands/select.ts)_
+_See code: [dist/commands/select.ts](https://github.com/JamesChung/get-sso-creds/blob/v6.3.4/dist/commands/select.ts)_
 <!-- commandsstop -->
