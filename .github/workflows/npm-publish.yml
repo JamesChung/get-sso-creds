@@ -25,9 +25,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: WyriHaximus/github-action-get-previous-tag@v1
-        id: tag
-      - run: git tag -a ${{ steps.tag.outputs.tag }} -m ${{ steps.tag.outputs.tag }}
+      - name: get-npm-version
+        id: version
+        uses: martinbeentjes/npm-get-version-action@main
+      - run: git tag -a ${{ steps.version.outputs.current-version }} -m ${{ steps.version.outputs.current-version }}
 
   publish-npm:
     needs: build
