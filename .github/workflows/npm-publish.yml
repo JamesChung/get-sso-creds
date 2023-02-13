@@ -18,18 +18,19 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - run: npm ci && npm run build
 
   create-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: snow-actions/git-config-user@v1.0.0
       - name: get-npm-version
         id: version
         uses: martinbeentjes/npm-get-version-action@main
       - name: tag-commit
-        run: git tag -a ${{ steps.version.outputs.current-version }} -m ${{ steps.version.outputs.current-version }}
+        run: git tag -a v${{ steps.version.outputs.current-version }} -m v${{ steps.version.outputs.current-version }}
 
   publish-npm:
     needs: build
@@ -38,7 +39,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm publish
