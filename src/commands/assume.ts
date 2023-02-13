@@ -1,4 +1,4 @@
-import { Command, Flags, CliUx } from "@oclif/core";
+import { Command, Flags, ux } from "@oclif/core";
 import { roleOutput, clipboardOutput } from "../lib/output-helper";
 import { assumeRole } from "../lib/assume-helper";
 import { writeCredentialsFile } from "../lib/creds-helper";
@@ -54,8 +54,6 @@ export default class Assume extends Command {
     }),
   };
 
-  static args = [];
-
   public async run(): Promise<void> {
     const { flags } = await this.parse(Assume);
 
@@ -67,18 +65,18 @@ export default class Assume extends Command {
       );
 
       if (flags.clipboard) {
-        CliUx.ux.action.start("❯ Saving to clipboard");
+        ux.action.start("❯ Saving to clipboard");
         clipboardOutput(roleCredentials);
-        CliUx.ux.action.stop();
+        ux.action.stop();
       } else if (flags.credentials) {
-        CliUx.ux.action.start("❯ Writing to credentials file");
+        ux.action.start("❯ Writing to credentials file");
         writeCredentialsFile(roleCredentials, flags["set-as"]);
-        CliUx.ux.action.stop();
+        ux.action.stop();
       } else {
         await roleOutput(this, flags.role, roleCredentials, flags);
       }
     } catch (error: any) {
-      CliUx.ux.action.stop("failed");
+      ux.action.stop("failed");
       this.error(error.message);
     }
   }
