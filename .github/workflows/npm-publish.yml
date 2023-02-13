@@ -25,11 +25,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: olegtarasov/get-tag@v2.1.2
+      - uses: WyriHaximus/github-action-get-previous-tag@v1
         id: tag
       - run: >
-          git tag -a ${{steps.tag.outputs.tag}}
-            -m ${{steps.tag.outputs.tag}}
+          git tag -a ${{ steps.tag.outputs.tag }}
+            -m ${{ steps.tag.outputs.tag }}
 
   publish-npm:
     needs: build
@@ -43,4 +43,4 @@ jobs:
       - run: npm ci
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
