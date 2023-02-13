@@ -1,11 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
 const core_1 = require("@oclif/core");
 const profile_helper_1 = require("../lib/profile-helper");
 const creds_helper_1 = require("../lib/creds-helper");
-const inquirer_1 = tslib_1.__importDefault(require("inquirer"));
+const inquirer_1 = require("inquirer");
 class Clear extends core_1.Command {
+    static description = "Clears selected credentials in ~/.aws/credentials.";
+    static examples = [
+        `$ gscreds clear
+? Select a profile: (Use arrow keys)
+❯ default
+  personal`,
+    ];
+    static flags = {
+        help: core_1.Flags.help(),
+    };
     async run() {
         try {
             const response = await inquirer_1.default.prompt([
@@ -27,13 +36,3 @@ class Clear extends core_1.Command {
     }
 }
 exports.default = Clear;
-Clear.description = "Clears selected credentials in ~/.aws/credentials.";
-Clear.examples = [
-    `$ gscreds clear
-? Select a profile: (Use arrow keys)
-❯ default
-  personal`,
-];
-Clear.flags = {
-    help: core_1.Flags.help(),
-};

@@ -1,13 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getProfileCredentials = exports.getCredentialsFromCredentialsFile = exports.clearCredentials = exports.writeCredentialsFile = exports.getCredentials = exports.getCredentialsFromCacheFiles = exports.initCredentials = void 0;
-const tslib_1 = require("tslib");
 const os_1 = require("os");
 const fs_1 = require("fs");
 const child_process_1 = require("child_process");
 const aws_sdk_1 = require("aws-sdk");
 const profile_helper_1 = require("./profile-helper");
-const chalk = tslib_1.__importStar(require("chalk"));
+const chalk = require("chalk");
 const ini_1 = require("ini");
 async function initCredentials(profile = "default") {
     if (!(0, profile_helper_1.isProfile)(profile)) {

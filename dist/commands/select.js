@@ -1,13 +1,55 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
 const core_1 = require("@oclif/core");
 const output_helper_1 = require("../lib/output-helper");
 const creds_helper_1 = require("../lib/creds-helper");
 const select_helper_1 = require("../lib/select-helper");
-const inquirer_1 = tslib_1.__importDefault(require("inquirer"));
-const chalk = tslib_1.__importStar(require("chalk"));
+const inquirer_1 = require("inquirer");
+const chalk = require("chalk");
 class Select extends core_1.Command {
+    static description = "Get AWS SSO credentials via AWS SSO.";
+    static examples = [
+        `$ gscreds select
+? Select an SSO url: (Use arrow keys)
+❯ https://alpha.awsapps.com/start
+  https://delta.awsapps.com/start
+? Select an SSO account:
+❯ Log archive | ctlogs@google.com | 111111111111
+  test-alpha | testalpha@yahoo.com | 222222222222
+? Select an SSO role: (Use arrow keys)
+❯ AWSServiceCatalogEndUserAccess
+  AWSAdministratorAccess
+ ...`,
+    ];
+    static flags = {
+        help: core_1.Flags.help(),
+        credentials: core_1.Flags.boolean({
+            char: "c",
+            default: false,
+            description: "Writes credentials to ~/.aws/credentials (will use [default] as the profile name if --set-as flag is not used).",
+            exclusive: ["clipboard"],
+        }),
+        clipboard: core_1.Flags.boolean({
+            char: "b",
+            default: false,
+            description: "Writes credentials to clipboard.",
+            exclusive: ["credentials"],
+        }),
+        json: core_1.Flags.boolean({
+            default: false,
+            description: "Outputs credentials in json format.",
+        }),
+        "set-as": core_1.Flags.string({
+            char: "n",
+            dependsOn: ["credentials"],
+            description: "Desired name of profile when setting credentials via --credentials flag.",
+        }),
+        profile: core_1.Flags.string({
+            char: "p",
+            default: "default",
+            description: "Desired SSO config profile to use.",
+        }),
+    };
     async run() {
         const { flags } = await this.parse(Select);
         try {
@@ -80,46 +122,3 @@ class Select extends core_1.Command {
     }
 }
 exports.default = Select;
-Select.description = "Get AWS SSO credentials via AWS SSO.";
-Select.examples = [
-    `$ gscreds select
-? Select an SSO url: (Use arrow keys)
-❯ https://alpha.awsapps.com/start
-  https://delta.awsapps.com/start
-? Select an SSO account:
-❯ Log archive | ctlogs@google.com | 111111111111
-  test-alpha | testalpha@yahoo.com | 222222222222
-? Select an SSO role: (Use arrow keys)
-❯ AWSServiceCatalogEndUserAccess
-  AWSAdministratorAccess
- ...`,
-];
-Select.flags = {
-    help: core_1.Flags.help(),
-    credentials: core_1.Flags.boolean({
-        char: "c",
-        default: false,
-        description: "Writes credentials to ~/.aws/credentials (will use [default] as the profile name if --set-as flag is not used).",
-        exclusive: ["clipboard"],
-    }),
-    clipboard: core_1.Flags.boolean({
-        char: "b",
-        default: false,
-        description: "Writes credentials to clipboard.",
-        exclusive: ["credentials"],
-    }),
-    json: core_1.Flags.boolean({
-        default: false,
-        description: "Outputs credentials in json format.",
-    }),
-    "set-as": core_1.Flags.string({
-        char: "n",
-        dependsOn: ["credentials"],
-        description: "Desired name of profile when setting credentials via --credentials flag.",
-    }),
-    profile: core_1.Flags.string({
-        char: "p",
-        default: "default",
-        description: "Desired SSO config profile to use.",
-    }),
-};

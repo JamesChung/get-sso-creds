@@ -1,25 +1,42 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
 const core_1 = require("@oclif/core");
 const creds_helper_1 = require("../lib/creds-helper");
 const console_helper_1 = require("../lib/console-helper");
 const profile_helper_1 = require("../lib/profile-helper");
-const inquirer_1 = tslib_1.__importDefault(require("inquirer"));
-const open_1 = tslib_1.__importDefault(require("open"));
+const inquirer_1 = require("inquirer");
+const open = require("open");
 class Console extends core_1.Command {
+    static description = "Opens AWS Console for a selected profile.";
+    static examples = [
+        `$ gscreds console
+? Select a profile: (Use arrow keys)
+❯ default
+  personal`,
+    ];
+    static flags = {
+        help: core_1.Flags.help(),
+        browser: core_1.Flags.string({
+            char: "b",
+            options: ["chrome", "firefox", "edge"],
+            description: `Opens designated browser over the system default.\n
+      Suggested values: ["chrome", "firefox", "edge"]`,
+        }),
+    };
+    credentials;
+    loginURL;
     async run() {
         const { flags } = await this.parse(Console);
         let browser = "";
         switch (flags.browser) {
             case "chrome":
-                browser = open_1.default.apps.chrome;
+                browser = open.apps.chrome;
                 break;
             case "firefox":
-                browser = open_1.default.apps.firefox;
+                browser = open.apps.firefox;
                 break;
             case "edge":
-                browser = open_1.default.apps.edge;
+                browser = open.apps.edge;
                 break;
         }
         try {
@@ -47,7 +64,7 @@ class Console extends core_1.Command {
                 this.credentials = (0, creds_helper_1.getCredentialsFromCredentialsFile)(profile);
             }
             this.loginURL = await (0, console_helper_1.generateLoginURL)(this.credentials);
-            await (0, open_1.default)(this.loginURL, {
+            await open(this.loginURL, {
                 app: {
                     name: browser,
                 },
@@ -65,19 +82,3 @@ class Console extends core_1.Command {
     }
 }
 exports.default = Console;
-Console.description = "Opens AWS Console for a selected profile.";
-Console.examples = [
-    `$ gscreds console
-? Select a profile: (Use arrow keys)
-❯ default
-  personal`,
-];
-Console.flags = {
-    help: core_1.Flags.help(),
-    browser: core_1.Flags.string({
-        char: "b",
-        options: ["chrome", "firefox", "edge"],
-        description: `Opens designated browser over the system default.\n
-      Suggested values: ["chrome", "firefox", "edge"]`,
-    }),
-};

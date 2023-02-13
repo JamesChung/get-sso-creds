@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateLoginURL = void 0;
-const tslib_1 = require("tslib");
-const axios_1 = tslib_1.__importDefault(require("axios"));
+const axios_1 = require("axios");
 async function generateLoginURL(credentials) {
     const awsFederationBaseURL = "https://signin.aws.amazon.com/federation";
     const creds = stringifyCredentials(credentials);

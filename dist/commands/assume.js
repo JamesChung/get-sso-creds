@@ -5,6 +5,51 @@ const output_helper_1 = require("../lib/output-helper");
 const assume_helper_1 = require("../lib/assume-helper");
 const creds_helper_1 = require("../lib/creds-helper");
 class Assume extends core_1.Command {
+    static description = "Assumes AWS Role.";
+    static examples = [
+        `$ gscreds assume --role arn:aws:iam::996942091142:role/test-role`,
+        `$ gscreds assume --role arn:aws:iam::996942091142:role/test-role -c --set-as 'my-profile'`,
+    ];
+    static flags = {
+        help: core_1.Flags.help(),
+        json: core_1.Flags.boolean({
+            default: false,
+            description: "Outputs credentials in json format.",
+        }),
+        credentials: core_1.Flags.boolean({
+            char: "c",
+            default: false,
+            description: "Writes credentials to ~/.aws/credentials (will use [default] as the profile name if --set-as flag is not used).",
+            exclusive: ["clipboard"],
+        }),
+        clipboard: core_1.Flags.boolean({
+            char: "b",
+            default: false,
+            description: "Writes credentials to clipboard.",
+            exclusive: ["credentials"],
+        }),
+        "set-as": core_1.Flags.string({
+            char: "n",
+            dependsOn: ["credentials"],
+            description: "Desired name of profile when setting credentials via --credentials flag.",
+        }),
+        role: core_1.Flags.string({
+            char: "r",
+            required: true,
+            description: "ARN of the role to assume.",
+        }),
+        "session-name": core_1.Flags.string({
+            char: "s",
+            dependsOn: ["role"],
+            default: "gscreds-session",
+            description: "Desired name for the role session.",
+        }),
+        profile: core_1.Flags.string({
+            char: "p",
+            default: "default",
+            description: "Desired SSO config profile to use.",
+        }),
+    };
     async run() {
         const { flags } = await this.parse(Assume);
         try {
@@ -30,48 +75,3 @@ class Assume extends core_1.Command {
     }
 }
 exports.default = Assume;
-Assume.description = "Assumes AWS Role.";
-Assume.examples = [
-    `$ gscreds assume --role arn:aws:iam::996942091142:role/test-role`,
-    `$ gscreds assume --role arn:aws:iam::996942091142:role/test-role -c --set-as 'my-profile'`,
-];
-Assume.flags = {
-    help: core_1.Flags.help(),
-    json: core_1.Flags.boolean({
-        default: false,
-        description: "Outputs credentials in json format.",
-    }),
-    credentials: core_1.Flags.boolean({
-        char: "c",
-        default: false,
-        description: "Writes credentials to ~/.aws/credentials (will use [default] as the profile name if --set-as flag is not used).",
-        exclusive: ["clipboard"],
-    }),
-    clipboard: core_1.Flags.boolean({
-        char: "b",
-        default: false,
-        description: "Writes credentials to clipboard.",
-        exclusive: ["credentials"],
-    }),
-    "set-as": core_1.Flags.string({
-        char: "n",
-        dependsOn: ["credentials"],
-        description: "Desired name of profile when setting credentials via --credentials flag.",
-    }),
-    role: core_1.Flags.string({
-        char: "r",
-        required: true,
-        description: "ARN of the role to assume.",
-    }),
-    "session-name": core_1.Flags.string({
-        char: "s",
-        dependsOn: ["role"],
-        default: "gscreds-session",
-        description: "Desired name for the role session.",
-    }),
-    profile: core_1.Flags.string({
-        char: "p",
-        default: "default",
-        description: "Desired SSO config profile to use.",
-    }),
-};

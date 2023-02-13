@@ -7,7 +7,7 @@ import { generateLoginURL } from "../lib/console-helper";
 import { getCredProfiles, getProfileNames } from "../lib/profile-helper";
 import { ICredentials } from "../lib";
 import inquirer from "inquirer";
-import open from "open";
+import * as open from "open";
 
 export default class Console extends Command {
   static description = "Opens AWS Console for a selected profile.";
