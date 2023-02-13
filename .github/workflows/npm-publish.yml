@@ -28,7 +28,8 @@ jobs:
       - name: get-npm-version
         id: version
         uses: martinbeentjes/npm-get-version-action@main
-      - run: git tag -a ${{ steps.version.outputs.current-version }} -m ${{ steps.version.outputs.current-version }}
+      - name: tag-commit
+        run: git tag -a ${{ steps.version.outputs.current-version }} -m ${{ steps.version.outputs.current-version }}
 
   publish-npm:
     needs: build
