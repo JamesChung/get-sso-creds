@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = void 0;
+const tslib_1 = require("tslib");
 const child_process_1 = require("child_process");
 const profile_helper_1 = require("./profile-helper");
-const chalk = require("chalk");
+const chalk = tslib_1.__importStar(require("chalk"));
 async function login(profile) {
     if (!(0, profile_helper_1.isProfile)(profile)) {
         throw new Error(`${chalk.redBright(profile)} is not a valid profile`);

@@ -9,6 +9,5 @@ export default class Get extends Command {
         preserve: import("@oclif/core/lib/interfaces").BooleanFlag<boolean>;
         json: import("@oclif/core/lib/interfaces").BooleanFlag<boolean>;
     };
-    static args: never[];
     run(): Promise<void>;
 }

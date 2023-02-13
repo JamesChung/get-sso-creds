@@ -1,23 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 const core_1 = require("@oclif/core");
 const profile_helper_1 = require("../lib/profile-helper");
-const inquirer = require("inquirer");
+const inquirer_1 = tslib_1.__importDefault(require("inquirer"));
 class Ls extends core_1.Command {
-    static description = "Lists profile names in ~/.aws/config or ~/.aws/credentials.";
-    static examples = [
-        `$ gscreds ls
-? Select a file: (Use arrow keys)
-❯ config
-  credentials`,
-    ];
-    static flags = {
-        help: core_1.Flags.help(),
-    };
-    static args = [];
     async run() {
         try {
-            const response = await inquirer.prompt([
+            const response = await inquirer_1.default.prompt([
                 {
                     name: "file",
                     message: "Select a file:",
@@ -39,9 +29,19 @@ class Ls extends core_1.Command {
             }
         }
         catch (error) {
-            core_1.CliUx.ux.action.stop("failed");
+            core_1.ux.action.stop("failed");
             this.error(error.message);
         }
     }
 }
 exports.default = Ls;
+Ls.description = "Lists profile names in ~/.aws/config or ~/.aws/credentials.";
+Ls.examples = [
+    `$ gscreds ls
+? Select a file: (Use arrow keys)
+❯ config
+  credentials`,
+];
+Ls.flags = {
+    help: core_1.Flags.help(),
+};

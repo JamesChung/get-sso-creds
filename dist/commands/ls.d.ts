@@ -5,6 +5,5 @@ export default class Ls extends Command {
     static flags: {
         help: import("@oclif/core/lib/interfaces").BooleanFlag<void>;
     };
-    static args: never[];
     run(): Promise<void>;
 }
