@@ -4,8 +4,7 @@ export default class LogOut extends Command {
     static examples: string[];
     static flags: {
         help: import("@oclif/core/lib/interfaces").BooleanFlag<void>;
-        profile: import("@oclif/core/lib/interfaces").OptionFlag<string>;
+        profile: import("@oclif/core/lib/interfaces").OptionFlag<string, import("@oclif/core/lib/interfaces/parser").CustomOptions>;
     };
-    static args: never[];
     run(): Promise<void>;
 }

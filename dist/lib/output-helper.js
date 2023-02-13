@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.roleOutput = exports.output = exports.clipboardOutput = void 0;
+const tslib_1 = require("tslib");
 const creds_helper_1 = require("../lib/creds-helper");
 const clipboardy_1 = require("clipboardy");
-const chalk = require("chalk");
+const chalk = tslib_1.__importStar(require("chalk"));
 function exportHeaderOutput(command, profileInfo, credentials) {
     command.log(`${chalk.yellowBright("Profile:")} ${chalk.cyan(profileInfo.profileName)}`);
     command.log(`${chalk.yellowBright("Credentials expire at:")} ${chalk.cyan(new Date(credentials.expiration).toLocaleTimeString())}\n`);

@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getProfileInfo = exports.getCredProfiles = exports.getProfiles = exports.getProfileNames = exports.isProfile = void 0;
+const tslib_1 = require("tslib");
 const fs_1 = require("fs");
 const os_1 = require("os");
 const ini_1 = require("ini");
-const chalk = require("chalk");
+const chalk = tslib_1.__importStar(require("chalk"));
 function isProfile(profile) {
     const configFile = (0, fs_1.readFileSync)(`${(0, os_1.homedir)()}/.aws/config`, "utf-8");
     const iniConfig = (0, ini_1.parse)(configFile);

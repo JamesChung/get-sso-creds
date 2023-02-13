@@ -7,11 +7,10 @@ export default class Assume extends Command {
         json: import("@oclif/core/lib/interfaces").BooleanFlag<boolean>;
         credentials: import("@oclif/core/lib/interfaces").BooleanFlag<boolean>;
         clipboard: import("@oclif/core/lib/interfaces").BooleanFlag<boolean>;
-        "set-as": import("@oclif/core/lib/interfaces").OptionFlag<string | undefined>;
-        role: import("@oclif/core/lib/interfaces").OptionFlag<string>;
-        "session-name": import("@oclif/core/lib/interfaces").OptionFlag<string>;
-        profile: import("@oclif/core/lib/interfaces").OptionFlag<string>;
+        "set-as": import("@oclif/core/lib/interfaces").OptionFlag<string | undefined, import("@oclif/core/lib/interfaces/parser").CustomOptions>;
+        role: import("@oclif/core/lib/interfaces").OptionFlag<string, import("@oclif/core/lib/interfaces/parser").CustomOptions>;
+        "session-name": import("@oclif/core/lib/interfaces").OptionFlag<string, import("@oclif/core/lib/interfaces/parser").CustomOptions>;
+        profile: import("@oclif/core/lib/interfaces").OptionFlag<string, import("@oclif/core/lib/interfaces/parser").CustomOptions>;
     };
-    static args: never[];
     run(): Promise<void>;
 }

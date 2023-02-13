@@ -4,9 +4,8 @@ export default class Console extends Command {
     static examples: string[];
     static flags: {
         help: import("@oclif/core/lib/interfaces").BooleanFlag<void>;
-        browser: import("@oclif/core/lib/interfaces").OptionFlag<string | undefined>;
+        browser: import("@oclif/core/lib/interfaces").OptionFlag<string | undefined, import("@oclif/core/lib/interfaces/parser").CustomOptions>;
     };
-    static args: never[];
     private credentials;
     private loginURL;
     run(): Promise<void>;
