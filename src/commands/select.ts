@@ -1,4 +1,4 @@
-import { Command, Flags, ux } from "@oclif/core";
+import { Command, Flags, CliUx } from "@oclif/core";
 import { roleOutput, clipboardOutput } from "../lib/output-helper";
 import { writeCredentialsFile } from "../lib/creds-helper";
 import {
@@ -8,7 +8,7 @@ import {
   getRoles,
   getRoleCredentials,
 } from "../lib/select-helper";
-import inquirer from "inquirer";
+import * as inquirer from "inquirer";
 import * as chalk from "chalk";
 
 export default class Select extends Command {
@@ -60,11 +60,13 @@ export default class Select extends Command {
     }),
   };
 
+  static args = [];
+
   public async run(): Promise<void> {
     const { flags } = await this.parse(Select);
 
     try {
-      ux.action.start("❯ Loading");
+      CliUx.ux.action.start("❯ Loading");
 
       const ssoConfigs = await getSSOConfigs();
       const urlChoices: string[] = [];
@@ -80,7 +82,7 @@ export default class Select extends Command {
 
       const accounts = await getAccounts(ssoConfigs, flags.profile);
 
-      ux.action.stop();
+      CliUx.ux.action.stop();
 
       const ssoUrlResponse = await inquirer.prompt([
         {
@@ -134,19 +136,19 @@ export default class Select extends Command {
       );
 
       if (flags.clipboard) {
-        ux.action.start("❯ Saving to clipboard");
+        CliUx.ux.action.start("❯ Saving to clipboard");
         clipboardOutput(roleCreds);
-        ux.action.stop();
+        CliUx.ux.action.stop();
       } else if (flags.credentials) {
-        ux.action.start("❯ Writing to credentials file");
+        CliUx.ux.action.start("❯ Writing to credentials file");
         writeCredentialsFile(roleCreds, flags["set-as"]);
-        ux.action.stop();
+        CliUx.ux.action.stop();
         return;
       } else {
         await roleOutput(this, ssoRoleResponse.ssoRole, roleCreds, flags);
       }
     } catch (error: any) {
-      ux.action.stop("failed");
+      CliUx.ux.action.stop("failed");
       this.error(
         `${error.message}\nOr specify a profile via --profile="profile-name", you may have not specified a valid SSO profile from your ~/.aws/config file. Will attempt to use default profile if flag is not set.`
       );

@@ -50,26 +50,27 @@ class Assume extends core_1.Command {
             description: "Desired SSO config profile to use.",
         }),
     };
+    static args = [];
     async run() {
         const { flags } = await this.parse(Assume);
         try {
             const roleCredentials = await (0, assume_helper_1.assumeRole)(flags.role, flags["session-name"], flags.profile);
             if (flags.clipboard) {
-                core_1.ux.action.start("❯ Saving to clipboard");
+                core_1.CliUx.ux.action.start("❯ Saving to clipboard");
                 (0, output_helper_1.clipboardOutput)(roleCredentials);
-                core_1.ux.action.stop();
+                core_1.CliUx.ux.action.stop();
             }
             else if (flags.credentials) {
-                core_1.ux.action.start("❯ Writing to credentials file");
+                core_1.CliUx.ux.action.start("❯ Writing to credentials file");
                 (0, creds_helper_1.writeCredentialsFile)(roleCredentials, flags["set-as"]);
-                core_1.ux.action.stop();
+                core_1.CliUx.ux.action.stop();
             }
             else {
                 await (0, output_helper_1.roleOutput)(this, flags.role, roleCredentials, flags);
             }
         }
         catch (error) {
-            core_1.ux.action.stop("failed");
+            core_1.CliUx.ux.action.stop("failed");
             this.error(error.message);
         }
     }

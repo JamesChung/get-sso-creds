@@ -16,15 +16,16 @@ Logging out... ⣽`,
             description: "Profile name to use for logout.",
         }),
     };
+    static args = [];
     async run() {
         const { flags } = await this.parse(LogOut);
         try {
-            core_1.ux.action.start("❯ Logging out");
+            core_1.CliUx.ux.action.start("❯ Logging out");
             await (0, logout_helper_1.logout)(flags.profile);
-            core_1.ux.action.stop();
+            core_1.CliUx.ux.action.stop();
         }
         catch (error) {
-            core_1.ux.action.stop("failed");
+            core_1.CliUx.ux.action.stop("failed");
             this.error(error.message);
         }
     }

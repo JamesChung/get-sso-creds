@@ -16,15 +16,16 @@ Logging in... ⣽`,
             description: "Profile name to use for login.",
         }),
     };
+    static args = [];
     async run() {
         const { flags } = await this.parse(LogIn);
         try {
-            core_1.ux.action.start("❯ Logging in");
+            core_1.CliUx.ux.action.start("❯ Logging in");
             await (0, login_helper_1.login)(flags.profile);
-            core_1.ux.action.stop();
+            core_1.CliUx.ux.action.stop();
         }
         catch (error) {
-            core_1.ux.action.stop("failed");
+            core_1.CliUx.ux.action.stop("failed");
             this.error(error.message);
         }
     }

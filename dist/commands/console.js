@@ -4,7 +4,7 @@ const core_1 = require("@oclif/core");
 const creds_helper_1 = require("../lib/creds-helper");
 const console_helper_1 = require("../lib/console-helper");
 const profile_helper_1 = require("../lib/profile-helper");
-const inquirer_1 = require("inquirer");
+const inquirer = require("inquirer");
 const open = require("open");
 class Console extends core_1.Command {
     static description = "Opens AWS Console for a selected profile.";
@@ -23,6 +23,7 @@ class Console extends core_1.Command {
       Suggested values: ["chrome", "firefox", "edge"]`,
         }),
     };
+    static args = [];
     credentials;
     loginURL;
     async run() {
@@ -40,7 +41,7 @@ class Console extends core_1.Command {
                 break;
         }
         try {
-            const { profileType } = await inquirer_1.default.prompt([
+            const { profileType } = await inquirer.prompt([
                 {
                     name: "profileType",
                     message: "Select a file:",
@@ -48,7 +49,7 @@ class Console extends core_1.Command {
                     choices: ["config", "credentials"],
                 },
             ]);
-            const { profile } = await inquirer_1.default.prompt([
+            const { profile } = await inquirer.prompt([
                 {
                     name: "profile",
                     message: "Select a profile:",
@@ -56,7 +57,7 @@ class Console extends core_1.Command {
                     choices: profileType === "config" ? (0, profile_helper_1.getProfileNames)() : (0, profile_helper_1.getCredProfiles)(),
                 },
             ]);
-            core_1.ux.action.start("❯ Opening Console");
+            core_1.CliUx.ux.action.start("❯ Opening Console");
             if (profileType === "config") {
                 this.credentials = (await (0, creds_helper_1.getProfileCredentials)(profile)).credentials;
             }
@@ -73,10 +74,10 @@ class Console extends core_1.Command {
                     throw new Error("Could not open browser.");
                 }
             });
-            core_1.ux.action.stop();
+            core_1.CliUx.ux.action.stop();
         }
         catch (error) {
-            core_1.ux.action.stop("failed");
+            core_1.CliUx.ux.action.stop("failed");
             this.error(error.message);
         }
     }

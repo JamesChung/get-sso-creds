@@ -1,4 +1,4 @@
-import { Command, Flags, ux } from "@oclif/core";
+import { Command, Flags, CliUx } from "@oclif/core";
 import { getProfileNames } from "../lib/profile-helper";
 import { output, clipboardOutput } from "../lib/output-helper";
 import { IFlags } from "../lib/interfaces";
@@ -6,7 +6,7 @@ import {
   getProfileCredentials,
   writeCredentialsFile,
 } from "../lib/creds-helper";
-import inquirer from "inquirer";
+import * as inquirer from "inquirer";
 
 export default class Get extends Command {
   static description =
@@ -55,6 +55,8 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
     }),
   };
 
+  static args = [];
+
   public async run(): Promise<void> {
     const { flags } = await this.parse(Get);
 
@@ -76,16 +78,16 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
       const { credentials } = await getProfileCredentials(response.profile);
 
       if (flags.clipboard) {
-        ux.action.start("❯ Saving to clipboard");
+        CliUx.ux.action.start("❯ Saving to clipboard");
         clipboardOutput(credentials);
-        ux.action.stop();
+        CliUx.ux.action.stop();
       } else if (flags.credentials) {
-        ux.action.start("❯ Writing to credentials file");
+        CliUx.ux.action.start("❯ Writing to credentials file");
         if (flags.preserve) {
           writeCredentialsFile(credentials, response.profile);
         }
         writeCredentialsFile(credentials);
-        ux.action.stop();
+        CliUx.ux.action.stop();
       } else {
         await output(this, input);
       }

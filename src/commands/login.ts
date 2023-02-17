@@ -1,4 +1,4 @@
-import { Command, Flags, ux } from "@oclif/core";
+import { Command, Flags, CliUx } from "@oclif/core";
 import { login } from "../lib/login-helper";
 
 export default class LogIn extends Command {
@@ -18,15 +18,17 @@ Logging in... ⣽`,
     }),
   };
 
+  static args = [];
+
   public async run(): Promise<void> {
     const { flags } = await this.parse(LogIn);
 
     try {
-      ux.action.start("❯ Logging in");
+      CliUx.ux.action.start("❯ Logging in");
       await login(flags.profile);
-      ux.action.stop();
+      CliUx.ux.action.stop();
     } catch (error: any) {
-      ux.action.stop("failed");
+      CliUx.ux.action.stop("failed");
       this.error(error.message);
     }
   }
