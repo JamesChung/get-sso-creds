@@ -8,7 +8,7 @@ import {
   existsSync,
 } from "fs";
 import { exec } from "child_process";
-import { STS } from "aws-sdk";
+import { STSClient, GetCallerIdentityCommand } from "@aws-sdk/client-sts";
 import { ICredentials, IUserIdentity, IProfile } from "./interfaces";
 import { getProfileInfo, isProfile } from "./profile-helper";
 import * as chalk from "chalk";
@@ -56,9 +56,9 @@ async function readCredsFile(path: string): Promise<string> {
 
 export async function getCredentialsFromCacheFiles(): Promise<ICredentials[]> {
   const credsList: ICredentials[] = [];
-  const credfileNames = readdirSync(`${homedir()}/.aws/cli/cache`, "utf-8");
+  const credFileNames = readdirSync(`${homedir()}/.aws/cli/cache`, "utf-8");
   const credFilePromises: Promise<string>[] = [];
-  for (let credFile of credfileNames) {
+  for (let credFile of credFileNames) {
     credFilePromises.push(
       readCredsFile(`${homedir()}/.aws/cli/cache/${credFile}`)
     );
@@ -81,14 +81,17 @@ export async function getCredentialsFromCacheFiles(): Promise<ICredentials[]> {
 
 export async function getCredentials(profile: IProfile): Promise<ICredentials> {
   const credsList = await getCredentialsFromCacheFiles();
-  const sts = new STS({ region: profile?.region });
   for (let creds of credsList) {
-    sts.config.credentials = {
-      accessKeyId: creds.accessKeyId,
-      secretAccessKey: creds.secretAccessKey,
-      sessionToken: creds.sessionToken,
-    };
-    const { UserId, Account, Arn } = await sts.getCallerIdentity().promise();
+    const sts = new STSClient({
+      region: profile?.region,
+      credentials: {
+        accessKeyId: creds.accessKeyId,
+        secretAccessKey: creds.secretAccessKey,
+        sessionToken: creds.sessionToken,
+      }
+    });
+    const command = new GetCallerIdentityCommand({});
+    const { UserId, Account, Arn } = await sts.send(command);
     const { userId, account, arn } = profile.identity;
     if (UserId === userId && Account === account && Arn == arn) {
       return creds;
