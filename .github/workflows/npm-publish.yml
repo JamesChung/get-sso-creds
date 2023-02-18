@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - main
-      - fix
     paths-ignore:
       - '.github/**'
       - '.*'
@@ -34,17 +33,19 @@ jobs:
         run: git tag -a v${{ steps.version.outputs.current-version }} -m v${{ steps.version.outputs.current-version }}
       - name: push-tag
         run: git push --tags
+      - name: release
+        run: gh release create v${{ steps.version.outputs.current-version }} --generate-notes
 
-  # publish-npm:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 18
-  #         registry-url: https://registry.npmjs.org/
-  #     - run: npm ci
-  #     - run: npm publish
-  #       env:
-  #         NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
+      - run: npm ci
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
