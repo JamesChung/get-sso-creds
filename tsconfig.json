@@ -2,11 +2,11 @@
   "compilerOptions": {
     "declaration": true,
     "importHelpers": true,
-    "module": "CommonJS",
+    "module": "commonjs",
     "outDir": "dist",
     "rootDir": "src",
     "strict": true,
-    "target": "ESNext"
+    "target": "esnext"
   },
   "include": ["src/**/*"]
 }

@@ -4,7 +4,7 @@ exports.getProfileCredentials = exports.getCredentialsFromCredentialsFile = expo
 const os_1 = require("os");
 const fs_1 = require("fs");
 const child_process_1 = require("child_process");
-const aws_sdk_1 = require("aws-sdk");
+const client_sts_1 = require("@aws-sdk/client-sts");
 const profile_helper_1 = require("./profile-helper");
 const chalk = require("chalk");
 const ini_1 = require("ini");
@@ -45,9 +45,9 @@ async function readCredsFile(path) {
 }
 async function getCredentialsFromCacheFiles() {
     const credsList = [];
-    const credfileNames = (0, fs_1.readdirSync)(`${(0, os_1.homedir)()}/.aws/cli/cache`, "utf-8");
+    const credFileNames = (0, fs_1.readdirSync)(`${(0, os_1.homedir)()}/.aws/cli/cache`, "utf-8");
     const credFilePromises = [];
-    for (let credFile of credfileNames) {
+    for (let credFile of credFileNames) {
         credFilePromises.push(readCredsFile(`${(0, os_1.homedir)()}/.aws/cli/cache/${credFile}`));
     }
     const credentialsList = await Promise.all(credFilePromises);
@@ -68,14 +68,17 @@ async function getCredentialsFromCacheFiles() {
 exports.getCredentialsFromCacheFiles = getCredentialsFromCacheFiles;
 async function getCredentials(profile) {
     const credsList = await getCredentialsFromCacheFiles();
-    const sts = new aws_sdk_1.STS({ region: profile?.region });
     for (let creds of credsList) {
-        sts.config.credentials = {
-            accessKeyId: creds.accessKeyId,
-            secretAccessKey: creds.secretAccessKey,
-            sessionToken: creds.sessionToken,
-        };
-        const { UserId, Account, Arn } = await sts.getCallerIdentity().promise();
+        const sts = new client_sts_1.STSClient({
+            region: profile?.region,
+            credentials: {
+                accessKeyId: creds.accessKeyId,
+                secretAccessKey: creds.secretAccessKey,
+                sessionToken: creds.sessionToken,
+            }
+        });
+        const command = new client_sts_1.GetCallerIdentityCommand({});
+        const { UserId, Account, Arn } = await sts.send(command);
         const { userId, account, arn } = profile.identity;
         if (UserId === userId && Account === account && Arn == arn) {
             return creds;

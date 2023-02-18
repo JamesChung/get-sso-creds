@@ -4,7 +4,7 @@ const core_1 = require("@oclif/core");
 const output_helper_1 = require("../lib/output-helper");
 const creds_helper_1 = require("../lib/creds-helper");
 const select_helper_1 = require("../lib/select-helper");
-const inquirer_1 = require("inquirer");
+const inquirer = require("inquirer");
 const chalk = require("chalk");
 class Select extends core_1.Command {
     static description = "Get AWS SSO credentials via AWS SSO.";
@@ -50,10 +50,11 @@ class Select extends core_1.Command {
             description: "Desired SSO config profile to use.",
         }),
     };
+    static args = [];
     async run() {
         const { flags } = await this.parse(Select);
         try {
-            core_1.ux.action.start("❯ Loading");
+            core_1.CliUx.ux.action.start("❯ Loading");
             const ssoConfigs = await (0, select_helper_1.getSSOConfigs)();
             const urlChoices = [];
             for (let ssoConfig of ssoConfigs) {
@@ -63,8 +64,8 @@ class Select extends core_1.Command {
                 throw new Error(`sign in first ${chalk.red("(aws sso login | gscreds login)")}`);
             }
             const accounts = await (0, select_helper_1.getAccounts)(ssoConfigs, flags.profile);
-            core_1.ux.action.stop();
-            const ssoUrlResponse = await inquirer_1.default.prompt([
+            core_1.CliUx.ux.action.stop();
+            const ssoUrlResponse = await inquirer.prompt([
                 {
                     name: "ssoUrl",
                     message: "Select an SSO url:",
@@ -77,7 +78,7 @@ class Select extends core_1.Command {
                 .accountList.map((value) => {
                 return `${value.accountName} | ${value.emailAddress} | ${value.accountId}`;
             });
-            const ssoAccountResponse = await inquirer_1.default.prompt([
+            const ssoAccountResponse = await inquirer.prompt([
                 {
                     name: "ssoAccount",
                     message: "Select an SSO account:",
@@ -91,7 +92,7 @@ class Select extends core_1.Command {
                 .trim();
             const accessToken = (0, select_helper_1.getToken)(ssoUrlResponse.ssoUrl, ssoConfigs);
             const ssoRoleNames = await (0, select_helper_1.getRoles)(accountValue, accessToken, flags.profile);
-            const ssoRoleResponse = await inquirer_1.default.prompt([
+            const ssoRoleResponse = await inquirer.prompt([
                 {
                     name: "ssoRole",
                     message: "Select an SSO role:",
@@ -101,14 +102,14 @@ class Select extends core_1.Command {
             ]);
             const roleCreds = await (0, select_helper_1.getRoleCredentials)(ssoRoleResponse.ssoRole, accountValue, accessToken, flags.profile);
             if (flags.clipboard) {
-                core_1.ux.action.start("❯ Saving to clipboard");
+                core_1.CliUx.ux.action.start("❯ Saving to clipboard");
                 (0, output_helper_1.clipboardOutput)(roleCreds);
-                core_1.ux.action.stop();
+                core_1.CliUx.ux.action.stop();
             }
             else if (flags.credentials) {
-                core_1.ux.action.start("❯ Writing to credentials file");
+                core_1.CliUx.ux.action.start("❯ Writing to credentials file");
                 (0, creds_helper_1.writeCredentialsFile)(roleCreds, flags["set-as"]);
-                core_1.ux.action.stop();
+                core_1.CliUx.ux.action.stop();
                 return;
             }
             else {
@@ -116,7 +117,7 @@ class Select extends core_1.Command {
             }
         }
         catch (error) {
-            core_1.ux.action.stop("failed");
+            core_1.CliUx.ux.action.stop("failed");
             this.error(`${error.message}\nOr specify a profile via --profile="profile-name", you may have not specified a valid SSO profile from your ~/.aws/config file. Will attempt to use default profile if flag is not set.`);
         }
     }

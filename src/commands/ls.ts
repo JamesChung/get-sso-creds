@@ -1,6 +1,6 @@
-import { Command, Flags, ux } from "@oclif/core";
+import { Command, Flags, CliUx } from "@oclif/core";
 import { getCredProfiles, getProfileNames } from "../lib/profile-helper";
-import inquirer from "inquirer";
+import * as inquirer from "inquirer";
 
 export default class Ls extends Command {
   static description =
@@ -16,6 +16,8 @@ export default class Ls extends Command {
   static flags = {
     help: Flags.help(),
   };
+
+  static args = [];
 
   public async run(): Promise<void> {
     try {
@@ -42,7 +44,7 @@ export default class Ls extends Command {
         return;
       }
     } catch (error: any) {
-      ux.action.stop("failed");
+      CliUx.ux.action.stop("failed");
       this.error(error.message);
     }
   }

@@ -1,4 +1,4 @@
-import { Command, Flags, ux } from "@oclif/core";
+import { Command, Flags, CliUx } from "@oclif/core";
 import {
   getProfileCredentials,
   getCredentialsFromCredentialsFile,
@@ -6,7 +6,7 @@ import {
 import { generateLoginURL } from "../lib/console-helper";
 import { getCredProfiles, getProfileNames } from "../lib/profile-helper";
 import { ICredentials } from "../lib";
-import inquirer from "inquirer";
+import * as inquirer from "inquirer";
 import * as open from "open";
 
 export default class Console extends Command {
@@ -28,6 +28,8 @@ export default class Console extends Command {
       Suggested values: ["chrome", "firefox", "edge"]`,
     }),
   };
+
+  static args = [];
 
   private credentials!: ICredentials;
   private loginURL!: string;
@@ -69,7 +71,7 @@ export default class Console extends Command {
         },
       ]);
 
-      ux.action.start("❯ Opening Console");
+      CliUx.ux.action.start("❯ Opening Console");
       if (profileType === "config") {
         this.credentials = (await getProfileCredentials(profile)).credentials;
       }
@@ -86,9 +88,9 @@ export default class Console extends Command {
           throw new Error("Could not open browser.");
         }
       });
-      ux.action.stop();
+      CliUx.ux.action.stop();
     } catch (error: any) {
-      ux.action.stop("failed");
+      CliUx.ux.action.stop("failed");
       this.error(error.message);
     }
   }

@@ -4,7 +4,7 @@ const core_1 = require("@oclif/core");
 const profile_helper_1 = require("../lib/profile-helper");
 const output_helper_1 = require("../lib/output-helper");
 const creds_helper_1 = require("../lib/creds-helper");
-const inquirer_1 = require("inquirer");
+const inquirer = require("inquirer");
 class Get extends core_1.Command {
     static description = "Get AWS SSO credentials from existing profiles in ~/.aws/config.";
     static examples = [
@@ -46,10 +46,11 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
             description: "Outputs credentials in json format.",
         }),
     };
+    static args = [];
     async run() {
         const { flags } = await this.parse(Get);
         try {
-            const response = await inquirer_1.default.prompt([
+            const response = await inquirer.prompt([
                 {
                     name: "profile",
                     message: "Select a profile:",
@@ -63,17 +64,17 @@ export AWS_SESSION_TOKEN=<AWS_SESSION_TOKEN>`,
             };
             const { credentials } = await (0, creds_helper_1.getProfileCredentials)(response.profile);
             if (flags.clipboard) {
-                core_1.ux.action.start("❯ Saving to clipboard");
+                core_1.CliUx.ux.action.start("❯ Saving to clipboard");
                 (0, output_helper_1.clipboardOutput)(credentials);
-                core_1.ux.action.stop();
+                core_1.CliUx.ux.action.stop();
             }
             else if (flags.credentials) {
-                core_1.ux.action.start("❯ Writing to credentials file");
+                core_1.CliUx.ux.action.start("❯ Writing to credentials file");
                 if (flags.preserve) {
                     (0, creds_helper_1.writeCredentialsFile)(credentials, response.profile);
                 }
                 (0, creds_helper_1.writeCredentialsFile)(credentials);
-                core_1.ux.action.stop();
+                core_1.CliUx.ux.action.stop();
             }
             else {
                 await (0, output_helper_1.output)(this, input);
