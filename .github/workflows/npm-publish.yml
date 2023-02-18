@@ -31,6 +31,10 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@main
       - name: tag-commit
         run: git tag -a v${{ steps.version.outputs.current-version }} -m v${{ steps.version.outputs.current-version }}
+      - name: push-tag
+        run: git push --tags
+      - name: release
+        run: gh release create v${{ steps.version.outputs.current-version }} --generate-notes
 
   publish-npm:
     needs: build
