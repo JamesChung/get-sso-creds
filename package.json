@@ -8,13 +8,13 @@
   },
   "homepage": "https://github.com/JamesChung/get-sso-creds",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "repository": "JamesChung/get-sso-creds",
   "files": [
-    "/bin",
-    "/dist",
-    "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
+    "./bin",
+    "./dist",
+    "./npm-shrinkwrap.json",
+    "./oclif.manifest.json"
   ],
   "dependencies": {
     "@oclif/core": "^1.26.2",
