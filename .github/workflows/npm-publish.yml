@@ -19,9 +19,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+          registry-url: https://registry.npmjs.org/
       - run: npm ci && npm run build
 
   create-release:
+    needs: build
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
@@ -39,7 +41,7 @@ jobs:
         run: gh release create v${{ steps.version.outputs.current-version }} --generate-notes
 
   publish-npm:
-    needs: build
+    needs: [build, create-release]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
